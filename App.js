@@ -1,25 +1,3 @@
-/*import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});*/
-
 import * as React from 'react';
 import { Text, View, StyleSheet, Image} from 'react-native';
 import { Constants } from 'expo';
@@ -31,17 +9,13 @@ import AssetExample from './components/AssetExample';
 // or any pure javascript modules available in npm
 //import { Card } from 'react-native-paper';
 
-// source ={require('./assets/Illustration@2x.png')}
-//source ={require('./assets/getStarted@2x.png')}
-
-
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
       <View style={styles.whiteBox}>     
       </View> 
-        <Image style = {styles.icon}>
+        <Image style = {styles.icon} source ={require('./assets/Illustration.png')}>
         </Image>
         
         <View style={styles.textBox}>        
@@ -52,7 +26,7 @@ export default class App extends React.Component {
             Connecting Food Lovers
            </Text>
         </View>
-        <Image style = {styles.startButton}></Image>
+        <Image style = {styles.startButton} source ={require('./assets/getStarted.png')}></Image>
 
       </View>
     );
@@ -61,18 +35,17 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   whiteBox:{
-  backgroundColor: 'red',
-  flex:1,  
+    width: 10,
+    height:10,
+    flex:1
   },
  container: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
     backgroundColor: 'white',
-    //margin:40,
   },
   paragraph: {
-    //margin: 24,
    width: 82.02,
   height: 39,
   color: '#353535',
@@ -80,7 +53,7 @@ const styles = StyleSheet.create({
   fontSize: 29,
   fontStyle: 'normal',
   fontStretch: 'normal',
-  fontWeight: 300,
+  fontWeight: 0,
   lineHeight: 39,
   textAlign: 'center',
   textTransform: 'none',
@@ -103,7 +76,7 @@ const styles = StyleSheet.create({
   fontSize: 14,
   fontStyle: 'normal',
   fontStretch: 'normal',
-  fontWeight: 300,
+  fontWeight: 0,
   lineHeight: 19,
   textAlign: 'center',
   textTransform: 'none',
@@ -112,13 +85,15 @@ const styles = StyleSheet.create({
   },
 
   textBox:{
-    flex: 0.25,
+    flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
   },
 
   startButton:{
+    width: 375,
+    height: 48,
     justifyContent: 'flex-end',
     alignItems: 'center',
     backgroundColor: 'white',

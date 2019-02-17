@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 
+//<Image style={styles.logo} source={require('../assets/snack-icon.png')} />
+
 export default class AssetExample extends React.Component {
   render() {
     return (
@@ -8,7 +10,7 @@ export default class AssetExample extends React.Component {
         <Text style={styles.paragraph}>
           Local files and assets can be imported by dragging and dropping them into the editor
         </Text>
-        <Image style={styles.logo} source={require('../assets/snack-icon.png')} />
+        
       </View>
     );
   }
