@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image, Dimensions} from 'react-native';
+import { Text, View, StyleSheet, Image, Dimensions, TouchableOpacity} from 'react-native';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default class SplashScreen extends React.Component{
@@ -7,7 +7,7 @@ export default class SplashScreen extends React.Component{
     constructor(){
         super()
         this.state ={
-            orientation: ""
+            orientation: ''
         }
     }
 
@@ -23,6 +23,7 @@ export default class SplashScreen extends React.Component{
             {
                 this.setState({ orientation: 'landscape' });
             }
+            console.log(this.state.orientation.toString())
         }
     }
 
@@ -54,10 +55,12 @@ export default class SplashScreen extends React.Component{
                             DinDin.
                         </Text>
                         <Text style={styles.slogan}>
-                            Connecting Food Lovers
+                            Connecting Food Lovers!
                         </Text>
                     </View>
-                    <Image style = {styles.startButton} source ={require('../assets/getStarted.png')}/>
+                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
+                        <Image style = {styles.startButton} source ={require('../assets/getStarted.png')}/>
+                    </TouchableOpacity>
                   
                 </View>
                 
@@ -72,7 +75,7 @@ export default class SplashScreen extends React.Component{
                     
                     <View style={styles.textBox}>        
                         <Text style={styles.paragraph}>
-                            DinDin.
+                            DinDin!
                         </Text>
                         <Text style={styles.slogan}>
                             Connecting Food Lovers

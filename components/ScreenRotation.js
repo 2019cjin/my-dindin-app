@@ -1,70 +1,55 @@
 import React from 'react';
-import { StyleSheet, Text, View, Dimensions, Image } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Platform } from 'react-native';
  
-export default class App extends React.Component {
-
-    constructor(){
-        super()
-        this.state ={
-            orientation: ""
+export default class App extends React.Component
+{
+  constructor()
+  {
+    super();
+ 
+    this.state = { orientation: '' }
+  }
+ 
+  getOrientation = () =>
+  {
+    if( this.refs.rootView )
+    {
+        if( Dimensions.get('window').width < Dimensions.get('window').height )
+        {
+          this.setState({ orientation: 'portrait' });
+        }
+        else
+        {
+          this.setState({ orientation: 'landscape' });
         }
     }
-
-    
-getOrientation = () =>
-{
-  if( this.refs.rootView )
-  {
-      if( Dimensions.get('window').width < Dimensions.get('window').height )
-      {
-        this.setState({ orientation: 'portrait' });
-      }
-      else
-      {
-        this.setState({ orientation: 'landscape' });
-      }
   }
-}
-
-componentDidMount()
-{
-  this.getOrientation();
-  
-  Dimensions.addEventListener( 'change', () =>
+ 
+  componentDidMount()
   {
     this.getOrientation();
-  });
-}
+    
+    Dimensions.addEventListener( 'change', () =>
+    {
+      this.getOrientation();
+    });
+  }
 
-componentWillUnMount() {
-    Dimensions.removeEventListener( 'change');
+  componentWillUnMount() 
+    {
+        Dimensions.removeEventListener( 'change');
     }
-
-render()
-{
-
-  if (this.state.orientation == 'portrait')
+ 
+  render()
   {
     return(
-        <View ref = "rootView" style = {[ styles.container, { backgroundColor: ( this.state.orientation == 'portrait' ) ? '#1B5E20' : '#006064' }]}>
-          <Text style = { styles.text }> VIEW</Text>
-          <Image style = {styles.icon} source ={require('../assets/Illustration.png')}/>
-        </View>
-      );
+      <View ref = "rootView" style = {[ styles.container, { backgroundColor: ( this.state.orientation == 'landscape' ) ? '#1B5E20' : '#006064' }]}>
+        <Text style = { styles.text }>{ this.state.orientation.toUpperCase() } VIEW</Text>
+      </View>
+    );
   }
-  else
-  {
-    return(
-        <View ref = "rootView" style = {[ styles.container, { backgroundColor: ( this.state.orientation == 'portrait' ) ? '#1B5E20' : '#006064' }]}>
-          <Text style = { [styles.text, styles.landscape ]}> VIEW</Text>
-          <Image style = {[styles.icon, styles.landscape ]} source ={require('../assets/Illustration.png')}/>
-        </View>
-      );
-  }
-  
 }
-}
-
+ 
 const styles = StyleSheet.create(
 {
   container:
@@ -79,17 +64,6 @@ const styles = StyleSheet.create(
   {
     fontSize: 22,
     color: 'white',
-    fontWeight: 'bold',
-
-  },
-  landscape:
-  {
-    transform: [{ rotate: '270deg'}]
-  },
-  icon:{
-    width: 275,
-    height: 259,
-    justifyContent:'center',
-    alignItems: 'center'   
-  },
+    fontWeight: 'bold'
+  }
 });
