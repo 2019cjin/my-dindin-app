@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
 
   slogan:{   
   width: 300,
-  height: 16,
+  height: 20,
   color: '#000000',
   fontFamily: 'SFUIText',
   fontSize: 14,
