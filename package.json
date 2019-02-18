@@ -10,10 +10,28 @@
     "expo": "^32.0.0",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
-    "react-native-paper": "2.2.8"
+    "react-native-paper": "2.2.8",
+    "react-native-responsive-screen": "^1.2.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.0.0"
+    "babel-preset-expo": "^5.0.0",
+    "eslint": "^5.14.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0"
   },
-  "private": true
+  "private": true,
+  "name": "dindin",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2019cjin/my-dindin-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/2019cjin/my-dindin-app/issues"
+  },
+  "homepage": "https://github.com/2019cjin/my-dindin-app#readme",
+  "description": ""
 }
