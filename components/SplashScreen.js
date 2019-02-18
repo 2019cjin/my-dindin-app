@@ -45,7 +45,28 @@ export default class SplashScreen extends React.Component{
         if (this.state.orientation == 'portrait')
         {
             return(
-                <View style={styles.container}>
+                <View ref = "rootView" style={styles.container}>
+                    <View style={styles.whiteBox}/>     
+                    <Image style = {styles.icon} source ={require('../assets/Illustration.png')}/>
+
+                    <View style={styles.textBox}>        
+                        <Text style={styles.paragraph}>
+                            DinDin.
+                        </Text>
+                        <Text style={styles.slogan}>
+                            Connecting Food Lovers
+                        </Text>
+                    </View>
+                    <Image style = {styles.startButton} source ={require('../assets/getStarted.png')}/>
+                  
+                </View>
+                
+            )
+        }
+        else
+        {
+            return(
+                <View ref = "rootView" style={[styles.container, styles.landscape]}>
                     <View style={styles.whiteBox}/>     
                     <Image style = {styles.icon} source ={require('../assets/Illustration.png')}/>
                     
@@ -58,16 +79,6 @@ export default class SplashScreen extends React.Component{
                         </Text>
                     </View>
                     <Image style = {styles.startButton} source ={require('../assets/getStarted.png')}/>
-                </View>
-                
-            )
-        }
-        else
-        {
-            return(
-                <View style={styles.container}>
-                    <View style={[styles.whiteBox, styles.landscape]}/>     
-                    <Image style = {[styles.icon, styles.landscape]} source ={require('../assets/Illustration.png')}/>
                     
                 </View>
                 
