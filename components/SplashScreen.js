@@ -23,7 +23,7 @@ export default class SplashScreen extends React.Component{
             {
                 this.setState({ orientation: 'landscape' });
             }
-            console.log(this.state.orientation.toString())
+           console.log(this.state.orientation.toString())
         }
     }
 
@@ -46,13 +46,13 @@ export default class SplashScreen extends React.Component{
         if (this.state.orientation == 'portrait')
         {
             return(
-                <View ref = "rootView" style={styles.container}>
+                <View ref = "rootView" style={[styles.container]}>
                     <View style={styles.whiteBox}/>     
                     <Image style = {styles.icon} source ={require('../assets/Illustration.png')}/>
 
                     <View style={styles.textBox}>        
-                        <Text style={styles.paragraph}>
-                            DinDin.
+                        <Text style={styles.paragraph} type={"Arabic"}>
+                            DinDin
                         </Text>
                         <Text style={styles.slogan}>
                             Connecting Food Lovers!
@@ -73,9 +73,9 @@ export default class SplashScreen extends React.Component{
                     <View style={styles.whiteBox}/>     
                     <Image style = {styles.icon} source ={require('../assets/Illustration.png')}/>
                     
-                    <View style={styles.textBox}>        
+                    <View style={styles.textBox} type={"Arabic"}>        
                         <Text style={styles.paragraph}>
-                            DinDin!
+                            DinDin
                         </Text>
                         <Text style={styles.slogan}>
                             Connecting Food Lovers
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 29,
     fontStyle: 'normal',
     fontStretch: 'normal',
-    fontWeight: 0,
+    //fontWeight: 0,
     lineHeight: 39,
     textAlign: 'center',
     textTransform: 'none',
