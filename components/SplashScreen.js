@@ -1,13 +1,56 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image, Dimensions, TouchableOpacity} from 'react-native';
+import { Text, View, StyleSheet, Image, Dimensions, TouchableOpacity, ImageBackground, Animated, Button} from 'react-native';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+//import { Constants } from 'expo';
+
+class FadeInView extends React.Component {
+  state = {
+    fadeAnim: new Animated.Value(0),  // Initial value for opacity: 0
+  }
+  componentDidMount() {
+    Animated.timing(                  // Animate over time
+      this.state.fadeAnim,            // The animated value to drive
+      {
+        toValue: 1,                   // Animate to opacity: 1 (opaque)
+        duration: getRandomInt(1000, 3000),              // Make it take a while
+      }
+    ).start();                        // Starts the animation
+  }
+  render() {
+    let { fadeAnim } = this.state;
+
+    return (
+      <Animated.View                 // Special animatable View
+        style={{
+          ...this.props.style,
+          opacity: fadeAnim,         // Bind opacity to animated value
+        }}
+      >
+        {this.props.children}
+      </Animated.View>
+    );
+  }
+}
 
 export default class SplashScreen extends React.Component{
 
     constructor(){
         super()
         this.state ={
-            orientation: ''
+            orientation: '',
+            slogan: 'Connecting Food Lovers'
+        }
+    }
+
+    changeLanguage = () =>
+    {
+        if (this.state.slogan === 'Connecting Food Lovers')
+        {
+            this.setState({ slogan:'توصيل عشاق الطعام'});
+        }
+        else
+        {
+            this.setState({ slogan: 'Connecting Food Lovers'});
         }
     }
 
@@ -29,6 +72,7 @@ export default class SplashScreen extends React.Component{
 
     componentDidMount()
     {
+        this.changeLanguage();
         this.getOrientation();
         
         Dimensions.addEventListener( 'change', () =>
@@ -43,47 +87,88 @@ export default class SplashScreen extends React.Component{
     }
 
     render(){
-        if (this.state.orientation == 'portrait')
+        if (this.state.orientation === 'portrait')
         {
             return(
-                <View ref = "rootView" style={[styles.container]}>
-                    <View style={styles.whiteBox}/>     
-                    <Image style = {styles.icon} source ={require('../assets/Illustration.png')}/>
+                <View ref = "rootView" style={styles.container}>
+                    <View style={styles.whiteBox}/> 
+                        
+                    <ImageBackground style = {styles.icon} source ={require('../assets/backgroundSplash.png')}>
+                    
+                        <FadeInView>
+                            <Image style = {styles.avatar1} source ={require('../assets/greenGirl.png')}>
+                            </Image>
+                        </FadeInView>
+
+                         <FadeInView>
+                            <Image style = {styles.avatar2} source ={require('../assets/purpleGuy.png')}>
+                            </Image>
+                        </FadeInView>
+
+                        <FadeInView>
+                            <Image style = {styles.avatar3} source ={require('../assets/redHairGirl.png')}>
+                            </Image>
+                        </FadeInView>
+                    </ImageBackground>
 
                     <View style={styles.textBox}>        
-                        <Text style={styles.paragraph} type={"Arabic"}>
+                        <Text style={styles.paragraph}>
                             DinDin
                         </Text>
-                        <Text style={styles.slogan}>
-                            Connecting Food Lovers!
-                        </Text>
+                        
+                        <Text style = {styles.slogan} id="sloganText">{this.state.slogan}</Text>
+                        <Button onPress={this.changeLanguage} title="English/عربى" color="#841584"/>
+                        
                     </View>
-                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
+
+                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}} activeOpacity={0.5}>
+
                         <Image style = {styles.startButton} source ={require('../assets/getStarted.png')}/>
                     </TouchableOpacity>
                   
                 </View>
+                
                 
             )
         }
         else
         {
             return(
-                <View ref = "rootView" style={[styles.container, styles.landscape]}>
-                    <View style={styles.whiteBox}/>     
-                    <Image style = {styles.icon} source ={require('../assets/Illustration.png')}/>
-                    
-                    <View style={styles.textBox} type={"Arabic"}>        
+                 <View ref = "rootView" style={styles.container}>
+                    <View style={styles.whiteBox}/> 
+                        
+                    <ImageBackground style = {styles.icon} source ={require('../assets/backgroundSplash.png')}>
+                        <FadeInView>
+                            <Image style = {styles.avatar1} source ={require('../assets/greenGirl.png')}>
+                            </Image>
+                        </FadeInView>
+
+                         <FadeInView>
+                            <Image style = {styles.avatar2} source ={require('../assets/purpleGuy.png')}>
+                            </Image>
+                        </FadeInView>
+
+                        <FadeInView>
+                            <Image style = {styles.avatar3} source ={require('../assets/redHairGirl.png')}>
+                            </Image>
+                        </FadeInView>
+                    </ImageBackground>
+
+                    <View style={styles.textBox}>        
                         <Text style={styles.paragraph}>
-                            DinDin
+                            DinDin.
                         </Text>
-                        <Text style={styles.slogan}>
-                            Connecting Food Lovers
-                        </Text>
+                        
+                        <Text style = {styles.slogan} id="sloganText">{this.state.slogan}</Text>
+                        <Button onPress={this.changeLanguage} title="English/عربى" color="#841584"/>
                     </View>
-                    <Image style = {styles.startButton} source ={require('../assets/getStarted.png')}/>
                     
+                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
+                        <Image style = {styles.startButton} source ={require('../assets/getStarted.png')}/>
+                    </TouchableOpacity>
+                  
                 </View>
+               
                 
             )
         }
@@ -160,4 +245,37 @@ const styles = StyleSheet.create({
     {
         transform: [{ rotate: '270deg'}]
     },
+
+    avatar1:{
+        width: 53,
+        height: 53,
+        position: 'absolute',
+        bottom: 50,
+        left:40,
+      },
+    
+      avatar2:{
+        width: 53,
+        height: 53,
+        position: 'absolute',
+        bottom: 50,
+        right: 50,
+      },
+    
+        avatar3:{
+        width: 53,
+        height: 53,
+        position: 'absolute',
+        top: 50,
+        right: 10,
+      },
+      
   });
+
+  //from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+  }
+  
