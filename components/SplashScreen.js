@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image, Dimensions, TouchableOpacity, ImageBackground, Animated, Button} from 'react-native';
+import { Text, View, StyleSheet, Image, Dimensions, TouchableOpacity, ImageBackground, Animated} from 'react-native';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 //import { Constants } from 'expo';
 
@@ -32,25 +32,15 @@ class FadeInView extends React.Component {
   }
 }
 
+
+
+
 export default class SplashScreen extends React.Component{
 
     constructor(){
         super()
         this.state ={
-            orientation: '',
-            slogan: 'Connecting Food Lovers'
-        }
-    }
-
-    changeLanguage = () =>
-    {
-        if (this.state.slogan === 'Connecting Food Lovers')
-        {
-            this.setState({ slogan:'توصيل عشاق الطعام'});
-        }
-        else
-        {
-            this.setState({ slogan: 'Connecting Food Lovers'});
+            orientation: ''
         }
     }
 
@@ -66,13 +56,12 @@ export default class SplashScreen extends React.Component{
             {
                 this.setState({ orientation: 'landscape' });
             }
-           console.log(this.state.orientation.toString())
+            console.log(this.state.orientation.toString())
         }
     }
 
     componentDidMount()
     {
-        this.changeLanguage();
         this.getOrientation();
         
         Dimensions.addEventListener( 'change', () =>
@@ -87,7 +76,7 @@ export default class SplashScreen extends React.Component{
     }
 
     render(){
-        if (this.state.orientation === 'portrait')
+        if (this.state.orientation == 'portrait')
         {
             return(
                 <View ref = "rootView" style={styles.container}>
@@ -113,16 +102,14 @@ export default class SplashScreen extends React.Component{
 
                     <View style={styles.textBox}>        
                         <Text style={styles.paragraph}>
-                            DinDin
+                            DinDin.
                         </Text>
-                        
-                        <Text style = {styles.slogan} id="sloganText">{this.state.slogan}</Text>
-                        <Button onPress={this.changeLanguage} title="English/عربى" color="#841584"/>
-                        
+                        <Text style={styles.slogan}>
+                            Connecting Food Lovers!
+                        </Text>
                     </View>
 
-                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}} activeOpacity={0.5}>
-
+                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
                         <Image style = {styles.startButton} source ={require('../assets/getStarted.png')}/>
                     </TouchableOpacity>
                   
@@ -138,6 +125,7 @@ export default class SplashScreen extends React.Component{
                     <View style={styles.whiteBox}/> 
                         
                     <ImageBackground style = {styles.icon} source ={require('../assets/backgroundSplash.png')}>
+                    
                         <FadeInView>
                             <Image style = {styles.avatar1} source ={require('../assets/greenGirl.png')}>
                             </Image>
@@ -158,9 +146,9 @@ export default class SplashScreen extends React.Component{
                         <Text style={styles.paragraph}>
                             DinDin.
                         </Text>
-                        
-                        <Text style = {styles.slogan} id="sloganText">{this.state.slogan}</Text>
-                        <Button onPress={this.changeLanguage} title="English/عربى" color="#841584"/>
+                        <Text style={styles.slogan}>
+                            Connecting Food Lovers!
+                        </Text>
                     </View>
                     
                     <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
@@ -195,7 +183,7 @@ const styles = StyleSheet.create({
     fontSize: 29,
     fontStyle: 'normal',
     fontStretch: 'normal',
-    //fontWeight: 0,
+    fontWeight: 0,
     lineHeight: 39,
     textAlign: 'center',
     textTransform: 'none',
