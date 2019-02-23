@@ -8,13 +8,13 @@ export default class HomeScreen extends React.Component{
         return(
            <View style={styles.container}>
            <View style={styles.header}>
-           <Image style = {styles.sideBtn} source ={require   ('../assets/sidemenu btn.png')}>
+           <Image style = {styles.sideBtn} source ={require   ('../assets/sidemenubtn.png')}>
             </Image>
 
             <Text style = {styles.title}> DinDin </Text>
 
 
-             <Image style = {styles.searchBtn} source ={require   ('../assets/search btn.png')}>
+             <Image style = {styles.searchBtn} source ={require   ('../assets/searchbtn.png')}>
             </Image>
 
            </View>

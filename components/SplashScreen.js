@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, StyleSheet, Image, Dimensions, TouchableOpacity, ImageBackground, Animated} from 'react-native';
+import { Text, View, StyleSheet, Image, Dimensions, TouchableOpacity, ImageBackground, Animated, Button} from 'react-native';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 //import { Constants } from 'expo';
 
@@ -40,7 +40,20 @@ export default class SplashScreen extends React.Component{
     constructor(){
         super()
         this.state ={
-            orientation: ''
+            orientation: '',
+            slogan: 'Connecting Food Lovers'
+        }
+    }
+
+    changeLanguage = () =>
+    {
+        if (this.state.slogan === 'Connecting Food Lovers')
+        {
+            this.setState({ slogan:'توصيل عشاق الطعام'});
+        }
+        else
+        {
+            this.setState({ slogan: 'Connecting Food Lovers'});
         }
     }
 
@@ -63,6 +76,7 @@ export default class SplashScreen extends React.Component{
     componentDidMount()
     {
         this.getOrientation();
+        this.changeLanguage();
         
         Dimensions.addEventListener( 'change', () =>
         {
@@ -104,9 +118,8 @@ export default class SplashScreen extends React.Component{
                         <Text style={styles.paragraph}>
                             DinDin.
                         </Text>
-                        <Text style={styles.slogan}>
-                            Connecting Food Lovers!
-                        </Text>
+                        <Text style = {styles.slogan} id="sloganText">{this.state.slogan}</Text>
+                        <Button onPress={this.changeLanguage} title="English/عربى" color="#841584"/>
                     </View>
 
                     <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
@@ -146,9 +159,8 @@ export default class SplashScreen extends React.Component{
                         <Text style={styles.paragraph}>
                             DinDin.
                         </Text>
-                        <Text style={styles.slogan}>
-                            Connecting Food Lovers!
-                        </Text>
+                        <Text style = {styles.slogan} id="sloganText">{this.state.slogan}</Text>
+                        <Button onPress={this.changeLanguage} title="English/عربى" color="#841584"/>
                     </View>
                     
                     <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
