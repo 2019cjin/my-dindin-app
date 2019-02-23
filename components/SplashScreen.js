@@ -41,7 +41,7 @@ export default class SplashScreen extends React.Component{
         super()
         this.state ={
             orientation: '',
-            slogan: 'Connecting Food Lovers'
+            slogan: ''
         }
     }
 

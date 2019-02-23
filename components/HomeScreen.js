@@ -1,25 +1,31 @@
 import * as React from 'react';
 import { Constants } from 'expo'
-import { Text, View, StyleSheet, Image} from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import EventsList from './EventsList';
 
 export default class HomeScreen extends React.Component{
+    constructor(){
+        super()
+    }
     render(){
+        console.log("Home" + this.props.navigation)
         return(
+            
+        
            <View style={styles.container}>
-           <View style={styles.header}>
-           <Image style = {styles.sideBtn} source ={require   ('../assets/sidemenubtn.png')}>
-            </Image>
+            <View style={styles.header}>
+                <Image style = {styles.sideBtn} source ={require   ('../assets/sidemenubtn.png')}/>
+               
+                <Text style = {styles.title}> DinDin </Text>
 
-            <Text style = {styles.title}> DinDin </Text>
-
-
-             <Image style = {styles.searchBtn} source ={require   ('../assets/searchbtn.png')}>
-            </Image>
-
-           </View>
-
-            </View>            
+                <Image style = {styles.searchBtn} source ={require   ('../assets/searchbtn.png')}/>
+            </View>
+           
+                <EventsList/>
+            </View> 
+             
+                  
            
         )
     }
@@ -32,6 +38,7 @@ const styles = StyleSheet.create({
             flexDirection:'column',
             backgroundColor: "white",
             paddingTop: Constants.statusBarHeight,
+            justifyContent: 'center'
 
         },
 
