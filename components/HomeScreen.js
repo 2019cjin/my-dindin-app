@@ -8,7 +8,18 @@ import OldEventsList from './OldEventsList';
 export default class HomeScreen extends React.Component{
     constructor(){
         super()
+        this.state={
+            date: new Date(),//include so that we are able to change the month
+        }
     }
+
+    componentDidMount(){
+        setInterval(() => {this.setState({date: new Date()})}, 1000);
+
+    }
+    //eventlist: need to pass in what month - default month is month of today
+    //event list don't show events in days before today
+    //  <EventsList type = {new Date()} navigation = {this.props.navigation} />
     render(){
         return(
             
@@ -22,7 +33,7 @@ export default class HomeScreen extends React.Component{
                 <Image style = {styles.searchBtn} source ={require   ('../assets/searchbtn.png')}/>
             </View>
            
-                <EventsList/>
+                <EventsList type = {this.state.date} navigation = {this.props.navigation} />
             </View> 
              
                   

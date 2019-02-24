@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, SectionList } from 'react-native';
 
+import {weekDayMonthDate} from './DateConversion';
 
 export default class EventsList extends React.Component{
 
@@ -61,13 +62,6 @@ export default class EventsList extends React.Component{
         this.getEventsData()
     }
 
-    getDate = (item) =>{
-        monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"]
-        weekNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-        d = new Date(item.toString())
-        return weekNames[d.getDay()] + " " + monthNames[d.getMonth()] + " " + d.getDate()
-    }
-
     haveEvents = ({ item, index, section: { date, data } }) =>
     <View>
         <View style={{paddingLeft: 20, paddingRight: 20}}>
@@ -90,7 +84,7 @@ export default class EventsList extends React.Component{
     </View>
 
     dateHeader = ({section: {date}}) => (
-        <Text style={styles.date}>{date}</Text>
+        <Text style={styles.date}>{weekDayMonthDate(date)}</Text>
     )
 
 
@@ -98,7 +92,7 @@ export default class EventsList extends React.Component{
         if(section.data.length == 0){
         return <View style={{paddingLeft: 20, paddingRight: 20}}>
                 <View style={styles.addEventButton}> 
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddNewEvent')}}>
                         <Image source={require('../assets/addNewEvent.png')}/>
                     </TouchableOpacity>
                 </View>
@@ -112,6 +106,10 @@ export default class EventsList extends React.Component{
         if(this.state.eventsList !== null){
             return(
                 <View>
+                    <View  style = {styles.eventContainer}>
+                        <Text>Here is the current time: {this.props.type.toLocaleTimeString()}</Text>
+                    </View>
+                    
                     <SectionList
                     renderSectionFooter={({section}) => this.renderNoContent(section)}
                     renderSectionHeader={this.dateHeader}
