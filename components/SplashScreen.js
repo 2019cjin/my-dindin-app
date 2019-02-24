@@ -134,7 +134,7 @@ export default class SplashScreen extends React.Component{
         else
         {
             return(
-                 <View ref = "rootView" style={styles.container}>
+                 <View ref = "rootView" style={[styles.container, styles.landscape]}>
                     <View style={styles.whiteBox}/> 
                         
                     <ImageBackground style = {styles.icon} source ={require('../assets/backgroundSplash.png')}>

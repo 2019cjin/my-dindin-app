@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, SectionList } from 'react-native';
 
 
 export default class EventsList extends React.Component{
@@ -8,78 +8,122 @@ export default class EventsList extends React.Component{
         super()
         this.state ={
             eventsList: null,
+            finalEvents: null,
+            exampleeventsList: [
+                {
+                    "date": "02/25/2019",
+                    "data": [
+                        {
+                            "image": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png", 
+                            "name": "Jack",
+                            "time": "2:00 PM",
+                        },
+                        {
+                            "image": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png", 
+                            "name": "Jill",
+                            "time": "5:00 PM",
+                        }
+                    ]
+                },
+                {
+                    "date": "02/26/2019",
+                    "data": []
+                },
+                {
+                    "date": "02/27/2019",
+                    "data": [
+                        {
+                            "image": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png", 
+                            "name": "Humpty Dumpty",
+                            "time": "2:00 PM"
+                        },
+                        {
+                            "image": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png", 
+                            "name": "Muffin Man",
+                            "time": "5:00 PM"
+                        }
+                    ]
+                }
+            ]
         }
     }
 
+
     async getEventsData(){
-        let response = await fetch("https://api.myjson.com/bins/17c1gu")
+        let response = await fetch("http://people.virginia.edu/~csj3sd/eventsList.json")
         let extractedJson = await response.json()
         this.setState({
             eventsList: extractedJson.eventsList
         })
     }
 
-    componentWillMount(){
-        
+    componentDidMount(){
         this.getEventsData()
     }
-    
-    keyExtractor(item){
-        return item.id.toString()
+
+    getDate = (item) =>{
+        monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"]
+        weekNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        d = new Date(item.toString())
+        return weekNames[d.getDay()] + " " + monthNames[d.getMonth()] + " " + d.getDate()
     }
 
-    renderRow({item}){
-        //console.log(item.row[0].image)
-        return(
-            <View style = {styles.eventsListContainer}>
-                <View style={styles.eventContainer}>
-                    <Text style={styles.date}>{item.date}</Text>
-                    <View style={styles.eventRowContainer}>
-                        <Image source ={require('../assets/greenGirl.png')}/>
-                        <View style={styles.personContactInfo}>
-                            <Text style={styles.person}>{item.name}</Text>
-                            <Text style={styles.time}>{item.time}</Text>
-                        </View>
-                        <View style={styles.contactButtons}>
-                            <Image source={require('../assets/call.png')}/>
-                            <Image source={require('../assets/email.png')}/>
-                        </View>   
-                    </View> 
+    haveEvents = ({ item, index, section: { date, data } }) =>
+    <View>
+        <View style={{paddingLeft: 20, paddingRight: 20}}>
+            <View style={styles.eventRowContainer}>
+                <Image style={{width: 50, height: 50}} source ={{uri: item.image}}/>
+                <View style={styles.personContactInfo}>
+                    <Text style={styles.person}>{item.name}</Text>
+                    <Text style={styles.time}>{item.time}</Text>
                 </View>
-            </View>
-        )
+                <View style={styles.contactButtons}>
+                    <TouchableOpacity>
+                        <Image style={{width: 32, height: 32}} source={require('../assets/call.png')}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <Image style={{width: 32, height: 32}} source={require('../assets/email.png')}/>
+                    </TouchableOpacity>
+                </View>   
+            </View> 
+        </View>
+    </View>
+
+    dateHeader = ({section: {date}}) => (
+        <Text style={styles.date}>{date}</Text>
+    )
+
+
+    renderNoContent = (section) => {
+        if(section.data.length == 0){
+        return <View style={{paddingLeft: 20, paddingRight: 20}}>
+                <View style={styles.addEventButton}> 
+                    <TouchableOpacity>
+                        <Image source={require('../assets/addNewEvent.png')}/>
+                    </TouchableOpacity>
+                </View>
+                </View>
+        }
+        return null
     }
+    //perhaps need dynamically changing list
 
     render(){
-        if(this.state.podCastList !== null){
+        if(this.state.eventsList !== null){
             return(
                 <View>
-                    
-                     <FlatList
-                        data={this.state.eventsList}
-                        renderItem={this.renderRow}
-                        keyExtractor={this.keyExtractor}
+                    <SectionList
+                    renderSectionFooter={({section}) => this.renderNoContent(section)}
+                    renderSectionHeader={this.dateHeader}
+                    renderItem = {this.haveEvents}
+                    sections={this.state.exampleeventsList}
                     />
-                    </View>
+                     
+                </View>
             )
             }
             else{
-                return(
-                    <View>
-                <View style={styles.eventContainer}>
-                    <Text style={styles.date}>The Date</Text>
-                    <View style={styles.eventRowContainer}>
-                        <Image source={require('../assets/greenGirl.png')}/>
-                        <View style={styles.personContactInfo}>
-                            <Text style={styles.person}>The person</Text>
-                            <Text style={styles.time}>The time</Text>
-                        </View>
-                        <View style={styles.contactButtons}>
-                            <Image source={require('../assets/call.png')}/>
-                            <Image source={require('../assets/email.png')}/>
-                        </View>   
-                    </View> 
-                </View>
+                return(   
                 <View style={styles.eventContainer}>
                     <Text style={styles.date}>The Date</Text>
                     <View style={styles.addEventButton}> 
@@ -88,7 +132,6 @@ export default class EventsList extends React.Component{
                         </TouchableOpacity>
                     </View> 
                 </View>
-            </View>
                 )
             }
     }
@@ -146,6 +189,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingBottom: 30,
         paddingTop: 20,
+        paddingLeft: 20,
+        paddingRight: 20,
     },
     person:{
         height: 19,
