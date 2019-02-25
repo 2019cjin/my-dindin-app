@@ -41,9 +41,12 @@ export default class SplashScreen extends React.Component{
         super()
         this.state ={
             orientation: '',
-            slogan: ''
+            slogan: '',
+            image1Opacity: 1,
+            image2Opacity: 0,
+            image3Opacity: 1
         }
-    }
+      }
 
     changeLanguage = () =>
     {
@@ -82,6 +85,46 @@ export default class SplashScreen extends React.Component{
         {
             this.getOrientation();
         });
+
+        setInterval(()=>{ 
+          if(this.state.image1Opacity >= 1){
+            this.setState((state)=>({
+            image1Opacity: 0
+            }))
+          }
+          else{
+             this.setState((state)=>({
+            image1Opacity: state.image1Opacity + 0.1,
+            }))
+          }}
+          , 800)
+
+          setInterval(()=>{ 
+          if(this.state.image2Opacity <= 0){
+            this.setState((state)=>({
+            image2Opacity: 1
+            }))
+          }
+          else{
+             this.setState((state)=>({
+            image2Opacity: state.image2Opacity - 0.05,
+            }))
+          }}
+          , 400)
+
+          setInterval(()=>{ 
+          if(this.state.image3Opacity <= 0){
+            this.setState((state)=>({
+            image3Opacity: 1
+            }))
+          }
+          else{
+             this.setState((state)=>({
+            image3Opacity: state.image3Opacity - 0.1,
+            }))
+          }}
+          , 600)
+
     }
 
     componentWillUnMount() 
@@ -99,17 +142,17 @@ export default class SplashScreen extends React.Component{
                     <ImageBackground style = {styles.icon} source ={require('../assets/backgroundSplash.png')}>
                     
                         <FadeInView>
-                            <Image style = {styles.avatar1} source ={require('../assets/greenGirl.png')}>
+                            <Image style={{width: 53, height: 53, position: 'absolute', bottom: 50, left:40, opacity: this.state.image1Opacity}} source ={require('../assets/greenGirl.png')}>
                             </Image>
                         </FadeInView>
 
                          <FadeInView>
-                            <Image style = {styles.avatar2} source ={require('../assets/purpleGuy.png')}>
+                            <Image style={{width: 53, height: 53, position: 'absolute', bottom: 50, right:50, opacity: this.state.image2Opacity}} source ={require('../assets/purpleGuy.png')}>
                             </Image>
                         </FadeInView>
 
                         <FadeInView>
-                            <Image style = {styles.avatar3} source ={require('../assets/redHairGirl.png')}>
+                            <Image style={{width: 53, height: 53, position: 'absolute', top: 50, right:10, opacity: this.state.image3Opacity}} source ={require('../assets/redHairGirl.png')}>
                             </Image>
                         </FadeInView>
                     </ImageBackground>
@@ -140,17 +183,17 @@ export default class SplashScreen extends React.Component{
                     <ImageBackground style = {styles.icon} source ={require('../assets/backgroundSplash.png')}>
                     
                         <FadeInView>
-                            <Image style = {styles.avatar1} source ={require('../assets/greenGirl.png')}>
+                            <Image style={{width: 53, height: 53, position: 'absolute', bottom: 50, left:40, opacity: this.state.image1Opacity}} source ={require('../assets/greenGirl.png')}>
                             </Image>
                         </FadeInView>
 
                          <FadeInView>
-                            <Image style = {styles.avatar2} source ={require('../assets/purpleGuy.png')}>
+                            <Image style={{width: 53, height: 53, position: 'absolute', bottom: 50, right:50, opacity: this.state.image2Opacity}} source ={require('../assets/purpleGuy.png')}>
                             </Image>
                         </FadeInView>
 
                         <FadeInView>
-                            <Image style = {styles.avatar3} source ={require('../assets/redHairGirl.png')}>
+                            <Image style={{width: 53, height: 53, position: 'absolute', top: 50, right:10, opacity: this.state.image3Opacity}} source ={require('../assets/redHairGirl.png')}>
                             </Image>
                         </FadeInView>
                     </ImageBackground>
@@ -246,6 +289,7 @@ const styles = StyleSheet.create({
         transform: [{ rotate: '270deg'}]
     },
 
+    /*
     avatar1:{
         width: 53,
         height: 53,
@@ -268,7 +312,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 50,
         right: 10,
-      },
+      },*/
       
   });
 
