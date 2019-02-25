@@ -9,7 +9,7 @@ export default class EventsList extends React.Component{
         super()
         this.state ={
             eventsList: null,
-            finalEvents: null,
+            finalEvents: [],
             exampleeventsList: [
                 {
                     "date": "02/25/2019",
@@ -56,6 +56,15 @@ export default class EventsList extends React.Component{
         this.setState({
             eventsList: extractedJson.eventsList
         })
+        if (eventsList !== null)
+        {
+            newList = []
+            d = eventsList[0]["date"]
+            while (eventsList.length > 0)
+            {
+                
+            }
+        }
     }
 
     componentDidMount(){
