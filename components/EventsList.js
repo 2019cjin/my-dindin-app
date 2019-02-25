@@ -105,7 +105,7 @@ export default class EventsList extends React.Component{
     render(){
         if(this.state.eventsList !== null){
             return(
-                <View>
+                <View style = {{height: 400}}>
                     <View  style = {styles.eventContainer}>
                         <Text>Here is the current time: {this.props.type.toLocaleTimeString()}</Text>
                     </View>
