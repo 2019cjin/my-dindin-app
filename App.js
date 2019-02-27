@@ -9,6 +9,7 @@ import HomeScreen from './components/HomeScreen';
 import SplashScreen from './components/SplashScreen';
 import AddNewEvent from './components/AddNewEvent';
 import EventsList from './components/EventsList';
+import LogInAccount from './components/LogInAccount';
 
 // or any pure javascript modules available in npm
 //import { Card } from 'react-native-paper';
@@ -17,7 +18,8 @@ const rootStack = createStackNavigator({
   Home:HomeScreen,
   Splash:SplashScreen,
   AddNewEvent:AddNewEvent,
-  EventsList:EventsList
+  EventsList:EventsList,
+  LogIn: LogInAccount
 },
 {
   initialRouteName: 'Splash'
