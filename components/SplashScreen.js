@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Image, Dimensions, TouchableOpacity, ImageBackground, Animated, Button} from 'react-native';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-//import { Constants } from 'expo';
+import { Constants } from 'expo';
 
 class FadeInView extends React.Component {
   state = {
@@ -211,7 +211,7 @@ export default class SplashScreen extends React.Component{
                   <Button onPress={this.changeLanguage} title="English/عربى" color="#841584"/>
               </View>
 
-              <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
+              <TouchableOpacity onPress={()=>{this.props.navigation.navigate("Home")}}>
                   <Image style = {styles.startButton} source ={require('../assets/getStarted.png')}/>
               </TouchableOpacity>
             

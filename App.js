@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Image} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation'
-//import { Constants } from 'expo';
+import { Constants } from 'expo';
 
 // You can import from local files
 import ScreenRotation from './components/ScreenRotation';
@@ -9,7 +9,7 @@ import HomeScreen from './components/HomeScreen';
 import SplashScreen from './components/SplashScreen';
 import AddNewEvent from './components/AddNewEvent';
 import EventsList from './components/EventsList';
-import LogInAccount from './components/LogInAccount';
+//import LogInScreen from './components/LogInScreen';
 
 // or any pure javascript modules available in npm
 //import { Card } from 'react-native-paper';
@@ -19,7 +19,7 @@ const rootStack = createStackNavigator({
   Splash:SplashScreen,
   AddNewEvent:AddNewEvent,
   EventsList:EventsList,
-  LogIn: LogInAccount
+  //LogIn: LogInScreen,
 },
 {
   initialRouteName: 'Splash'

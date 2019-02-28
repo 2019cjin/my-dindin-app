@@ -1,41 +1,65 @@
-import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
-import { AuthSession } from 'expo';
+import React, {Component} from 'react';
+import FacebookLogin from 'react-facebook-login';
 
-const FB_APP_ID = 'YOUR_APP_ID'; 
+export default class LogInAccount extends Component {
+    state = {
+        isLoggedIn: false,
+        userID: '',
+        name: '',
+        email: '',
+        picture: ''
 
-export default class App extends React.Component {
-  state = {
-    result: null,
-  };
+    }
+    
+    responseFacebook = response => {
+        //console.log(response);
+        this.setState({
+            isLoggedIn:true,
+            userID: response.name,
+            email: response.email,
+            picture: response.picture.data.url
+        });
+    }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Button title="Open FB Auth" onPress={this._handlePressAsync} />
-        {this.state.result ? (
-          <Text>{JSON.stringify(this.state.result)}</Text>
-        ) : null}
-        </View>
-    );
-  }
+    componentClicked = () => console.log('clicked');
+    
+    render() {
+        let fbContent;
 
-  _handlePressAsync = async () => {
-    let redirectUrl = AuthSession.getRedirectUrl();
-    let result = await AuthSession.startAsync({
-      authUrl:
-        `https://www.facebook.com/v2.8/dialog/oauth?response_type=token` +
-        `&client_id=${FB_APP_ID}` +
-        `&redirect_uri=${encodeURIComponent(redirectUrl)}`,
-    });
-    this.setState({ result });
-  };
+        if(this.state.isLoggedIn){
+            fbContent = null;
+            //if they are logged in then navigate to the Home Screen
+            //Example
+            //fbContent = {
+                //<div style = {{
+                   // width: 400,
+                    //margin: auto,
+                    //background: "white",
+                   // padding: 20
+
+                //}}>
+
+                    //<img src={this.state.picture} alt={this.state.name} />
+                    //<h2>Welcome {this.state.name}</h2>
+            
+                //</div>
+            //}
+        } else {
+            fbContent = (<FacebookLogin
+                appId = "394003008066360"
+                autoLoad = {true}
+                fields = "name,email,picture"
+                onClick={this.componentClicked}
+                callback={this.responseFacebook}    
+                />);
+                //call the next page
+        }
+
+
+        return (
+            <div>
+                fbContent
+            </div>
+        )
+    }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
