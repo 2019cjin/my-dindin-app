@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { AuthSession } from 'expo';
 
-const FB_APP_ID = 'YOUR_APP_ID'; 
+const FB_APP_ID = '394003008066360'; 
 
 export default class App extends React.Component {
   state = {

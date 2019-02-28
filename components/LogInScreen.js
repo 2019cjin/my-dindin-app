@@ -4,7 +4,7 @@ import { Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import EventsList from './EventsList';
 import OldEventsList from './OldEventsList';
-//import LogInAccount from './components/LogInAccount';
+import LogInAccount from './LogInAccountV2';
 
 export default class LogInScreen extends React.Component{
    
@@ -15,6 +15,7 @@ export default class LogInScreen extends React.Component{
         
            <View style={styles.container}>
              <Text>Facebook Login</Text>
+             <LogInAccount/>
             </View> 
              
                   

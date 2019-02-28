@@ -45,20 +45,21 @@ export default class LogInAccount extends Component {
                 //</div>
             //}
         } else {
-            fbContent = (<FacebookLogin
+            /*fbContent = (<FacebookLogin
                 appId = "394003008066360"
                 autoLoad = {true}
                 fields = "name,email,picture"
                 onClick={this.componentClicked}
                 callback={this.responseFacebook}    
-                />);
+                />);*/
+                fbContent = null;
                 //call the next page
         }
 
 
         return (
             <div>
-                fbContent
+                {fbContent}
             </div>
         )
     }
