@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import FacebookLogin from 'react-facebook-login';
 
-export default class Facebook extends Component {
+export default class LogInAccount extends Component {
     state = {
         isLoggedIn: false,
         userID: '',

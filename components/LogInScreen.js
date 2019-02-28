@@ -1,12 +1,9 @@
 import * as React from 'react';
-import { Constants } from 'expo'
 import { Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import EventsList from './EventsList';
-import OldEventsList from './OldEventsList';
-import Facebook from './components/LogInAccount';
+//import LogInAccount from './LogInAccount';
 
-export default class HomeScreen extends React.Component{
+export default class LogInScreen extends React.Component{
    
 
     render(){
@@ -15,7 +12,7 @@ export default class HomeScreen extends React.Component{
         
            <View style={styles.container}>
              <Text>Facebook Login</Text>
-             <Facebook/>
+             
             </View> 
              
                   
