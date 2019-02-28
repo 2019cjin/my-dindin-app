@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Image, Dimensions, TouchableOpacity, ImageBackground, Animated, Button} from 'react-native';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-//import { Constants } from 'expo';
+import { Constants } from 'expo';
 
 class FadeInView extends React.Component {
   state = {
@@ -33,15 +33,15 @@ class FadeInView extends React.Component {
 }
 
 
-
-
 export default class SplashScreen extends React.Component{
 
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         this.state ={
-            orientation: '',
             slogan: '',
+            width: Dimensions.get("window").width,
+            height: Dimensions.get("window").height,
+            orientation: '',
             image1Opacity: 1,
             image2Opacity: 0,
             image3Opacity: 1
@@ -66,7 +66,7 @@ export default class SplashScreen extends React.Component{
         {
             if( Dimensions.get('window').width < Dimensions.get('window').height )
             {
-                this.setState({ orientation: 'portrait' });
+                this.setState({ orientation: 'portrait',});
             }
             else
             {
@@ -76,16 +76,18 @@ export default class SplashScreen extends React.Component{
         }
     }
 
+    //onLayout
+
     componentDidMount()
     {
-        this.getOrientation();
         this.changeLanguage();
-        
+        this.getOrientation();
+      
         Dimensions.addEventListener( 'change', () =>
         {
             this.getOrientation();
         });
-
+        
         setInterval(()=>{ 
           if(this.state.image1Opacity >= 1){
             this.setState((state)=>({
@@ -129,14 +131,14 @@ export default class SplashScreen extends React.Component{
 
     componentWillUnMount() 
     {
-        Dimensions.removeEventListener( 'change');
+      Dimensions.removeEventListener( 'change')
     }
 
     render(){
-        if (this.state.orientation == 'portrait')
+        if (this.state.orientation !== 'landscape')
         {
             return(
-                <View ref = "rootView" style={styles.container}>
+                <View style={[styles.container]}>
                     <View style={styles.whiteBox}/> 
                         
                     <ImageBackground style = {styles.icon} source ={require('../assets/backgroundSplash.png')}>
@@ -157,7 +159,7 @@ export default class SplashScreen extends React.Component{
                         </FadeInView>
                     </ImageBackground>
 
-                    <View style={styles.textBox}>        
+                    <View style={styles.textBox}>       
                         <Text style={styles.paragraph}>
                             DinDin.
                         </Text>
@@ -165,7 +167,7 @@ export default class SplashScreen extends React.Component{
                         <Button onPress={this.changeLanguage} title="English/عربى" color="#841584"/>
                     </View>
 
-                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
+                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('LogIn')}}>
                         <Image style = {styles.startButton} source ={require('../assets/getStarted.png')}/>
                     </TouchableOpacity>
                   
@@ -177,40 +179,43 @@ export default class SplashScreen extends React.Component{
         else
         {
             return(
-                 <View ref = "rootView" style={[styles.container, styles.landscape]}>
-                    <View style={styles.whiteBox}/> 
-                        
-                    <ImageBackground style = {styles.icon} source ={require('../assets/backgroundSplash.png')}>
-                    
-                        <FadeInView>
-                            <Image style={{width: 53, height: 53, position: 'absolute', bottom: 50, left:40, opacity: this.state.image1Opacity}} source ={require('../assets/greenGirl.png')}>
-                            </Image>
-                        </FadeInView>
-
-                         <FadeInView>
-                            <Image style={{width: 53, height: 53, position: 'absolute', bottom: 50, right:50, opacity: this.state.image2Opacity}} source ={require('../assets/purpleGuy.png')}>
-                            </Image>
-                        </FadeInView>
-
-                        <FadeInView>
-                            <Image style={{width: 53, height: 53, position: 'absolute', top: 50, right:10, opacity: this.state.image3Opacity}} source ={require('../assets/redHairGirl.png')}>
-                            </Image>
-                        </FadeInView>
-                    </ImageBackground>
-
-                    <View style={styles.textBox}>        
-                        <Text style={styles.paragraph}>
-                            DinDin.
-                        </Text>
-                        <Text style = {styles.slogan} id="sloganText">{this.state.slogan}</Text>
-                        <Button onPress={this.changeLanguage} title="English/عربى" color="#841584"/>
-                    </View>
-                    
-                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
-                        <Image style = {styles.startButton} source ={require('../assets/getStarted.png')}/>
-                    </TouchableOpacity>
+              <View style={[styles.container, styles.landscape]}>
+              <View style={styles.whiteBox}/> 
                   
-                </View>
+              <ImageBackground style = {styles.icon} source ={require('../assets/backgroundSplash.png')}>
+              
+                  <FadeInView>
+                      <Image style={{width: 53, height: 53, position: 'absolute', bottom: 50, left:40, opacity: this.state.image1Opacity}} source ={require('../assets/greenGirl.png')}>
+                      </Image>
+                  </FadeInView>
+
+                   <FadeInView>
+                      <Image style={{width: 53, height: 53, position: 'absolute', bottom: 50, right:50, opacity: this.state.image2Opacity}} source ={require('../assets/purpleGuy.png')}>
+                      </Image>
+                  </FadeInView>
+
+                  <FadeInView>
+                      <Image style={{width: 53, height: 53, position: 'absolute', top: 50, right:10, opacity: this.state.image3Opacity}} source ={require('../assets/redHairGirl.png')}>
+                      </Image>
+                  </FadeInView>
+              </ImageBackground>
+
+              <View style={styles.textBox}>    
+                  <Text style={styles.paragraph}>
+                          Width: {this.state.width} Height: {this.state.height}
+                    </Text>     
+                  <Text style={styles.paragraph}>
+                      DinDin.
+                  </Text>
+                  <Text style = {styles.slogan} id="sloganText">{this.state.slogan}</Text>
+                  <Button onPress={this.changeLanguage} title="English/عربى" color="#841584"/>
+              </View>
+
+              <TouchableOpacity onPress={()=>{this.props.navigation.navigate("LogIn")}}>
+                  <Image style = {styles.startButton} source ={require('../assets/getStarted.png')}/>
+              </TouchableOpacity>
+            
+          </View>
                
                 
             )
@@ -231,7 +236,7 @@ const styles = StyleSheet.create({
       backgroundColor: 'white',
     },
     paragraph: {
-    width: 82.02,
+    //width: 82.02,
     height: 39,
     color: '#353535',
     fontFamily: 'SFUIText',

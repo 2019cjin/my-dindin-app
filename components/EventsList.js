@@ -9,10 +9,27 @@ export default class EventsList extends React.Component{
         super()
         this.state ={
             eventsList: null,
-            finalEvents: null,
+            monthEvents: [],
+            finalEvents: [
+                {
+                    "key": "02/28/2019",
+                    "data": [
+                        {
+                            "image": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png", 
+                            "name": "jim",
+                            "time": "2:00 PM",
+                        },
+                        {
+                            "image": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png", 
+                            "name": "Jerry",
+                            "time": "5:00 PM",
+                        }
+                    ]
+                }
+            ],
             exampleeventsList: [
                 {
-                    "date": "02/25/2019",
+                    "key": "02/25/2019",
                     "data": [
                         {
                             "image": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png", 
@@ -27,11 +44,11 @@ export default class EventsList extends React.Component{
                     ]
                 },
                 {
-                    "date": "02/26/2019",
+                    "key": "02/26/2019",
                     "data": []
                 },
                 {
-                    "date": "02/27/2019",
+                    "key": "03/27/2019",
                     "data": [
                         {
                             "image": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png", 
@@ -49,20 +66,71 @@ export default class EventsList extends React.Component{
         }
     }
 
+    convertList(){
+        let finalEvents = []
+        if (this.state.eventList !== null)
+        {
+            sameDate = null
+            for(let i =0; i < this.state.eventList.length; i++){
+
+                if (sameDate !== this.state.eventList[i].date)
+                {
+                    finalEvents.push(
+                        {
+                            "key": this.state.eventList[i].date,
+                            "data":[]
+                        }
+                    )
+                }
+                console.log("pushed")
+
+                finalEvents[finalEvents.length - 1].data.push(
+                    {
+                        "image": this.state.eventList[i].image,
+                        "name": this.state.eventList[i].name,
+                        "time": this.state.eventList[i].time
+                    }
+                )
+            }
+        }
+        //this.setState({finalEvents: finalEvents})
+        this.state.finalEvents[0].data.push({
+            "image": this.state.eventList[0].image,
+            "name": this.state.eventList[0].name,
+            "time": this.state.eventList[0].time
+        })
+
+    }
+
+    getEventsInMonth(){
+        for(let i =0; i < eventsList.length; i++){
+            if (this.props.date.getMonth() === new Date(eventsList[i].date).getMonth())
+            {
+                monthEvents.push(eventsList[i])
+                console.log(monthEvents)
+            }
+        }
+        this.setState({monthEvents: this.state.monthEvents})
+    }
 
     async getEventsData(){
         let response = await fetch("http://people.virginia.edu/~csj3sd/eventsList.json")
         let extractedJson = await response.json()
-        this.setState({
+        await this.setState({
             eventsList: extractedJson.eventsList
         })
+        //console.log(eventsList)
+        await this.convertList()
+        //await this.getEventsInMonth()
     }
 
     componentDidMount(){
         this.getEventsData()
     }
 
-    haveEvents = ({ item, index, section: { date, data } }) =>
+    keyExtractor = (item, index) => index.toString()
+
+    haveEvents = ({ item, index, section: { key, data } }) =>
     <View>
         <View style={{paddingLeft: 20, paddingRight: 20}}>
             <View style={styles.eventRowContainer}>
@@ -83,8 +151,8 @@ export default class EventsList extends React.Component{
         </View>
     </View>
 
-    dateHeader = ({section: {date}}) => (
-        <Text style={styles.date}>{weekDayMonthDate(date)}</Text>
+    dateHeader = ({section: {key}}) => (
+        <Text style={styles.date}>{weekDayMonthDate(key)}</Text>
     )
 
 
@@ -105,7 +173,7 @@ export default class EventsList extends React.Component{
     render(){
         if(this.state.eventsList !== null){
             return(
-                <View>
+                <View style = {{height: 400}}>
                     <View  style = {styles.eventContainer}>
                         <Text>Here is the current time: {this.props.type.toLocaleTimeString()}</Text>
                     </View>
@@ -114,7 +182,8 @@ export default class EventsList extends React.Component{
                     renderSectionFooter={({section}) => this.renderNoContent(section)}
                     renderSectionHeader={this.dateHeader}
                     renderItem = {this.haveEvents}
-                    sections={this.state.exampleeventsList}
+                    sections={this.state.finalEvents}
+                    keyExtractor={this.keyExtractor}
                     />
                      
                 </View>
@@ -182,7 +251,7 @@ const styles = StyleSheet.create({
         height: 17,
         fontFamily: "SFUIText-Medium",
         fontSize: 13,
-        fontWeight: 0,
+        fontWeight: "400",
         lineHeight: 17,
         alignItems: 'center',
         paddingBottom: 30,
@@ -194,7 +263,7 @@ const styles = StyleSheet.create({
         height: 19,
         fontFamily: "SFUIText-Regular",
         fontSize: 14,
-        fontWeight: 0,
+        fontWeight: "400",
         lineHeight: 19,
     },
     time:{
@@ -202,7 +271,7 @@ const styles = StyleSheet.create({
         opacity: 0.5,
         fontFamily: "SFUIText-Regular",
         fontSize: 14,
-        fontWeight: 0,
+        fontWeight: "400",
         lineHeight: 19,
         color: 'black',
     }
