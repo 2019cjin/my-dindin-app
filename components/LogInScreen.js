@@ -14,9 +14,7 @@ export default class LogInScreen extends React.Component{
         
            <View style={styles.container}>
              <Text>Facebook Login</Text>
-
              <LogInAccount/>
-
             </View> 
              
                   

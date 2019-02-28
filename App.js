@@ -9,7 +9,8 @@ import HomeScreen from './components/HomeScreen';
 import SplashScreen from './components/SplashScreen';
 import AddNewEvent from './components/AddNewEvent';
 import EventsList from './components/EventsList';
-import LogInScreenV2 from './components/LogInScreen';
+import LogInScreen from './components/LogInScreen';
+//import LogInScreen from './components/LogInScreen';
 
 // or any pure javascript modules available in npm
 //import { Card } from 'react-native-paper';
