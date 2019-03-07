@@ -1,0 +1,21 @@
+[debug] [2019-03-04T21:28:25.162Z] ----------------------------------------------------------------------
+[debug] [2019-03-04T21:28:25.166Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Emma\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2019-03-04T21:28:25.166Z] CLI Version:   6.4.0
+[debug] [2019-03-04T21:28:25.166Z] Platform:      win32
+[debug] [2019-03-04T21:28:25.167Z] Node Version:  v10.15.0
+[debug] [2019-03-04T21:28:25.171Z] Time:          Mon Mar 04 2019 16:28:25 GMT-0500 (Eastern Standard Time)
+[debug] [2019-03-04T21:28:25.171Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-03-04T21:28:25.182Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-03-04T21:28:25.183Z] > authorizing via signed-in user
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\Emma\Documents\GitHub\my-dindin-app
+
