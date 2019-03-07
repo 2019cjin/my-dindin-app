@@ -21,8 +21,8 @@ export default class App extends React.Component {
   }
 
   _handlePressAsync = async () => {
-   // let redirectUrl = AuthSession.getRedirectUrl();
-   let redirectUrl = "localhost:19000"
+    //let redirectUrl = AuthSession.getRedirectUrl();
+    let redirectUrl = "localhost:19000/signin-facebook";
     let result = await AuthSession.startAsync({
       authUrl:
         `https://www.facebook.com/v2.8/dialog/oauth?response_type=token` +
