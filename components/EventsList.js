@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
         height: 17,
         fontFamily: "SFUIText-Medium",
         fontSize: 13,
-        fontWeight: 0,
+        fontWeight: "400",
         lineHeight: 17,
         alignItems: 'center',
         paddingBottom: 30,
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
         height: 19,
         fontFamily: "SFUIText-Regular",
         fontSize: 14,
-        fontWeight: 0,
+        fontWeight: "400",
         lineHeight: 19,
     },
     time:{
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
         opacity: 0.5,
         fontFamily: "SFUIText-Regular",
         fontSize: 14,
-        fontWeight: 0,
+        fontWeight: "400",
         lineHeight: 19,
         color: 'black',
     }
