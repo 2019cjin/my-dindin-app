@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, SectionList } from 'react-native';
+import { Constants } from 'expo'
 
 import {weekDayMonthDate} from './DateConversion';
 

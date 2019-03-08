@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native'
+import { Constants } from 'expo'
 
 export default class Header extends React.Component{
     constructor(props){
