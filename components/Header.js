@@ -10,10 +10,10 @@ export default class Header extends React.Component{
         return(
             <View style={styles.container}>
            <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
-                <Image style={styles.menuIcon} source={require('./assets/sidemenubtn.png')}/>
+                <Image style={styles.menuIcon} source={require('../assets/sidemenubtn.png')}/>
             </TouchableOpacity>
                 <Text style = {styles.title}> DinDin </Text>
-                <Image style={styles.searchIcon} source={require('./assets/searchbtn.png')} />
+                <Image style={styles.searchIcon} source={require('../assets/searchbtn.png')} />
             </View>
         )
     }
