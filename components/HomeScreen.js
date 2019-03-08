@@ -31,6 +31,7 @@ export default class HomeScreen extends React.Component{
         <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
           <PendingInvite/>    
           </TouchableOpacity>  
+          <EventsList type = {this.state.date} navigation = {this.props.navigation} />
         
       </View>
 
