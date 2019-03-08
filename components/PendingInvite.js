@@ -1,12 +1,12 @@
 import * as React from 'react'
-import {View, Text, StyleSheet,ImageBackground} from 'react-native'
+import {View, Text, StyleSheet,ImageBackground, Image} from 'react-native'
 
 export default class PendingInvite extends React.Component{
-
+/*
  constructor(props){
      super(props)
      this.state={
-         featured: null
+         pendinginvite: null
      }
  }   
 
@@ -14,17 +14,16 @@ componentDidMount(){
     this.getData()
 }
 
-/*
 async getData(){
     let response = await fetch("https://www.cs.virginia.edu/~dgg6b/Mobile/Featured/featured.json")
     let parsedResponse = await response.json()
     this.setState({
-        featured : parsedResponse
+        pendinginvite : parsedResponse
     })
-}*/
+}
 
 render(){
-    if(this.state.featured === null){
+    if(this.state.pendinginvite === null){
         return(<View/>)
     }
     return(
@@ -32,15 +31,41 @@ render(){
         <View style={styles.container}>
 
         <ImageBackground style={styles.featuredImage}
-        source={{uri: this.state.featured.image}}>
-            <Text style={styles.title}> {this.state.featured.title}
+        source={{uri: this.state.pendinginvite.image}}>
+            <Text style={styles.title}> {this.state.pendinginvite.title}
              </Text>
-            <Text style={styles.author}> {this.state.featured.author} 
+            <Text style={styles.author}> {this.state.pendinginvite.author} 
             </Text>
         </ImageBackground>
         </View>
         )
     }
+}*/
+
+render(){
+  return(
+  <View style={styles.container}>
+
+       <ImageBackground style={styles.featuredImage}>
+
+          <Text style={styles.title}> Pending
+             </Text>
+             
+              <Image style={styles.profilePic} source={require('./assets/profpic.png')} />
+
+           <Text style={styles.author}> Jill Smith
+             </Text>
+
+              <Text style={styles.author}> Wednesday 4 Nov - 8 pm 
+             </Text>
+
+
+        </ImageBackground>
+
+
+  </View>
+  )
+}
 }
 const styles = StyleSheet.create(
     {
@@ -51,20 +76,35 @@ const styles = StyleSheet.create(
         featuredImage:{
             height: 148,
             flexDirection: 'column',
-            justifyContent: 'flex-end',
+            justifyContent: 'flex-start',
+            borderStyle: 'solid',
+            borderWidth: 1,
+            backgroundColor: "#e8f4f8",
+            borderColor: "#eef7fa",
+            borderRadius: 5
         },
         title:{
-            fontFamily: "Helvetica-Bold",
-            fontSize: 20,
-            color: "#FFFFFF",
+            fontFamily: "Helvetica",
+            fontSize: 12,
+            color: "#00000",
             letterSpacing: 0.38,
             textAlign: "left",
         }, 
         author:{
-            fontFamily: "Helvetica",
-            fontSize: 16,
-            color: "rgba(255,255,255,0.75)",
-            textAlign: "left"
+            fontFamily: "Segoe UI",
+            fontSize: 14,
+            color: "#00000",
+            textAlign: "right",
+            paddingRight: 50,
+            fontStretch: "Medium"
+        },
+
+        profilePic:{
+       
+            textAlign: "left",
+            paddingLeft: 100,
+            paddingTop:70,
+            //backgroundColor:'blue'
         }
 
        
