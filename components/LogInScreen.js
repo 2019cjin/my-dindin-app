@@ -4,6 +4,7 @@ import { Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import EventsList from './EventsList';
 import OldEventsList from './OldEventsList';
 import LogInAccount from './LogInAccountV2';
+import { Constants } from 'expo'
 
 export default class LogInScreen extends React.Component{
    
