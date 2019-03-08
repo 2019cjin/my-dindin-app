@@ -159,7 +159,7 @@ export default class SplashScreen extends React.Component{
                         <Button onPress={this.changeLanguage} title="English/عربى" color="#841584"/>
                     </View>
 
-                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('LogIn')}}>
+                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
                         <Image style = {styles.startButton} source ={require('../assets/getStarted.png')}/>
                     </TouchableOpacity>
                   
