@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {View, Text, StyleSheet,ImageBackground, Image} from 'react-native'
+import {Constants} from 'expo'
 
 export default class PendingInvite extends React.Component{
 /*
@@ -51,7 +52,7 @@ render(){
           <Text style={styles.title}> Pending
              </Text>
              
-              <Image style={styles.profilePic} source={require('./assets/profpic.png')} />
+              <Image style={styles.profilePic} source={require('../assets/profpic1.png')} />
 
            <Text style={styles.author}> Jill Smith
              </Text>
