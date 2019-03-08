@@ -70,44 +70,12 @@ render(){
 }
 const styles = StyleSheet.create(
     {
-        container:{
-            height:158,
-            margin: 10,
-        },
-        featuredImage:{
-            height: 148,
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            borderStyle: 'solid',
-            borderWidth: 1,
-            backgroundColor: "#e8f4f8",
-            borderColor: "#eef7fa",
-            borderRadius: 5
-        },
-        title:{
-            fontFamily: "Helvetica",
-            fontSize: 12,
-            color: "#00000",
-            letterSpacing: 0.38,
-            textAlign: "left",
-        }, 
-        author:{
-            fontFamily: "Segoe UI",
-            fontSize: 14,
-            color: "#00000",
-            textAlign: "right",
-            paddingRight: 50,
-            fontStretch: "Medium"
-        },
+    container: {
+        flex: 1,
+        flexDirection:'column',
+        backgroundColor: "white",
+        paddingTop: Constants.statusBarHeight,          
 
-        profilePic:{
-       
-            textAlign: "left",
-            paddingLeft: 100,
-            paddingTop:70,
-            //backgroundColor:'blue'
-        }
-
-       
     }
+}
 )
