@@ -17,4 +17,12 @@ function weekDayMonthDate(item) {
   return weekDayNames[d.getDay()] + " " + months[d.getMonth()] + " " + date
 }
 
-export { getNumDays, weekDayMonthDate }
+function getWeekDayMonthDate(item) {
+  const d = item
+  let date = d.getDate().toString()
+  return weekDayNames[d.getDay()] + " " + months[d.getMonth()] + " " + date
+}
+
+export { getNumDays, weekDayMonthDate, getWeekDayMonthDate }
+
+

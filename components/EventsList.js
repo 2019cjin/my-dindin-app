@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, SectionList } from 'react-native';
 import { Constants } from 'expo'
 
-import {weekDayMonthDate} from './DateConversion';
+import {weekDayMonthDate, getWeekDayMonthDate} from './DateConversion';
 
 export default class EventsList extends React.Component{
 
@@ -10,24 +10,7 @@ export default class EventsList extends React.Component{
         super()
         this.state ={
             eventsList: null,
-            monthEvents: [],
-            finalEvents: [
-                {
-                    "key": "02/28/2019",
-                    "data": [
-                        {
-                            "image": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png", 
-                            "name": "jim",
-                            "time": "2:00 PM",
-                        },
-                        {
-                            "image": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png", 
-                            "name": "Jerry",
-                            "time": "5:00 PM",
-                        }
-                    ]
-                }
-            ],
+            finalEvents: [],
             exampleeventsList: [
                 {
                     "key": "02/25/2019",
@@ -68,40 +51,84 @@ export default class EventsList extends React.Component{
     }
 
     convertList(){
-        let finalEvents = []
-        if (this.state.eventList !== null)
+        if (this.state.eventsList !== null)
         {
-            sameDate = null
-            for(let i =0; i < this.state.eventList.length; i++){
-
-                if (sameDate !== this.state.eventList[i].date)
+            sameDate = new Date(this.props.today.getFullYear(), this.props.today.getMonth(), this.props.today.getDate())
+            this.state.finalEvents.push(
                 {
-                    finalEvents.push(
+                    "key": sameDate,
+                    "data":[]
+                }
+            )
+            for (let i = 0; i < this.state.eventsList.length; i++)
+            {
+                if (sameDate < new Date(this.state.eventsList[i].date))
+                {
+                    sameDate.setDate(sameDate.getDate + 1)
+                    this.state.finalEvents.push(
                         {
-                            "key": this.state.eventList[i].date,
+                            "key": sameDate,
                             "data":[]
                         }
                     )
+                    continue
                 }
-                console.log("pushed")
+                else if (sameDate > new Date(this.state.eventsList[i].date))
+                {
+                    continue
+                }
+                else
+                {
+                    this.state.finalEvents[this.state.finalEvents.length - 1].data.push(
+                        {
+                            "image": this.state.eventsList[i].image,
+                            "name": this.state.eventsList[i].name,
+                            "time": this.state.eventsList[i].time
+                        }
+                    )
+                }
+                
+            }
+        }
+    }
 
-                finalEvents[finalEvents.length - 1].data.push(
+    getFinalList(){
+        if (this.state.eventsList !== null)
+        {
+            sameDate = null
+            for (let i = 0; i < this.state.eventsList.length; i++)
+            {
+                if (sameDate < new Date(this.state.eventsList[i].date))
+                {
+                    this.state.finalEvents.push(
+                        {
+                            "key": new Date(this.state.eventsList[i].date),
+                            "data":[]
+                        }
+                    )
+                    sameDate = new Date(this.state.eventsList[i].date)
+                }
+                this.state.finalEvents[this.state.finalEvents.length - 1].data.push(
                     {
-                        "image": this.state.eventList[i].image,
-                        "name": this.state.eventList[i].name,
-                        "time": this.state.eventList[i].time
+                        "image": this.state.eventsList[i].image,
+                        "name": this.state.eventsList[i].name,
+                        "time": this.state.eventsList[i].time
                     }
                 )
             }
         }
-        //this.setState({finalEvents: finalEvents})
-        this.state.finalEvents[0].data.push({
-            "image": this.state.eventList[0].image,
-            "name": this.state.eventList[0].name,
-            "time": this.state.eventList[0].time
-        })
-
     }
+
+    /*convertList(){
+        if (this.state.eventsList !== null)
+        {
+            this.state.exampleeventsList[0].data.push({
+                "image": this.state.eventsList[0].image,
+                "name": this.state.eventsList[0].name,
+                "time": this.state.eventsList[0].time
+            })
+        }
+    }*/
 
     getEventsInMonth(){
         for(let i =0; i < eventsList.length; i++){
@@ -120,9 +147,8 @@ export default class EventsList extends React.Component{
         await this.setState({
             eventsList: extractedJson.eventsList
         })
-        //console.log(eventsList)
-        await this.convertList()
-        //await this.getEventsInMonth()
+        await this.getFinalList()
+        //await this.convertList()
     }
 
     componentDidMount(){
@@ -152,10 +178,9 @@ export default class EventsList extends React.Component{
         </View>
     </View>
 
-    dateHeader = ({section: {key}}) => (
-        <Text style={styles.date}>{weekDayMonthDate(key)}</Text>
+    getDateHeader = ({section: {key}}) => (
+        <Text style={styles.date}>{getWeekDayMonthDate(key)}</Text>
     )
-
 
     renderNoContent = (section) => {
         if(section.data.length == 0){
@@ -174,14 +199,11 @@ export default class EventsList extends React.Component{
     render(){
         if(this.state.eventsList !== null){
             return(
-                <View style = {{height: 400}}>
-                    <View  style = {styles.eventContainer}>
-                        <Text>Here is the current time: {this.props.type.toLocaleTimeString()}</Text>
-                    </View>
-                    
+                <View>
+
                     <SectionList
                     renderSectionFooter={({section}) => this.renderNoContent(section)}
-                    renderSectionHeader={this.dateHeader}
+                    renderSectionHeader={this.getDateHeader}
                     renderItem = {this.haveEvents}
                     sections={this.state.finalEvents}
                     keyExtractor={this.keyExtractor}
