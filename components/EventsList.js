@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, SectionList } from 'react-native';
 import { Constants } from 'expo'
 
-import {weekDayMonthDate, getWeekDayMonthDate} from './DateConversion';
+import {weekDayMonthDate, getWeekDayMonthDate, convertStringToDate} from './DateConversion';
 
 export default class EventsList extends React.Component{
 
@@ -53,31 +53,35 @@ export default class EventsList extends React.Component{
     convertList(){
         if (this.state.eventsList !== null)
         {
-            sameDate = new Date(this.props.today.getFullYear(), this.props.today.getMonth(), this.props.today.getDate())
+            sameDate = new Date(this.props.today.getFullYear().toString(), this.props.today.getMonth().toString(), this.props.today.getDate().toString())
+            console.log("sameDate:" + sameDate.toString())
             this.state.finalEvents.push(
                 {
-                    "key": sameDate,
+                    "key": new Date(this.props.today.getFullYear().toString(), this.props.today.getMonth().toString(), this.props.today.getDate().toString()),
                     "data":[]
                 }
             )
             for (let i = 0; i < this.state.eventsList.length; i++)
             {
-                if (sameDate < new Date(this.state.eventsList[i].date))
+                currentDate = convertStringToDate(this.state.eventsList[i].date)
+                console.log(this.state.eventsList[i])
+                console.log(new Date(this.state.eventsList[i].date.toString()))
+                if (sameDate < currentDate)
                 {
-                    sameDate.setDate(sameDate.getDate + 1)
+                    console.log("create new cell")
+                    newDate = new Date()
+                    newDate.setDate(sameDate.getDate() + 1)
                     this.state.finalEvents.push(
                         {
-                            "key": sameDate,
+                            "key": newDate,
                             "data":[]
                         }
                     )
-                    continue
+                    sameDate.setDate(sameDate.getDate() + 1)
+                    i = i - 1
+                    console.log(sameDate.toString())
                 }
-                else if (sameDate > new Date(this.state.eventsList[i].date))
-                {
-                    continue
-                }
-                else
+                else if (sameDate === currentDate)
                 {
                     this.state.finalEvents[this.state.finalEvents.length - 1].data.push(
                         {
@@ -86,8 +90,13 @@ export default class EventsList extends React.Component{
                             "time": this.state.eventsList[i].time
                         }
                     )
+                    console.log("here")
+                } 
+                else 
+                {
+                    console.log("going here")
+                    continue
                 }
-                
             }
         }
     }
@@ -142,13 +151,13 @@ export default class EventsList extends React.Component{
     }
 
     async getEventsData(){
-        let response = await fetch("http://people.virginia.edu/~csj3sd/eventsList.json")
+        let response = await fetch("https://api.myjson.com/bins/v8bqq")
         let extractedJson = await response.json()
         await this.setState({
             eventsList: extractedJson.eventsList
         })
-        await this.getFinalList()
-        //await this.convertList()
+        //await this.getFinalList()
+        await this.convertList()
     }
 
     componentDidMount(){
@@ -195,6 +204,10 @@ export default class EventsList extends React.Component{
         return null
     }
     //perhaps need dynamically changing list
+
+    /**<Text>Today is: {this.props.today.getFullYear().toString()}</Text>
+                    <Text>Today is: {this.props.today.getMonth().toString()}</Text>
+                    <Text>Today is: {this.props.today.getDate().toString()}</Text> */
 
     render(){
         if(this.state.eventsList !== null){

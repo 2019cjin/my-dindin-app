@@ -23,6 +23,11 @@ function getWeekDayMonthDate(item) {
   return weekDayNames[d.getDay()] + " " + months[d.getMonth()] + " " + date
 }
 
-export { getNumDays, weekDayMonthDate, getWeekDayMonthDate }
+function convertStringToDate(str){ 
+  const year = str.substring(0, 4)
+  const month = str.substring(5, 7)
+  const day = str.substring(8, 10)
+  return new Date (parseInt(year, 10).toString(), parseInt(month, 10).toString, parseInt(day, 10).toString())
+}
 
-
+export { getNumDays, weekDayMonthDate, getWeekDayMonthDate, convertStringToDate }

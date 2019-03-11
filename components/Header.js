@@ -14,7 +14,9 @@ export default class Header extends React.Component{
                 <Image style={styles.menuIcon} source={require('../assets/sidemenubtn.png')}/>
             </TouchableOpacity>
                 <Text style = {styles.title}> DinDin </Text>
+            <TouchableOpacity>
                 <Image style={styles.searchIcon} source={require('../assets/searchbtn.png')} />
+            </TouchableOpacity>
             </View>
         )
     }
@@ -41,17 +43,20 @@ const styles = StyleSheet.create(
           textWrapping:"Wrap",
           //Text="DinDin",
           fontFamily:"Segoe UI",
-          fontSize:19,
+          fontSize:20,
           fontStretch:"Medium",
           foreground:"#353535",
 
       },
         searchIcon:{
-            margin:10
+            margin:20,
+            width: 25,
+            height: 25,
         },
         menuIcon:{
-            width: 30,
-            height: 30,
+            width: 22,
+            height: 22,
+            margin: 20, 
         }
         
     }
