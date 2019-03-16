@@ -37,15 +37,15 @@ const styles = StyleSheet.create(
 
       title:{
 
-        textAlignment: "Center",
-          verticalAlignment:"Center",
+        textAlign: "center",
+          //verticalAlignment:"Center",
           lineHeight:23,
-          textWrapping:"Wrap",
+          //textWrapping:"Wrap",
           //Text="DinDin",
-          fontFamily:"Segoe UI",
+          //fontFamily:"Segoe UI",
           fontSize:20,
-          fontStretch:"Medium",
-          foreground:"#353535",
+          //fontStretch:"Medium",
+         // foreground:"#353535",
 
       },
         searchIcon:{

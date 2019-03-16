@@ -87,17 +87,17 @@ const styles = StyleSheet.create(
         title:{
             fontFamily: "Helvetica",
             fontSize: 12,
-            color: "#00000",
+            color: "#000000",
             letterSpacing: 0.38,
             textAlign: "left",
         }, 
         author:{
-            fontFamily: "Segoe UI",
+            //fontFamily: "Segoe UI",
             fontSize: 14,
-            color: "#00000",
+            color: "#000000",
             textAlign: "right",
             paddingRight: 50,
-            fontStretch: "Medium"
+            //fontStretch: "Medium"
         },
 
         profilePic:{
