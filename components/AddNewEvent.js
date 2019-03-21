@@ -60,7 +60,8 @@ export default class AddNewEvent extends React.Component{
                              cc 
                         </Text>
                     </View>
-                    <Picker selectedValue = {this.state.hour} onValueChange = {this.updateHour} style={{height: 100, width: 100,}} itemStyle={{height: 100, fontSize:44,}}>
+
+                    <Picker selectedValue = {this.state.hour} onValueChange = {this.updateHour} style={{height: 100, width: 100}} itemStyle={{height: 100, fontSize:44,}}>
                         <Picker.Item label = "12" value = "12" />
                         <Picker.Item label = "01" value = "1" />
                         <Picker.Item label = "02" value = "2" />
