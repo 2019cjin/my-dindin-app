@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {View, Text, StyleSheet,ImageBackground, Image} from 'react-native'
+import {View, Text, StyleSheet,ImageBackground, Image, TouchableOpacity} from 'react-native'
 import {Constants} from 'expo'
 
 export default class PendingInvite extends React.Component{
@@ -47,7 +47,7 @@ render(){
   return(
   <View style={styles.container}>
 
-    <TouchableOpacity onPress>
+    <TouchableOpacity >
        <ImageBackground style={styles.featuredImage}>
 
           <Text style={styles.title}> Pending
@@ -67,13 +67,13 @@ render(){
         
         
         <View style ={styles.setButtons}>
-        <TouchableOpacity onPress>
+        <TouchableOpacity>
           <Text style= {styles.acceptInvite}>
             Accept
           </Text>
           </TouchableOpacity>
          
-          <TouchableOpacity onPress>
+          <TouchableOpacity>
           <Text style= {styles.declineInvite}>
             Decline
           </Text>
