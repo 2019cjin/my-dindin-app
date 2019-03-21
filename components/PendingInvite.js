@@ -16,7 +16,7 @@ componentDidMount(){
 }
 
 async getData(){
-    let response = await fetch("https://www.cs.virginia.edu/~dgg6b/Mobile/Featured/featured.json")
+    let response = await fetch("https://www.homedir.virginia.edu/myhome/esb5er/myweb/html/dinDinJSON/EvansAlma.json")
     let parsedResponse = await response.json()
     this.setState({
         pendinginvite : parsedResponse
