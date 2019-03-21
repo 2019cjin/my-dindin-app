@@ -127,6 +127,31 @@ const styles = StyleSheet.create(
             paddingLeft: 100,
             paddingTop:70,
             //backgroundColor:'blue'
+        },
+        
+        setButtons:{
+            flexDirection: 'row',
+            height: 50,
+            //flex: 1,
+            justifyContent: 'center'
+        },
+
+        acceptInvite:{
+          fontFamily: "Segoe UI",
+          fontSize: 14,
+          backgroundColor:'#e8f4f8',
+          width: 195,
+          textAlign: "center",
+          color: 'green',
+        },
+
+        declineInvite:{
+          fontFamily: "Segoe UI",
+          fontSize: 14,
+          backgroundColor:'#e8f4f8',
+          width: 195,
+          textAlign: "center",
+          color: 'red'
         }
 }
 )
