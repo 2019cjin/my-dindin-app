@@ -47,6 +47,7 @@ render(){
   return(
   <View style={styles.container}>
 
+    <TouchableOpacity onPress>
        <ImageBackground style={styles.featuredImage}>
 
           <Text style={styles.title}> Pending
@@ -58,10 +59,30 @@ render(){
              </Text>
 
               <Text style={styles.author}> Wednesday 4 Nov - 8 pm 
-             </Text>
+             </Text>           
 
 
         </ImageBackground>
+        </TouchableOpacity>
+        
+        
+        <View style ={styles.setButtons}>
+        <TouchableOpacity onPress>
+          <Text style= {styles.acceptInvite}>
+            Accept
+          </Text>
+          </TouchableOpacity>
+         
+          <TouchableOpacity onPress>
+          <Text style= {styles.declineInvite}>
+            Decline
+          </Text>
+          </TouchableOpacity>         
+
+        </View>
+
+
+
 
 
   </View>
