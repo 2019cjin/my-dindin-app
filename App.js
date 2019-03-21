@@ -8,6 +8,7 @@ import ScreenRotation from './components/ScreenRotation';
 import HomeScreen from './components/HomeScreen';
 import SplashScreen from './components/SplashScreen';
 import AddNewEvent from './components/AddNewEvent';
+import AddNewEventNextStep from './components/AddNewEventNextStep';
 import EventsList from './components/EventsList';
 import LogInScreen from './components/LogInScreen';
 //import LogInScreen from './components/LogInScreen';
@@ -19,6 +20,7 @@ const rootStack = createStackNavigator({
   Home:HomeScreen,
   Splash:SplashScreen,
   AddNewEvent:AddNewEvent,
+  AddNewEventNextStep:AddNewEventNextStep,
   EventsList:EventsList,
   LogIn: LogInScreen,
 },

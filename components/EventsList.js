@@ -195,7 +195,7 @@ export default class EventsList extends React.Component{
         if(section.data.length == 0){
         return <View style={{paddingLeft: 20, paddingRight: 20}}>
                 <View style={styles.addEventButton}> 
-                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddNewEvent')}}>
+                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddNewEvent'); this.setState({currentDate: this.props.today})}}>
                         <Image source={require('../assets/addNewEvent.png')}/>
                     </TouchableOpacity>
                 </View>

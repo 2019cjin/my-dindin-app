@@ -102,7 +102,7 @@ const styles = StyleSheet.create(
 
         profilePic:{
        
-            textAlign: "left",
+            //textAlign: "left",
             paddingLeft: 100,
             paddingTop:70,
             //backgroundColor:'blue'
