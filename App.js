@@ -11,6 +11,7 @@ import AddNewEvent from './components/AddNewEvent';
 import AddNewEventNextStep from './components/AddNewEventNextStep';
 import EventsList from './components/EventsList';
 import LogInScreen from './components/LogInScreen';
+import InvitationDetailsScreen from './components/InvitationDetailsScreen'
 //import LogInScreen from './components/LogInScreen';
 
 // or any pure javascript modules available in npm

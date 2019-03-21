@@ -36,7 +36,7 @@ export default class HomeScreen extends React.Component{
         
         <View style={styles.container}>
         <Header navigation={this.props.navigation}/>
-        <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
+        <TouchableOpacity onPress={()=>{this.props.navigation}}>
           <PendingInvite/>    
           </TouchableOpacity>  
       
