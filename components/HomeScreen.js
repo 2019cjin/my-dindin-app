@@ -14,14 +14,22 @@ export default class HomeScreen extends React.Component{
             date: new Date(),//include so that we are able to change the month
         }
     }
+    
+    getDate = setInterval(() => {this.setState({date: new Date()})}, 1000)
 
     componentDidMount(){
-        setInterval(() => {this.setState({date: new Date()})}, 1000);
+        
+        this.getDate;
 
     }
     //eventlist: need to pass in what month - default month is month of today
     //event list don't show events in days before today
     //  <EventsList type = {new Date()} navigation = {this.props.navigation} />
+
+    componentWillUnmount(){
+        clearInterval(this.getDate)
+    }
+
     render(){
         return(
           

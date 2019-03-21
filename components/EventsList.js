@@ -195,7 +195,7 @@ export default class EventsList extends React.Component{
         if(section.data.length == 0){
         return <View style={{paddingLeft: 20, paddingRight: 20}}>
                 <View style={styles.addEventButton}> 
-                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddNewEvent')}}>
+                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddNewEvent'); this.setState({currentDate: this.props.today})}}>
                         <Image source={require('../assets/addNewEvent.png')}/>
                     </TouchableOpacity>
                 </View>
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     },
     date:{
         height: 17,
-        fontFamily: "SFUIText-Medium",
+        //fontFamily: "SFUIText-Medium",
         fontSize: 13,
         fontWeight: "400",
         lineHeight: 17,
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     },
     person:{
         height: 19,
-        fontFamily: "SFUIText-Regular",
+        //fontFamily: "SFUIText-Regular",
         fontSize: 14,
         fontWeight: "400",
         lineHeight: 19,
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     time:{
         height: 19,
         opacity: 0.5,
-        fontFamily: "SFUIText-Regular",
+        //fontFamily: "SFUIText-Regular",
         fontSize: 14,
         fontWeight: "400",
         lineHeight: 19,
