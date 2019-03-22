@@ -1,8 +1,7 @@
 import * as React from 'react'
 import {View, Text, StyleSheet,ImageBackground, Image, TouchableOpacity} from 'react-native'
-import {Constants} from 'expo'
 
-export default class PendingInvite extends React.Component{
+export default class InviteDetail extends React.Component{
 /*
  constructor(props){
      super(props)
@@ -16,7 +15,7 @@ componentDidMount(){
 }
 
 async getData(){
-    let response = await fetch("https://www.homedir.virginia.edu/myhome/esb5er/myweb/html/dinDinJSON/EvansAlma.json")
+    let response = await fetch("https://www.cs.virginia.edu/~dgg6b/Mobile/Featured/featured.json")
     let parsedResponse = await response.json()
     this.setState({
         pendinginvite : parsedResponse
@@ -47,25 +46,25 @@ render(){
   return(
   <View style={styles.container}>
 
-    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('InviteDetail')}}>
+      <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
        <ImageBackground style={styles.featuredImage}>
 
-          <Text style={styles.title}> Pending
-             </Text>
+          
              
               <Image style={styles.profilePic} source={require('../assets/profpic1.png')} />
-
-           <Text style={styles.author}> Jill Smith
+           <Text style={styles.author}> Location
              </Text>
 
               <Text style={styles.author}> Wednesday 4 Nov - 8 pm 
-             </Text>           
+             </Text>
 
+             <Text style={styles.author}> Hosted by Jill Smith
+             </Text>
+             
 
         </ImageBackground>
-        </TouchableOpacity>
-        
-        
+      </TouchableOpacity>
+
         <View style ={styles.setButtons}>
         <TouchableOpacity>
           <Text style= {styles.acceptInvite}>
@@ -77,13 +76,11 @@ render(){
           <Text style= {styles.declineInvite}>
             Decline
           </Text>
-          </TouchableOpacity>         
+          </TouchableOpacity>
+
+         
 
         </View>
-
-
-
-
 
   </View>
   )
@@ -98,37 +95,32 @@ const styles = StyleSheet.create(
         featuredImage:{
             height: 148,
             flexDirection: 'column',
-            justifyContent: 'flex-start',
+            justifyContent: 'center',
+            alignItems: 'center',
             borderStyle: 'solid',
             borderWidth: 1,
             backgroundColor: "#e8f4f8",
             borderColor: "#eef7fa",
             borderRadius: 5
         },
-        title:{
-            //fontFamily: "Helvetica",
-            fontSize: 12,
-            color: "#000000",
-            letterSpacing: 0.38,
-            textAlign: "left",
-        }, 
+       
         author:{
             //fontFamily: "Segoe UI",
             fontSize: 14,
             color: "#000000",
-            textAlign: "right",
+            textAlign: "center",
             paddingRight: 50,
             //fontStretch: "Medium"
         },
 
         profilePic:{
-       
-            //textAlign: "left",
-            paddingLeft: 100,
-            paddingTop:70,
+            //justifyContent:'left',
+            //textAlign: "center",
+            //paddingLeft: 100,
+            //paddingTop:70,
             //backgroundColor:'blue'
         },
-        
+
         setButtons:{
             flexDirection: 'row',
             height: 50,
@@ -140,7 +132,7 @@ const styles = StyleSheet.create(
           //fontFamily: "Segoe UI",
           fontSize: 14,
           backgroundColor:'#e8f4f8',
-          width: 195,
+          width: 177,
           textAlign: "center",
           color: 'green',
         },
@@ -149,9 +141,11 @@ const styles = StyleSheet.create(
           //fontFamily: "Segoe UI",
           fontSize: 14,
           backgroundColor:'#e8f4f8',
-          width: 195,
+          width: 177,
           textAlign: "center",
           color: 'red'
         }
-}
+
+       
+    }
 )

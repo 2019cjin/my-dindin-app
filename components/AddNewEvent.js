@@ -33,16 +33,33 @@ export default class AddNewEvent extends React.Component{
                     <View style = {styles.header}>
                         <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
                             <Svg height={50} width={50}>
-                            
-                            <Svg.Rect
-                                x={15}
-                                y={15}
-                                width={70}
-                                height={70}
-                                strokeWidth={2}
-                                stroke="#9b59b6"
-                                fill="#ffffff"
-                            />
+
+                            <Svg.Line
+                                    x1="10"
+                                    y1="10"
+                                    x2="20"
+                                    y2="20"
+                                    stroke="#0F8CFF"
+                                    strokeWidth="2"
+                                />
+
+                            <Svg.Line
+                                    x1="10"
+                                    y1="10"
+                                    x2="20"
+                                    y2="0"
+                                    stroke="#0F8CFF"
+                                    strokeWidth="2"
+                                />
+
+                                <Svg.Line
+                                    x1="10"
+                                    y1="10"
+                                    x2="35"
+                                    y2="10"
+                                    stroke="#0F8CFF"
+                                    strokeWidth="2"
+                                />
                             </Svg>
                             
                         </TouchableOpacity>
@@ -93,12 +110,16 @@ export default class AddNewEvent extends React.Component{
                     </Picker>
                     <Text style={{fontSize: 70, justifyContent: 'center',height:100, alignItems:'center'}}> </Text>
                     <View style={{justifyContent:"center"}}>
-                        <Text style={{fontSize: 20}}>
-                            AM
-                        </Text>
-                        <Text style={{fontSize: 20}}>
-                            PM
-                        </Text>
+                        <TouchableOpacity>
+                            <Text style={{fontSize: 20}}>
+                                AM
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Text style={{fontSize: 20}}>
+                                PM
+                            </Text>
+                        </TouchableOpacity>
                     </View>
                     </View>
                     <View>
