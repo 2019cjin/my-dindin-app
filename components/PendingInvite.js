@@ -106,7 +106,7 @@ const styles = StyleSheet.create(
             borderRadius: 5
         },
         title:{
-            fontFamily: "Helvetica",
+            //fontFamily: "Helvetica",
             fontSize: 12,
             color: "#000000",
             letterSpacing: 0.38,
@@ -137,7 +137,7 @@ const styles = StyleSheet.create(
         },
 
         acceptInvite:{
-          fontFamily: "Segoe UI",
+          //fontFamily: "Segoe UI",
           fontSize: 14,
           backgroundColor:'#e8f4f8',
           width: 195,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create(
         },
 
         declineInvite:{
-          fontFamily: "Segoe UI",
+          //fontFamily: "Segoe UI",
           fontSize: 14,
           backgroundColor:'#e8f4f8',
           width: 195,
