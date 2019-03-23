@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Constants, Svg } from 'expo'
-import { Picker, Text, View, StyleSheet, Image, TouchableOpacity, TextInput} from 'react-native';
+import { Picker, Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 //import Picker from 'react-native-wheel-picker'
 //import {Svg} from 'react-native-svg';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
-export default class AddNewEvent extends React.Component{
+export default class AddNewEventMap extends React.Component{
 
     constructor(){
         super()
@@ -15,8 +15,7 @@ export default class AddNewEvent extends React.Component{
             hourNum:12,
             minute:'',
             minuteNum:0,
-            timeOfDay:'',
-            address:'Enter address here!'
+            timeOfDay:''
         }
     }
 
@@ -121,11 +120,8 @@ export default class AddNewEvent extends React.Component{
                     
                     </View>
                     <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                        <TextInput
-                            style={{height: 40, width: 200, borderColor: 'gray', borderWidth: 1}}
-                            onChangeText={(text) => this.setState({text})}
-                            value={this.state.text}
-                        />
+                        <Image source={require('../assets/locationIcon.png')}/>
+                        <Text style = {styles.location}> Where will dinner be?</Text>
                     </View>
                 </View>
                 <View>
