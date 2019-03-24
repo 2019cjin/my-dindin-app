@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, SectionList } from 'react-native';
 import { Constants } from 'expo'
 
-import {weekDayMonthDate, getWeekDayMonthDate, convertStringToDate} from './DateConversion';
+import {getLastDay, getWeekDayMonthDate, convertStringToDate} from './DateConversion';
 
 export default class EventsList extends React.Component{
 
@@ -53,6 +53,81 @@ export default class EventsList extends React.Component{
     convertList(){
         if (this.state.eventsList !== null)
         {
+            console.log("not null eventsList")
+            firstDate = new Date(this.props.today.getFullYear().toString(), this.props.today.getMonth().toString(), this.props.today.getDate().toString())
+            console.log("firstDate:" + firstDate.toString())
+            this.state.finalEvents.push(
+                {
+                    "key": new Date(this.props.today.getFullYear().toString(), this.props.today.getMonth().toString(), this.props.today.getDate().toString()),
+                    "data":[]
+                }
+            )
+            lastDate = new Date(this.props.today.getFullYear().toString(), this.props.today.getMonth().toString(), getLastDay(this.props.today.getMonth()))
+            console.log("lastDate:" + lastDate.toString())
+            i = 0
+            console.log("i:" + i)
+
+            while (firstDate <= lastDate)
+            {
+                console.log("i:" + i)
+                if (i < this.state.eventsList.length)//find events to add to firstDate list of events
+                {
+                    console.log()
+                    currentDate = convertStringToDate(this.state.eventsList[i].date.toString())
+                    console.log("currentDate:" + currentDate.toString())
+                    console.log("i in eventsList:" + i)
+                    if (currentDate.getMonth() !== firstDate.getMonth() || currentDate.getFullYear() !== firstDate.getFullYear())
+                    {
+                        i = this.state.eventsList.length
+                    }
+                    else if (currentDate.getDate() > firstDate.getDate())
+                    {
+                    
+                    }
+                    else
+                    {
+                        while (currentDate.getDate() <= firstDate.getDate() && i < this.state.eventsList.length )
+                        {
+                            currentDate = convertStringToDate(this.state.eventsList[i].date.toString())
+                            if (currentDate.getDate() === firstDate.getDate())
+                            {
+                                this.state.finalEvents[this.state.finalEvents.length - 1].data.push(
+                                    {
+                                        "image": this.state.eventsList[i].image,
+                                        "name": this.state.eventsList[i].name,
+                                        "time": this.state.eventsList[i].time
+                                    }
+                                )
+                                console.log("added event:")
+                            }
+                            i ++
+                        }
+                    }
+                }
+                //make new list of events for a particular date for each date
+                newDate = new Date()
+                newDate.setDate(firstDate.getDate() + 1)
+                this.state.finalEvents.push(
+                    {
+                        "key": newDate,
+                        "data":[]
+                    }
+                )
+                firstDate.setDate(firstDate.getDate() + 1)
+                console.log("newDate added:" + firstDate.toString())
+            }
+            
+        }
+        else
+        {
+            console.log("null eventsList")
+        }
+    }
+
+
+    getFinalList2(){
+        if (this.state.eventsList !== null)
+        {
             sameDate = new Date(this.props.today.getFullYear().toString(), this.props.today.getMonth().toString(), this.props.today.getDate().toString())
             console.log("sameDate:" + sameDate.toString())
             this.state.finalEvents.push(
@@ -65,7 +140,7 @@ export default class EventsList extends React.Component{
             {
                 currentDate = convertStringToDate(this.state.eventsList[i].date)
                 console.log(this.state.eventsList[i])
-                console.log(new Date(this.state.eventsList[i].date.toString()))
+                console.log("Current Date:" + currentDate.toString())
                 if (sameDate < currentDate)
                 {
                     console.log("create new cell")
@@ -95,12 +170,11 @@ export default class EventsList extends React.Component{
                 else 
                 {
                     console.log("going here")
-                    continue
+                    break
                 }
             }
         }
     }
-
     getFinalList(){
         if (this.state.eventsList !== null)
         {
@@ -151,13 +225,15 @@ export default class EventsList extends React.Component{
     }
 
     async getEventsData(){
-        let response = await fetch("https://api.myjson.com/bins/v8bqq")
+        //let response = await fetch("https://api.myjson.com/bins/v8bqq")
+        let response = await fetch("http://api.myjson.com/bins/jb4l2")
         let extractedJson = await response.json()
         await this.setState({
             eventsList: extractedJson.eventsList
         })
         //await this.getFinalList()
         await this.convertList()
+        //await this.getFinalList2()
     }
 
     componentDidMount(){

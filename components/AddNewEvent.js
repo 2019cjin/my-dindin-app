@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Constants, Svg } from 'expo'
+import { Constants, Svg, MapView, Marker, Location, Permissions } from 'expo'
 import { Picker, Text, View, StyleSheet, Image, TouchableOpacity, TextInput} from 'react-native';
 //import Picker from 'react-native-wheel-picker'
 //import {Svg} from 'react-native-svg';
@@ -16,7 +16,15 @@ export default class AddNewEvent extends React.Component{
             minute:'',
             minuteNum:0,
             timeOfDay:'',
-            address:'Enter address here!'
+            address:'38,-78',
+            addressLatitude: 38.0293059,
+            addressLongitude: -78.4766781,
+            mapRegion: null, 
+            hasLocationPermissions: false,
+            locationResult: null,
+            locationLatitude: 39,
+            locationLongitude: -77, 
+            locationInfo: null
         }
     }
 
@@ -31,10 +39,51 @@ export default class AddNewEvent extends React.Component{
         this.setState({ timeOfDay: t })
      }
 
+     getAddress () {
+         if (parseInt(this.state.address.substring(0, 2), 10) !== null || parseInt(this.state.address.substring(3, 5), 10) !== null)
+         {
+            this.setState({
+                addressLatitude: parseInt(this.state.address.substring(0, 2), 10), 
+                addressLongitude: parseInt(this.state.address.substring(3, 6), 10)
+            })
+         }
+     }
+
+     invitePeopleBtnAction = ()=>{
+         this.props.navigation.navigate('AddNewEventNextStep')
+     }
+
+     componentDidMount() {
+        this.getLocationAsync();
+      }
+    
+      _handleMapRegionChange = mapRegion => {
+        console.log(mapRegion);
+        this.setState({ mapRegion });
+      };
+    
+      async getLocationAsync (){
+       let { status } = await Permissions.askAsync(Permissions.LOCATION);
+       if (status !== 'granted') {
+         this.setState({
+           locationResult: 'Permission to access location was denied',
+         });
+       } else {
+         this.setState({ hasLocationPermissions: true });
+       }
+    
+       let location = await Location.getCurrentPositionAsync({});
+       await this.setState({ locationResult: JSON.stringify(location), locationLatitude: location.coords.latitude, locationLongitude: location.coords.longitude});
+      
+       // Center the map on the location we just fetched.
+        this.setState({mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }});
+      }
+    
+
     render(){
         return(
             <View style = {{ justifyContent: 'space-between', flex: 1}}>
-                <View style = {{ justifyContent: 'space-between', flex: 1}}>
+                <View style = {{ justifyContent: 'space-between', height: 200}}>
                     <View style = {styles.header}>
                         <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
                             <Svg height={50} width={50}>
@@ -121,17 +170,42 @@ export default class AddNewEvent extends React.Component{
                     
                     </View>
                     <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                        <Image style={{height:22, width: 15}} source={require('../assets/locationIcon.png')}/>
+                        <Text style={{fontSize: 20, color:'white'}}>
+                            cc
+                        </Text>
                         <TextInput
-                            style={{height: 40, width: 200, borderColor: 'gray', borderWidth: 1}}
-                            onChangeText={(text) => this.setState({text})}
-                            value={this.state.text}
+                            style={{height: 25, width: 250, fontSize: 25, borderBottomColor: 'grey', borderBottomWidth: 1}}
+                            onChangeText={(address) => this.setState({address})}
+                            value={this.state.address}
                         />
                     </View>
                 </View>
-                <View>
-                    <Image source={require('../assets/map.png')}/>
-                </View>
-                <TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddNewEventNextStep')}}>
+                <View style={styles.container}>
+        
+                {
+                this.state.locationResult === null ?
+                <Text>Finding your current location...</Text> :
+                this.state.hasLocationPermissions === false ?
+                    <Text>Location permissions are not granted.</Text> :
+                    this.state.mapRegion === null ?
+                    <Text>Map region doesn't exist.</Text> :
+                    <MapView
+                    style={{alignSelf: 'stretch', height: 350}}
+                    region={this.state.mapRegion}
+                    onRegionChange={this._handleMapRegionChange}>
+                    <MapView.Marker
+                coordinate={{
+                            latitude: this.state.locationLatitude,
+                            longitude: this.state.locationLongitude
+                            }}
+            />
+                    </MapView>
+                }
+                
+
+            </View>
+                <TouchableOpacity onPress={this.invitePeopleBtnAction}>
                         <Image style = {styles.invitePeopleButton} source ={require('../assets/invitePeopleBtn.png')}/>
                 </TouchableOpacity>
                 
@@ -208,6 +282,14 @@ const styles = StyleSheet.create(
             marginTop: 35,
             marginLeft: 25,
             zIndex: 5
-          }
+          },
+          container: {
+            //flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            //paddingTop: Constants.statusBarHeight,
+            backgroundColor: '#ecf0f1',
+            height: 350
+          },
     }
 )

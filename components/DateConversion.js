@@ -2,6 +2,10 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 const weekDayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 const numDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
+function getLastDay(item) {
+  return numDaysInMonth[item ]
+}
+
 function getNumDays(item) {
   const d = new Date(item.toString())
   if (d.getMonth() === 1 && d.getYear() % 4 === 0)
@@ -27,7 +31,7 @@ function convertStringToDate(str){
   const year = str.substring(0, 4)
   const month = str.substring(5, 7)
   const day = str.substring(8, 10)
-  return new Date (parseInt(year, 10).toString(), parseInt(month, 10).toString, parseInt(day, 10).toString())
+  return new Date (parseInt(year, 10).toString(), parseInt(month, 10).toString(), parseInt(day, 10).toString())
 }
 
-export { getNumDays, weekDayMonthDate, getWeekDayMonthDate, convertStringToDate }
+export { getNumDays, weekDayMonthDate, getWeekDayMonthDate, convertStringToDate, getLastDay }
