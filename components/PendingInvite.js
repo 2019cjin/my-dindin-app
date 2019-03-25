@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {View, Text, StyleSheet,ImageBackground, Image, TouchableOpacity} from 'react-native'
 import {Constants} from 'expo'
+import firebaseStore from '../firebase/firebase_interface'
 
 var GobalSpace = {
     url: "http://people.virginia.edu/~esb5er/EvansAlma.json"
@@ -8,9 +9,18 @@ var GobalSpace = {
 
 export default class PendingInvite extends React.Component{
 
+    constructor(prop){
+        super(props)
+        this.path = "/Invitations/Invitation/"
+        firebaseStore = new firebaseStore(path)
+        data =  firebaseStore.getInformation(); 
+        console.log("got data constructor" + data)
+    }
+
     componentDidMount() {
         this.timerID = setInterval(() => {this.tick()}, 7000);
       }
+
       tick() {
         return fetch(GobalSpace.url).then(
           (response) => response.json()).then(

@@ -10,6 +10,7 @@
   */
 
  import * as firebase from 'firebase';
+import console = require('console');
 
  // Initialize Firebase
  const firebaseConfig = {
@@ -22,7 +23,7 @@
  };
  
 
- class firebaseStore{
+ export default class firebaseStore{
  
     constructor(path){
         this.dataObject = null; 
@@ -46,6 +47,7 @@
     firebase.database().ref(path).on('value', (snapshot) => {
       this.dataObject = {...dataObject, ...snapshot.val()}
       this.gotInformation = true
+      console.log(Json.Stringify(snapshot.val()))
     });
   }
 
