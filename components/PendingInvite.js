@@ -1,8 +1,37 @@
 import * as React from 'react'
 import {View, Text, StyleSheet,ImageBackground, Image, TouchableOpacity} from 'react-native'
 import {Constants} from 'expo'
+import firebaseStore from '../firebase/firebase_interface'
+
+var GobalSpace = {
+    url: "http://people.virginia.edu/~esb5er/EvansAlma.json"
+  }
 
 export default class PendingInvite extends React.Component{
+
+    constructor(prop){
+        super(props)
+        this.path = "/Invitations/Invitation/"
+        firebaseStore = new firebaseStore(path)
+        data =  firebaseStore.getInformation(); 
+        console.log("got data constructor" + data)
+    }
+
+    componentDidMount() {
+        this.timerID = setInterval(() => {this.tick()}, 7000);
+      }
+
+      tick() {
+        return fetch(GobalSpace.url).then(
+          (response) => response.json()).then(
+            response =>{
+              this.setState({catFact: response}
+                )
+            }
+        )
+      }
+    
+
 /*
  constructor(props){
      super(props)
@@ -55,7 +84,7 @@ render(){
              
               <Image style={styles.profilePic} source={require('../assets/profpic1.png')} />
 
-           <Text style={styles.author}> Jill Smith
+           <Text style={styles.author}> {this.state.catFact.firstName} {this.state.catFact.lastName}
              </Text>
 
               <Text style={styles.author}> Wednesday 4 Nov - 8 pm 
