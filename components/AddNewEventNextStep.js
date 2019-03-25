@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Constants, Svg } from 'expo'
+import { Constants, Svg, CheckBox } from 'expo'
 import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList} from 'react-native';
 import { CheckBox } from 'react-native-check-box';
 //import {Svg} from 'react-native-svg';
@@ -27,7 +27,6 @@ export default class AddNewEventNextStep extends React.Component{
             locLongitude: -77, 
             inviteeList:[],
             contactsList:null,
-            checked:0
         }
     }
 
@@ -52,18 +51,20 @@ export default class AddNewEventNextStep extends React.Component{
     async getContactsList(){
         let response = await fetch("https://api.myjson.com/bins/crkna")
         let extractedJson = await response.json()
-        await this.setState({
-            contactsList: extractedJson.contactsList
-        })
-        for (let i = 0; i < this.state.contactsList.length; i ++)
+        let list = extractedJson.contactsList
+        for (let i = 0; i < list.length; i ++)
         {
-            this.state.contactsList[i]["selected"] = true
+            await (list[i].selected = false)
         }
+        await this.setState({
+            contactsList: list
+        })
+        //await console.log("got contact list")
+        //console.log(this.state.contactsList)
     }
 
     componentWillMount(){
         this.getContactsList()
-        this.setState({checked:true})
     }
     
 
@@ -72,6 +73,7 @@ export default class AddNewEventNextStep extends React.Component{
     }
 
     renderRow({item}){
+        image = true
         return(
             <View style={styles.contactRowContainer}>
                     <Image style={{width: 50, height: 50}} source ={{uri: item.image}}/>
@@ -79,11 +81,28 @@ export default class AddNewEventNextStep extends React.Component{
                         <Text style={styles.person}>{item.firstName} {item.lastName}</Text>
                         <Text style={styles.phone}>{item.phoneNumber}</Text>
                     </View> 
+                    <TouchableOpacity onPress={()=>{item["selected"] = !item["selected"]; console.log(item["selected"].toString())}}>
+                        {  image === false ?
+                        <Image source={require('../assets/selectedInvitee.png')}/>:
+                        <Image source={require('../assets/unselectedInvitee.png')}/>
+                        }
+                    </TouchableOpacity>
+                    <View style={styles.checkBox}>
+                    <CheckBox
+                    checked={item.selected}
+                    checkedIcon={<Image source={require('../assets/selectedInvitee.png')} />}
+                    uncheckedIcon={<Image source={require('../assets/unselectedInvitee.png')} />}
+                    onPress={() => {
+                        item["selected"] = !item["selected"]
+                    }}
+                    />
+                </View>
             </View> 
         )
     }
 
     render(){
+        //console.log(this.state.contactsList)
         return(
             <View style = {{ justifyContent: 'space-between', flex: 1}}>
                 <View style = {styles.header}>

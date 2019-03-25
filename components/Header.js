@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native'
-import { Constants } from 'expo'
+import { Constants, Svg } from 'expo'
 
 export default class Header extends React.Component{
     constructor(props){
@@ -10,12 +10,30 @@ export default class Header extends React.Component{
     render(){
         return(
             <View style={styles.container}>
-           <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
+           <TouchableOpacity onPress={()=>{this.props.navigation.goBack()}}>
                 <Image style={styles.menuIcon} source={require('../assets/sidemenubtn.png')}/>
             </TouchableOpacity>
-                <Text style = {styles.title}> DinDin </Text>
+            <Text style = {styles.title}> DinDin </Text>
             <TouchableOpacity>
-                <Image style={styles.searchIcon} source={require('../assets/searchbtn.png')} />
+                <Svg height={50} width={50} >
+
+                        <Svg.Circle 
+                                cx="12" 
+                                cy="20" 
+                                r="10" 
+                                stroke="#0F8CFF"
+                                strokeWidth="2"
+                                fill="#ffffff" />
+
+                            <Svg.Line
+                                x1="20"
+                                y1="26"
+                                x2="30"
+                                y2="33"
+                                stroke="#0F8CFF"
+                                strokeWidth="2"
+                            />
+                        </Svg>
             </TouchableOpacity>
             </View>
         )
