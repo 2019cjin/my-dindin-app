@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Constants, Svg } from 'expo'
 import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList} from 'react-native';
-import { CheckBox } from 'react-native-check-box'
+import { CheckBox } from 'react-native-check-box';
 //import {Svg} from 'react-native-svg';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 

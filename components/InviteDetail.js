@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {View, Text, StyleSheet,ImageBackground, Image, TouchableOpacity} from 'react-native'
+import MapInvite from './MapInvite'
 
 export default class InviteDetail extends React.Component{
 /*
@@ -77,10 +78,8 @@ render(){
             Decline
           </Text>
           </TouchableOpacity>
-
-         
-
         </View>
+        <MapInvite />
 
   </View>
   )
