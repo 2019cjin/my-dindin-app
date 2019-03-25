@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Constants, Svg, CheckBox } from 'expo'
 import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList} from 'react-native';
-import { CheckBox } from 'react-native-check-box';
+//import { CheckBox } from 'react-native-check-box';
 //import {Svg} from 'react-native-svg';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -87,16 +87,7 @@ export default class AddNewEventNextStep extends React.Component{
                         <Image source={require('../assets/unselectedInvitee.png')}/>
                         }
                     </TouchableOpacity>
-                    <View style={styles.checkBox}>
-                    <CheckBox
-                    checked={item.selected}
-                    checkedIcon={<Image source={require('../assets/selectedInvitee.png')} />}
-                    uncheckedIcon={<Image source={require('../assets/unselectedInvitee.png')} />}
-                    onPress={() => {
-                        item["selected"] = !item["selected"]
-                    }}
-                    />
-                </View>
+                
             </View> 
         )
     }

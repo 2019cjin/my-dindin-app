@@ -8,8 +8,8 @@ import Header from './Header'
 import PendingInvite from './PendingInvite'
 
 export default class HomeScreen extends React.Component{
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         this.state={
             date: new Date(),//include so that we are able to change the month
         }
