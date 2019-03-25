@@ -53,29 +53,31 @@ export default class EventsList extends React.Component{
     convertList(){
         if (this.state.eventsList !== null)
         {
-            console.log("not null eventsList")
+            //console.log("not null eventsList")
             firstDate = new Date(this.props.today.getFullYear().toString(), this.props.today.getMonth().toString(), this.props.today.getDate().toString())
-            console.log("firstDate:" + firstDate.toString())
-            this.state.finalEvents.push(
-                {
-                    "key": new Date(this.props.today.getFullYear().toString(), this.props.today.getMonth().toString(), this.props.today.getDate().toString()),
-                    "data":[]
-                }
-            )
+            //console.log("firstDate:" + firstDate.toString())
             lastDate = new Date(this.props.today.getFullYear().toString(), this.props.today.getMonth().toString(), getLastDay(this.props.today.getMonth()))
-            console.log("lastDate:" + lastDate.toString())
+            //console.log("lastDate:" + lastDate.toString())
             i = 0
-            console.log("i:" + i)
+            //console.log("i:" + i)
 
             while (firstDate <= lastDate)
             {
-                console.log("i:" + i)
+                //make new list of events for a particular date for each date
+                newDate = new Date()
+                newDate.setDate(firstDate.getDate())
+                this.state.finalEvents.push(
+                    {
+                        "key": newDate,
+                        "data":[]
+                    }
+                )
+                //console.log("i:" + i)
                 if (i < this.state.eventsList.length)//find events to add to firstDate list of events
                 {
-                    console.log()
                     currentDate = convertStringToDate(this.state.eventsList[i].date.toString())
-                    console.log("currentDate:" + currentDate.toString())
-                    console.log("i in eventsList:" + i)
+                    //console.log("currentDate:" + currentDate.toString())
+                    //console.log("i in eventsList:" + i)
                     if (currentDate.getMonth() !== firstDate.getMonth() || currentDate.getFullYear() !== firstDate.getFullYear())
                     {
                         i = this.state.eventsList.length
@@ -98,83 +100,23 @@ export default class EventsList extends React.Component{
                                         "time": this.state.eventsList[i].time
                                     }
                                 )
-                                console.log("added event:")
+                                //console.log("added event:")
                             }
                             i ++
                         }
                     }
                 }
-                //make new list of events for a particular date for each date
-                newDate = new Date()
-                newDate.setDate(firstDate.getDate() + 1)
-                this.state.finalEvents.push(
-                    {
-                        "key": newDate,
-                        "data":[]
-                    }
-                )
+    
                 firstDate.setDate(firstDate.getDate() + 1)
-                console.log("newDate added:" + firstDate.toString())
-            }
-            
+                //console.log("newDate added:" + firstDate.toString())
+            } 
         }
         else
         {
-            console.log("null eventsList")
+            //console.log("null eventsList")
         }
     }
 
-
-    getFinalList2(){
-        if (this.state.eventsList !== null)
-        {
-            sameDate = new Date(this.props.today.getFullYear().toString(), this.props.today.getMonth().toString(), this.props.today.getDate().toString())
-            console.log("sameDate:" + sameDate.toString())
-            this.state.finalEvents.push(
-                {
-                    "key": new Date(this.props.today.getFullYear().toString(), this.props.today.getMonth().toString(), this.props.today.getDate().toString()),
-                    "data":[]
-                }
-            )
-            for (let i = 0; i < this.state.eventsList.length; i++)
-            {
-                currentDate = convertStringToDate(this.state.eventsList[i].date)
-                console.log(this.state.eventsList[i])
-                console.log("Current Date:" + currentDate.toString())
-                if (sameDate < currentDate)
-                {
-                    console.log("create new cell")
-                    newDate = new Date()
-                    newDate.setDate(sameDate.getDate() + 1)
-                    this.state.finalEvents.push(
-                        {
-                            "key": newDate,
-                            "data":[]
-                        }
-                    )
-                    sameDate.setDate(sameDate.getDate() + 1)
-                    i = i - 1
-                    console.log(sameDate.toString())
-                }
-                else if (sameDate === currentDate)
-                {
-                    this.state.finalEvents[this.state.finalEvents.length - 1].data.push(
-                        {
-                            "image": this.state.eventsList[i].image,
-                            "name": this.state.eventsList[i].name,
-                            "time": this.state.eventsList[i].time
-                        }
-                    )
-                    console.log("here")
-                } 
-                else 
-                {
-                    console.log("going here")
-                    break
-                }
-            }
-        }
-    }
     getFinalList(){
         if (this.state.eventsList !== null)
         {
@@ -202,28 +144,6 @@ export default class EventsList extends React.Component{
         }
     }
 
-    /*convertList(){
-        if (this.state.eventsList !== null)
-        {
-            this.state.exampleeventsList[0].data.push({
-                "image": this.state.eventsList[0].image,
-                "name": this.state.eventsList[0].name,
-                "time": this.state.eventsList[0].time
-            })
-        }
-    }*/
-
-    getEventsInMonth(){
-        for(let i =0; i < eventsList.length; i++){
-            if (this.props.date.getMonth() === new Date(eventsList[i].date).getMonth())
-            {
-                monthEvents.push(eventsList[i])
-                console.log(monthEvents)
-            }
-        }
-        this.setState({monthEvents: this.state.monthEvents})
-    }
-
     async getEventsData(){
         //let response = await fetch("https://api.myjson.com/bins/v8bqq")
         let response = await fetch("http://api.myjson.com/bins/jb4l2")
@@ -233,7 +153,6 @@ export default class EventsList extends React.Component{
         })
         //await this.getFinalList()
         await this.convertList()
-        //await this.getFinalList2()
     }
 
     componentDidMount(){

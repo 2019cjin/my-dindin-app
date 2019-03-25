@@ -58,7 +58,7 @@ export default class AddNewEvent extends React.Component{
       }
     
       _handleMapRegionChange = mapRegion => {
-        console.log(mapRegion);
+        //console.log(mapRegion);
         this.setState({ mapRegion });
       };
     
@@ -170,7 +170,9 @@ export default class AddNewEvent extends React.Component{
                     
                     </View>
                     <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                        <Image style={{height:22, width: 15}} source={require('../assets/locationIcon.png')}/>
+                        <TouchableOpacity>
+                            <Image style={{height:22, width: 15}} source={require('../assets/locationIcon.png')}/>
+                        </TouchableOpacity>
                         <Text style={{fontSize: 20, color:'white'}}>
                             cc
                         </Text>
@@ -205,9 +207,9 @@ export default class AddNewEvent extends React.Component{
                 
 
             </View>
-                <TouchableOpacity onPress={this.invitePeopleBtnAction}>
-                        <Image style = {styles.invitePeopleButton} source ={require('../assets/invitePeopleBtn.png')}/>
-                </TouchableOpacity>
+            <TouchableOpacity onPress={this.invitePeopleBtnAction}>
+                    <Image style = {styles.invitePeopleButton} source ={require('../assets/invitePeopleBtn.png')}/>
+            </TouchableOpacity>
                 
             </View>
         )
