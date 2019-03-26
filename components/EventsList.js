@@ -64,6 +64,7 @@ export default class EventsList extends React.Component{
             while (firstDate <= lastDate)
             {
                 //make new list of events for a particular date for each date
+                console.log("firstDate:"+firstDate.toString())
                 newDate = new Date()
                 newDate.setDate(firstDate.getDate())
                 this.state.finalEvents.push(
@@ -76,7 +77,7 @@ export default class EventsList extends React.Component{
                 if (i < this.state.eventsList.length)//find events to add to firstDate list of events
                 {
                     currentDate = convertStringToDate(this.state.eventsList[i].date.toString())
-                    //console.log("currentDate:" + currentDate.toString())
+                    console.log("currentDate:" + currentDate.toString())
                     //console.log("i in eventsList:" + i)
                     if (currentDate.getMonth() !== firstDate.getMonth() || currentDate.getFullYear() !== firstDate.getFullYear())
                     {
@@ -86,10 +87,15 @@ export default class EventsList extends React.Component{
                     {
                     
                     }
+                    else if (currentDate.getDate() < firstDate.getDate())
+                    {
+                        i ++
+                    }
                     else
                     {
-                        while (currentDate.getDate() <= firstDate.getDate() && i < this.state.eventsList.length )
+                        while (i < this.state.eventsList.length )
                         {
+                            console.log("eventToAdd:"+this.state.eventsList[i].name)
                             currentDate = convertStringToDate(this.state.eventsList[i].date.toString())
                             if (currentDate.getDate() === firstDate.getDate())
                             {
@@ -100,9 +106,15 @@ export default class EventsList extends React.Component{
                                         "time": this.state.eventsList[i].time
                                     }
                                 )
-                                //console.log("added event:")
+                                console.log("added event:")
+                                i ++
+                                //currentDate = convertStringToDate(this.state.eventsList[i].date.toString())
+                                console.log("i after adding event:" + i)
                             }
-                            i ++
+                            else{
+                                break
+                            }
+                            
                         }
                     }
                 }
@@ -146,7 +158,9 @@ export default class EventsList extends React.Component{
 
     async getEventsData(){
         //let response = await fetch("https://api.myjson.com/bins/v8bqq")
-        let response = await fetch("http://api.myjson.com/bins/jb4l2")
+        //https://api.myjson.com/bins/1g5852
+        //https://api.myjson.com/bins/ycd5i
+        let response = await fetch("https://api.myjson.com/bins/ycd5i")
         let extractedJson = await response.json()
         await this.setState({
             eventsList: extractedJson.eventsList
