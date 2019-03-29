@@ -125,7 +125,7 @@ export default class SplashScreen extends React.Component{
 
     componentWillUnMount() 
     {
-      clearInterval()
+      //clearInterval()
     }
 
     render(){

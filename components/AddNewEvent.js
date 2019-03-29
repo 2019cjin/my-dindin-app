@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Constants, Svg, MapView, Marker, Location, Permissions } from 'expo'
 import { Picker, Text, View, StyleSheet, Image, TouchableOpacity, TextInput} from 'react-native';
+//import console = require('console');
 //import Picker from 'react-native-wheel-picker'
 //import {Svg} from 'react-native-svg';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -11,11 +12,11 @@ export default class AddNewEvent extends React.Component{
     constructor(){
         super()
         this.state={
-            hour: '',
+            hour: '12',
             hourNum:12,
-            minute:'',
+            minute:'00',
             minuteNum:0,
-            timeOfDay:'',
+            timeOfDay:'AM',
             address:'38,-78',
             addressLatitude: 38.0293059,
             addressLongitude: -78.4766781,
@@ -24,7 +25,8 @@ export default class AddNewEvent extends React.Component{
             locationResult: null,
             locationLatitude: 39,
             locationLongitude: -77, 
-            locationInfo: null
+            locationInfo: null,
+            date: ''
         }
     }
 
@@ -50,11 +52,18 @@ export default class AddNewEvent extends React.Component{
      }
 
      invitePeopleBtnAction = ()=>{
-         this.props.navigation.navigate('AddNewEventNextStep')
+         this.props.navigation.navigate('AddNewEventNextStep', {date: this.state.date, 
+                                                                time: this.state.hour + ":" + this.state.minute + " " + this.state.timeOfDay, 
+                                                                address: this.state.address,
+                                                                addressLat: this.state.addressLatitude,
+                                                                addressLong: this.state.addressLongitude})
      }
 
      componentDidMount() {
+        //const { navigation } = this.props;
+        //const eDate = navigation.getParam('eventDate', 'NO DATE');
         this.getLocationAsync();
+        //this.setState({date: JSON.stringify(eDate)});
       }
     
       _handleMapRegionChange = mapRegion => {
@@ -81,6 +90,10 @@ export default class AddNewEvent extends React.Component{
     
 
     render(){
+
+        const { navigation } = this.props;
+        const date = navigation.getParam('eventDate', 'NO DATE');
+
         return(
             <View style = {{ justifyContent: 'space-between', flex: 1}}>
                 <View style = {{ justifyContent: 'space-between', height: 200}}>
@@ -121,6 +134,9 @@ export default class AddNewEvent extends React.Component{
                         <Text style = {styles.title}>DinDin</Text>
                         <Text style = {styles.title}>            </Text>
                     </View>
+                    <Text style = {{fontSize: 15}}>            </Text>
+                    <Text style = {styles.title}>Date: {JSON.stringify(date)}</Text>
+                    <Text style = {[{color:'grey', fontSize: 15, textAlign: 'center'}]}>When and where is dinner? </Text>
                     
                     <View style = {{flexDirection:'row', justifyContent: 'center', }}>
                     <View style={{justifyContent:"center"}}>
@@ -149,8 +165,8 @@ export default class AddNewEvent extends React.Component{
                     <Text style={{fontSize: 70, justifyContent: 'center',height:100, alignItems:'center'}}>:</Text>
 
                     <Picker selectedValue = {this.state.minute} onValueChange = {this.updateMinute} style={{height: 100, width:80, justifyContent: 'center'}} itemStyle={{height: 65, fontSize:44}}>
-                        <Picker.Item label = "00" value = "0" /><Picker.Item label = "01" value = "1" /><Picker.Item label = "02" value = "2" /><Picker.Item label = "03" value = "3" /><Picker.Item label = "04" value = "4" />
-                        <Picker.Item label = "05" value = "5" /><Picker.Item label = "06" value = "6" /><Picker.Item label = "07" value = "7" /><Picker.Item label = "08" value = "8" /><Picker.Item label = "09" value = "9" />
+                        <Picker.Item label = "00" value = "00" /><Picker.Item label = "01" value = "01" /><Picker.Item label = "02" value = "02" /><Picker.Item label = "03" value = "03" /><Picker.Item label = "04" value = "04" />
+                        <Picker.Item label = "05" value = "05" /><Picker.Item label = "06" value = "06" /><Picker.Item label = "07" value = "07" /><Picker.Item label = "08" value = "08" /><Picker.Item label = "09" value = "09" />
                         <Picker.Item label = "10" value = "10" /><Picker.Item label = "11" value = "11" /><Picker.Item label = "12" value = "12" /><Picker.Item label = "13" value = "13" /><Picker.Item label = "14" value = "14" />
                         <Picker.Item label = "15" value = "15" /><Picker.Item label = "16" value = "16" /><Picker.Item label = "17" value = "17" /><Picker.Item label = "18" value = "18" /><Picker.Item label = "19" value = "19" />
                         <Picker.Item label = "20" value = "20" /><Picker.Item label = "21" value = "21" /><Picker.Item label = "22" value = "22" /><Picker.Item label = "23" value = "23" /><Picker.Item label = "24" value = "24" />
@@ -208,7 +224,7 @@ export default class AddNewEvent extends React.Component{
 
             </View>
             <TouchableOpacity onPress={this.invitePeopleBtnAction}>
-                    <Image style = {styles.invitePeopleButton} source ={require('../assets/invitePeopleBtn.png')}/>
+                <Image style = {styles.invitePeopleButton} source ={require('../assets/invitePeopleBtn.png')}/>
             </TouchableOpacity>
                 
             </View>
@@ -291,7 +307,7 @@ const styles = StyleSheet.create(
             justifyContent: 'center',
             //paddingTop: Constants.statusBarHeight,
             backgroundColor: '#ecf0f1',
-            height: 350
+            height: 325
           },
     }
 )

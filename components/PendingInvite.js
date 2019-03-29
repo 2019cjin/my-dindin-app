@@ -1,12 +1,27 @@
 import * as React from 'react'
 import {View, Text, StyleSheet,ImageBackground, Image, TouchableOpacity} from 'react-native'
 import {Constants} from 'expo'
-import firebaseWrapper from '../firebase/firebase_interface'
+import * as firebase from 'firebase';
+
+//import InvitationDetailsScreen from './components/InvitationDetailsScreen'
 
 var GobalSpace = {
     url: "http://people.virginia.edu/~esb5er/EvansAlma.json"
   }
 
+
+  //import console = require('console');
+  
+   // Initialize Firebase
+   const firebaseConfig = {
+     apiKey: "AIzaSyDZpTrKnBHgaQbv_F87VoD5ZOn83Rkqe-w",
+     authDomain: "dindin-9954b.firebaseapp.com",
+     databaseURL: "https://dindin-9954b.firebaseio.com",
+     projectId: "dindin-9954b",
+     storageBucket: "dindin-9954b.appspot.com",
+     messagingSenderId: "1055947992772"
+   };
+   
 export default class PendingInvite extends React.Component{
 
     constructor(props){
@@ -14,12 +29,39 @@ export default class PendingInvite extends React.Component{
         this.state= {
           catFact:{firstName: '', lastName: ''}
         }
-        console.log(props.store)
+        //console.log(props.store)
+        if (!firebase.apps.length){
+          firebase.initializeApp(firebaseConfig)
+        }
+        path = 'Invitations/Invitation/'
+        this.startListener(path)
+        this.gotInformation = false;
+
     }
 
+    
+    startListener(path) {
+      let context = this
+      firebase.database().ref(path).on('value', (snapshot) => {     
+        console.log(JSON.stringify(snapshot.val()))
+        context.setState({
+          data: JSON.parse(JSON.stringify(snapshot.val())), 
+          gotInformation: true
+        })
+      })
+    }
+
+      
+
+    timerID = setInterval(() => {this.tick()}, 7000)
+
     componentDidMount() {
-        this.timerID = setInterval(() => {this.tick()}, 7000);
+        this.timerID
       }
+
+      componentWillUnmount(){
+        clearInterval(this.timerID)
+    }
 
       tick() {
         return fetch(GobalSpace.url).then(
@@ -72,26 +114,39 @@ render(){
     }
 }*/
 
+
 render(){
   return(
   <View style={styles.container}>
 
     <TouchableOpacity onPress={()=>{this.props.navigation.navigate('InviteDetail')}}>
+
+
+    
+
+
+            { this.state.gotInformation ? ( 
+            <View>
+            <Text style={styles.title}> Pending {this.state.data.length}</Text>
        <ImageBackground style={styles.featuredImage}>
 
-          <Text style={styles.title}> Pending
-             </Text>
-             
-              <Image style={styles.profilePic} source={require('../assets/profpic1.png')} />
+             <View> 
+                  <Image style={styles.profilePic} source={require('../assets/profpic1.png')} />
 
-           <Text style={styles.author}> {this.state.catFact.firstName} {this.state.catFact.lastName}
-             </Text>
+              <Text style={styles.author}>  {this.state.data[0]["name"]} {this.state.catFact.lastName}
+                </Text>
 
-              <Text style={styles.author}> Wednesday 4 Nov - 8 pm 
-             </Text>           
+                  <Text style={styles.author}> Wednesday 4 Nov - 8 pm 
+                </Text>           
+            </View>
 
+            </ImageBackground>
+            </View>
 
-        </ImageBackground>
+            ):  (<View/>)
+
+        }
+
         </TouchableOpacity>
         
         

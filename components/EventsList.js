@@ -64,7 +64,7 @@ export default class EventsList extends React.Component{
             while (firstDate <= lastDate)
             {
                 //make new list of events for a particular date for each date
-                console.log("firstDate:"+firstDate.toString())
+                //console.log("firstDate:"+firstDate.toString())
                 newDate = new Date()
                 newDate.setDate(firstDate.getDate())
                 this.state.finalEvents.push(
@@ -77,7 +77,7 @@ export default class EventsList extends React.Component{
                 if (i < this.state.eventsList.length)//find events to add to firstDate list of events
                 {
                     currentDate = convertStringToDate(this.state.eventsList[i].date.toString())
-                    console.log("currentDate:" + currentDate.toString())
+                    //console.log("currentDate:" + currentDate.toString())
                     //console.log("i in eventsList:" + i)
                     if (currentDate.getMonth() !== firstDate.getMonth() || currentDate.getFullYear() !== firstDate.getFullYear())
                     {
@@ -87,15 +87,11 @@ export default class EventsList extends React.Component{
                     {
                     
                     }
-                    else if (currentDate.getDate() < firstDate.getDate())
-                    {
-                        i ++
-                    }
                     else
                     {
-                        while (i < this.state.eventsList.length )
+                        while (i < this.state.eventsList.length && currentDate.getDate() <= firstDate.getDate())
                         {
-                            console.log("eventToAdd:"+this.state.eventsList[i].name)
+                            //console.log("eventToAdd:"+this.state.eventsList[i].name)
                             currentDate = convertStringToDate(this.state.eventsList[i].date.toString())
                             if (currentDate.getDate() === firstDate.getDate())
                             {
@@ -106,10 +102,14 @@ export default class EventsList extends React.Component{
                                         "time": this.state.eventsList[i].time
                                     }
                                 )
-                                console.log("added event:")
+                               // console.log("added event:")
                                 i ++
                                 //currentDate = convertStringToDate(this.state.eventsList[i].date.toString())
-                                console.log("i after adding event:" + i)
+                               // console.log("i after adding event:" + i)
+                            }
+                            else if (currentDate.getDate() < firstDate.getDate())
+                            {
+                                i ++
                             }
                             else{
                                 break
@@ -204,9 +204,10 @@ export default class EventsList extends React.Component{
         if(section.data.length == 0){
         return <View style={{paddingLeft: 20, paddingRight: 20}}>
                 <View style={styles.addEventButton}> 
-                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddNewEvent'); this.setState({currentDate: this.props.today})}}>
+                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddNewEvent', {eventDate: section.key}); this.setState({currentDate: this.props.today}); }}>
                         <Image source={require('../assets/addNewEvent.png')}/>
                     </TouchableOpacity>
+                    <Text style={styles.date}>{section.key.toString()}</Text>
                 </View>
                 </View>
         }

@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Constants, Svg, CheckBox } from 'expo'
+import { Constants, Svg } from 'expo'
 import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList} from 'react-native';
-//import { CheckBox } from 'react-native-check-box';
+//import Checkbox from 'react-native-modest-checkbox';
+import { CheckBox } from 'react-native-elements';
 //import {Svg} from 'react-native-svg';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -15,7 +16,28 @@ import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList} from 'react-
                         item["selected"] = !item["selected"]
                     }}
                     />
-                </View>*/
+                </View>
+                
+                <CheckBox
+                        checkedIcon={<Image source={require('../assets/selectedInvitee.png')} />}
+                        uncheckedIcon={<Image source={require('../assets/unselectedInvitee.png')} />}
+                        onPress={() => {
+                            item["selected"] = !item["selected"]
+                            console.log(item["selected"].toString())
+                            image = !image
+                        }}
+                        checked={item["selected"]}
+                        />
+                        
+                        <CheckBox
+                            style={{flex: 1, padding: 10}}
+                            onClick={()=>{
+                                item["selected"] = !item["selected"]
+                                console.log(item["selected"].toString())
+                            }}
+                            isChecked={item["selected"]}
+                            leftText={"CheckBox"}
+                        />*/
 
 export default class AddNewEventNextStep extends React.Component{
     constructor(){
@@ -27,6 +49,7 @@ export default class AddNewEventNextStep extends React.Component{
             locLongitude: -77, 
             inviteeList:[],
             contactsList:null,
+            gotList: false
         }
     }
 
@@ -59,12 +82,17 @@ export default class AddNewEventNextStep extends React.Component{
         await this.setState({
             contactsList: list
         })
+        this.setState({gotList:true})
         //await console.log("got contact list")
         //console.log(this.state.contactsList)
     }
 
     componentWillMount(){
-        this.getContactsList()
+        if (!this.state.gotList)
+        {
+            this.getContactsList()
+        }
+        
     }
     
 
@@ -73,7 +101,7 @@ export default class AddNewEventNextStep extends React.Component{
     }
 
     renderRow({item}){
-        image = true
+        image = false
         return(
             <View style={styles.contactRowContainer}>
                     <Image style={{width: 50, height: 50}} source ={{uri: item.image}}/>
@@ -81,19 +109,51 @@ export default class AddNewEventNextStep extends React.Component{
                         <Text style={styles.person}>{item.firstName} {item.lastName}</Text>
                         <Text style={styles.phone}>{item.phoneNumber}</Text>
                     </View> 
-                    <TouchableOpacity onPress={()=>{item["selected"] = !item["selected"]; console.log(item["selected"].toString())}}>
-                        {  image === false ?
-                        <Image source={require('../assets/selectedInvitee.png')}/>:
-                        <Image source={require('../assets/unselectedInvitee.png')}/>
-                        }
-                    </TouchableOpacity>
-                
+                    <View style={styles.checkBox}>
+                        <CheckBox
+                            checkedIcon={<Image source={require('../assets/selectedInvitee.png')} />}
+                            uncheckedIcon={<Image source={require('../assets/unselectedInvitee.png')} />}
+                            onPress={() => {
+                                item["selected"] = !item["selected"]
+                                console.log(item["selected"].toString())
+                                image = !image
+                            }}
+                            checked={item["selected"]}
+                            />
+                    </View>
             </View> 
         )
     }
 
     render(){
         //console.log(this.state.contactsList)
+        var payments = [];
+
+        if (this.state.contactsList !== null){
+        for (let i = 0; i < this.state.contactsList.length; i ++)
+        {
+            payments.push(
+            <View key = {i}>
+                <CheckBox
+                checkedIcon={<Image source={require('../assets/unselectedInvitee.png')} />}
+                uncheckedIcon={<Image source={require('../assets/selectedInvitee.png')} />}
+                onPress={() => {
+                    this.state.contactsList[i]["selected"] = !this.state.contactsList[i]["selected"]
+                    console.log(this.state.contactsList[i]["selected"].toString())
+                }}
+                checked={this.state.contactsList[i]["selected"]}
+                />
+                
+            </View>
+            )
+        }
+    }
+
+    const { navigation } = this.props;
+    const date = navigation.getParam('eventDate', 'NO DATE');
+    const time = navigation.getParam('time', 'NO TIME');
+    const location = navigation.getParam('address', 'NO ADDRESS')
+
         return(
             <View style = {{ justifyContent: 'space-between', flex: 1}}>
                 <View style = {styles.header}>
@@ -161,6 +221,9 @@ export default class AddNewEventNextStep extends React.Component{
                         <Image style={{height:35, width: 40}} source ={require('../assets/yourEventIcon.png')}/>
                     </View>
                     <Text style={styles.numPeopleSelected}>{this.state.inviteeList.length} selected</Text>
+                    <Text style={styles.numPeopleSelected}>Date: {JSON.stringify(date)}</Text>
+                    <Text style={styles.numPeopleSelected}>Time: {JSON.stringify(time)}</Text>
+                    <Text style={styles.numPeopleSelected}>Location: {JSON.stringify(location)}</Text>
                     <View style={{flex:1}}/>
                 </View>
 
@@ -175,6 +238,7 @@ export default class AddNewEventNextStep extends React.Component{
                     />
                     }
                 </View>
+                
 
                 <TouchableOpacity onPress={this.sendInvitesBtnAction} style={{flex: 2}}>
                     <Image style = {styles.sendInvitesButton} source ={require('../assets/SendInvitesBtn.png')}/>
