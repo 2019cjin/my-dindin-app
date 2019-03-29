@@ -10,7 +10,7 @@
   */
 
  import * as firebase from 'firebase';
-import console = require('console');
+//import console = require('console');
 
  // Initialize Firebase
  const firebaseConfig = {
@@ -23,12 +23,14 @@ import console = require('console');
  };
  
 
- export default class firebaseStore{
+ export default class firebaseWrapper{
  
-    constructor(path){
+    constructor(path, store){
         this.dataObject = null; 
-        firebase.initializeApp(firebaseConfig)
-        StartListener(path)
+        if (!firebase.apps.length){
+          firebase.initializeApp(firebaseConfig)
+        }
+        this.StartListener(path, store)
         this.gotInformation = false;
     }
  
@@ -43,11 +45,15 @@ import console = require('console');
         });
     }
 
-    StartListener(path) {
+    StartListener(path, store) {
     firebase.database().ref(path).on('value', (snapshot) => {
-      this.dataObject = {...dataObject, ...snapshot.val()}
+      this.dataObject = {...this.dataObject, ...snapshot.val()}
       this.gotInformation = true
-      console.log(Json.Stringify(snapshot.val()))
+      store.dispatch( {
+        type: 'updater', 
+        payload: snapshot.val()
+      } )
+      console.log(JSON.stringify(snapshot.val()))
     });
   }
 

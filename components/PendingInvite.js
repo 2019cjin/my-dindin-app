@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {View, Text, StyleSheet,ImageBackground, Image, TouchableOpacity} from 'react-native'
 import {Constants} from 'expo'
-import firebaseStore from '../firebase/firebase_interface'
+import firebaseWrapper from '../firebase/firebase_interface'
 
 var GobalSpace = {
     url: "http://people.virginia.edu/~esb5er/EvansAlma.json"
@@ -9,12 +9,12 @@ var GobalSpace = {
 
 export default class PendingInvite extends React.Component{
 
-    constructor(prop){
+    constructor(props){
         super(props)
-        this.path = "/Invitations/Invitation/"
-        firebaseStore = new firebaseStore(path)
-        data =  firebaseStore.getInformation(); 
-        console.log("got data constructor" + data)
+        this.state= {
+          catFact:{firstName: '', lastName: ''}
+        }
+        console.log(props.store)
     }
 
     componentDidMount() {
