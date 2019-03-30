@@ -207,7 +207,6 @@ export default class EventsList extends React.Component{
                     <TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddNewEvent', {eventDate: section.key}); this.setState({currentDate: this.props.today}); }}>
                         <Image source={require('../assets/addNewEvent.png')}/>
                     </TouchableOpacity>
-                    <Text style={styles.date}>{section.key.toString()}</Text>
                 </View>
                 </View>
         }

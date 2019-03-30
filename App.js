@@ -55,11 +55,11 @@ export default class App extends React.Component {
 
   //dispatch functions
 
-
+//persistenceKey="TopNav"
   render() {
     
     return ( 
-        <AppContainer persistenceKey="TopNav"/>
+        <AppContainer />
     );
   }
 }
