@@ -18,7 +18,7 @@ export default class AddNewEvent extends React.Component{
             minuteNum:0,
             timeOfDay:'AM',
             address:null,
-            selectedAddress:'noneSelected',
+            selectedAddress:'No Address Selected',
             addressLatitude: 38.0293059,
             addressLongitude: -78.4766781,
             mapRegion: null, 
@@ -100,6 +100,19 @@ export default class AddNewEvent extends React.Component{
 
        // const { navigation } = this.props;
         //const date = navigation.getParam('eventDate', 'NO DATE');
+
+       /* {
+            this.state.numLocRequests > 0 ? 
+            <View>
+            <TextInput
+            style={{height: 25, fontSize: 20, borderBottomColor: 'grey', borderBottomWidth: 1}}
+            onChangeText={(address) => this.setState({selectedAddress: address})}
+            value={this.state.selectedAddress}
+            />
+            <Text numberOfLines={1} style={{fontSize: 20}}>{getNextAddr(this.state.address, this.state.numLocRequests)}</Text> 
+            </View>:
+            <Text>Click Blue Icon to the Left to Get Addresss</Text>
+        }*/
 
         return(
             <View style = {{ justifyContent: 'space-between', flex: 1}}>
@@ -198,11 +211,11 @@ export default class AddNewEvent extends React.Component{
                         <Text style={{fontSize: 20, color:'white'}}>
                             c
                         </Text>
-                        {
-                            this.state.numLocRequests > 0 ? 
-                            <Text numberOfLines={1} style={{fontSize: 20}}>{getNextAddr(this.state.address, this.state.numLocRequests)}</Text> :
-                            <Text>Click Blue Icon to the Left to Get Addresss</Text>
-                        }
+                        <TextInput
+                            style={{height: 25, fontSize: 20, borderBottomColor: 'grey', borderBottomWidth: 1}}
+                            onChangeText={(address) => this.setState({selectedAddress: address})}
+                            value={this.state.selectedAddress}
+                        />
                     </View>
                 </View>
                 <View style={styles.container}>

@@ -99,7 +99,14 @@ export default class EventsList extends React.Component{
                                     {
                                         "image": this.state.eventsList[i].image,
                                         "name": this.state.eventsList[i].name,
-                                        "time": this.state.eventsList[i].time
+                                        "time": this.state.eventsList[i].time,
+                                        /*"address": this.state.eventsList[i].address,
+                                        "latitude": this.state.eventsList[i].latitude,
+                                        "longitude": this.state.eventsList[i].longitude,
+                                        "hostFName": this.state.eventsList[i].hostFName,
+                                        "hostLName": this.state.eventsList[i].hostLName,
+                                        "phoneNum": this.state.eventsList[i].phoneNum,
+                                        "profilePic": this.state.eventsList[i].profilePic,*/
                                     }
                                 )
                                // console.log("added event:")
@@ -148,8 +155,8 @@ export default class EventsList extends React.Component{
                 this.state.finalEvents[this.state.finalEvents.length - 1].data.push(
                     {
                         "image": this.state.eventsList[i].image,
+                        "time": this.state.eventsList[i].time,
                         "name": this.state.eventsList[i].name,
-                        "time": this.state.eventsList[i].time
                     }
                 )
             }
@@ -160,7 +167,8 @@ export default class EventsList extends React.Component{
         //let response = await fetch("https://api.myjson.com/bins/v8bqq")
         //https://api.myjson.com/bins/1g5852
         //https://api.myjson.com/bins/ycd5i
-        let response = await fetch("https://api.myjson.com/bins/ycd5i")
+        //https://api.myjson.com/bins/lgzwi
+        let response = await fetch("https://api.myjson.com/bins/lgzwi")
         let extractedJson = await response.json()
         await this.setState({
             eventsList: extractedJson.eventsList

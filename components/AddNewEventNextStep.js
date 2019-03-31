@@ -3,43 +3,10 @@ import { Constants, Svg } from 'expo'
 import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList} from 'react-native';
 //import Checkbox from 'react-native-modest-checkbox';
 import { CheckBox } from 'react-native-elements';
-import {getWeekDayMonthDate} from './DateConversion';
+import {getWeekDayMonthDate, convertDateToDBString} from './DateConversion';
 import {getAddressString} from './MapHelperFunction';
 //import {Svg} from 'react-native-svg';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
-//checkBox
-/*<View style={styles.checkBox}>
-                    <CheckBox
-                    checked={item.selected}
-                    checkedIcon={<Image source={require('../assets/selectedInvitee.png')} />}
-                    uncheckedIcon='circle-o'
-                    onPress={() => {
-                        item["selected"] = !item["selected"]
-                    }}
-                    />
-                </View>
-                
-                <CheckBox
-                        checkedIcon={<Image source={require('../assets/selectedInvitee.png')} />}
-                        uncheckedIcon={<Image source={require('../assets/unselectedInvitee.png')} />}
-                        onPress={() => {
-                            item["selected"] = !item["selected"]
-                            console.log(item["selected"].toString())
-                            image = !image
-                        }}
-                        checked={item["selected"]}
-                        />
-                        
-                        <CheckBox
-                            style={{flex: 1, padding: 10}}
-                            onClick={()=>{
-                                item["selected"] = !item["selected"]
-                                console.log(item["selected"].toString())
-                            }}
-                            isChecked={item["selected"]}
-                            leftText={"CheckBox"}
-                        />*/
 
 export default class AddNewEventNextStep extends React.Component{
     constructor(){
@@ -52,7 +19,8 @@ export default class AddNewEventNextStep extends React.Component{
             inviteeList:[],
             contactsList:null,
             gotList: false,
-            eventDetails: null
+            eventDetails: null,
+            numInvitee: 0
         }
     }
 
@@ -67,11 +35,6 @@ export default class AddNewEventNextStep extends React.Component{
 
     goBack = ()=>{
         this.props.navigation.navigate('AddNewEvent')
-    }
-
-    getInviteesList(i){
-        this.state.contactsList[i]["selected"] = true
-        this.state.inviteeList.push(contactsList[i])
     }
 
     async getContactsList(){
@@ -98,21 +61,37 @@ export default class AddNewEventNextStep extends React.Component{
         const latitude = navigation.getParam('addressLat', 'NO LATITUDE')
         const longitude = navigation.getParam('addressLong', 'NO LONGITUDE')
 
-        this.setState({eventDetails: {'date': date, 
+        this.setState({eventDetails: {'date': convertDateToDBString(date), 
                                       'time': time, 
                                       'location': location,
                                       'latitude': latitude,
-                                      'longitude': longitude}})
+                                      'longitude': longitude,
+                                      'hostFName': 'Dave',
+                                      'hostLName': 'Lane',
+                                      'phoneNum': "123-456-7890",
+                                      'profilePic': ""}})
+
+    }
+
+    getInviteeList(){
+        for (let i = 0; i < this.state.contactsList.length; i ++)
+        {
+            if (this.state.contactsList[i]["selected"] === true)
+            {
+                this.state.inviteeList.push(this.state.contactsList[i])
+            }
+        }
     }
 
     async componentWillMount(){
-        if (!this.state.gotList)
+        if (this.state.contactsList === null)
         {
-            this.getContactsList()
+            await this.getContactsList()
         }
         if (this.state.eventDetails === null)
         {
-            this.getEventDetails()
+            await this.getEventDetails()
+            this.getInviteeList()
         }
         
     }
@@ -123,7 +102,6 @@ export default class AddNewEventNextStep extends React.Component{
     }
 
     renderRow({item}){
-        image = false
         return(
             <View style={styles.contactRowContainer}>
                     <Image style={{width: 50, height: 50}} source ={{uri: item.image}}/>
@@ -137,8 +115,14 @@ export default class AddNewEventNextStep extends React.Component{
                             uncheckedIcon={<Image source={require('../assets/unselectedInvitee.png')} />}
                             onPress={() => {
                                 item["selected"] = !item["selected"]
-                                console.log(item["selected"].toString())
-                                image = !image
+                                if (item["selected"])
+                                {
+                                    this.setState({numInvitee: this.state.numInvitee + 1})
+                                }
+                                else
+                                {
+                                    this.setState({numInvitee: this.state.numInvitee - 1})
+                                }
                             }}
                             checked={item["selected"]}
                             />
@@ -246,7 +230,7 @@ export default class AddNewEventNextStep extends React.Component{
                     </View>
                     <View style={{flex: 1, flexDirection:'row', justifyContent:'space-between', width:350}}>
                         <Text style={{color:'grey'}}>Who do you want to invite?</Text>
-                        <Text style={{color: "#0F8CFF"}}>{this.state.inviteeList.length} selected</Text>
+                        <Text style={{color: "#0F8CFF"}}>{this.state.numInvitee} selected</Text>
                     </View>
                 </View>
 
@@ -256,8 +240,9 @@ export default class AddNewEventNextStep extends React.Component{
                     <Text>contacts list loading...</Text> :
                     <FlatList
                         data={this.state.contactsList}
-                        renderItem={this.renderRow}
+                        renderItem={this.renderRow.bind(this)}
                         keyExtractor={this.keyExtractor}
+                        extraData={this.state}
                     />
                     }
                 </View>
