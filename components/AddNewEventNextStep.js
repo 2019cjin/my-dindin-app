@@ -5,8 +5,18 @@ import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList} from 'react-
 import { CheckBox } from 'react-native-elements';
 import {getWeekDayMonthDate, convertDateToDBString} from './DateConversion';
 import {getAddressString} from './MapHelperFunction';
-//import {Svg} from 'react-native-svg';
-//import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+import * as firebase from 'firebase';//for connecting to firebase
+
+// Initialize Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyDZpTrKnBHgaQbv_F87VoD5ZOn83Rkqe-w",
+    authDomain: "dindin-9954b.firebaseapp.com",
+    databaseURL: "https://dindin-9954b.firebaseio.com",
+    projectId: "dindin-9954b",
+    storageBucket: "dindin-9954b.appspot.com",
+    messagingSenderId: "1055947992772"
+  };
 
 export default class AddNewEventNextStep extends React.Component{
     constructor(){
@@ -22,8 +32,27 @@ export default class AddNewEventNextStep extends React.Component{
             eventDetails: null,
             numInvitee: 0
         }
+
+        //connect to firebase
+        if (!firebase.apps.length){
+            firebase.initializeApp(firebaseConfig)
+          }
+          path = 'jdoe/eventsList/'
+          this.startListener(path)
+          this.gotInformation = false;
     }
 
+
+    async startListener(path) {
+        let context = this;
+        firebase.database().ref(path).on('value', (snapshot) => {     
+          //console.log(JSON.stringify(snapshot.val()))
+          context.setState({
+            eventsList: JSON.parse(JSON.stringify(snapshot.val())), 
+            gotInformation: true
+          })
+        })
+      }
 
     //https://api.myjson.com/bins/1583d2
     //https://api.myjson.com/bins/crkna
@@ -33,7 +62,7 @@ export default class AddNewEventNextStep extends React.Component{
         //need to create event and add to eventList
         this.getEventDetails()
         this.getInviteeList()
-            console.log(this.state.inviteeList)
+        console.log(this.state.inviteeList)
             
         //need to send invitations
         
@@ -43,8 +72,10 @@ export default class AddNewEventNextStep extends React.Component{
         this.props.navigation.navigate('AddNewEvent')
     }
 
+    //https://api.myjson.com/bins/crkna
+    //https://api.myjson.com/bins/aig76
     async getContactsList(){
-        let response = await fetch("https://api.myjson.com/bins/crkna")
+        let response = await fetch("https://api.myjson.com/bins/pikn6")
         let extractedJson = await response.json()
         let list = extractedJson.contactsList
         for (let i = 0; i < list.length; i ++)
@@ -54,7 +85,7 @@ export default class AddNewEventNextStep extends React.Component{
         await this.setState({
             contactsList: list
         })
-        this.setState({gotList:true})
+        //this.setState({gotList:true})
         //await console.log("got contact list")
         //console.log(this.state.contactsList)
     }
@@ -112,10 +143,10 @@ export default class AddNewEventNextStep extends React.Component{
     renderRow({item}){
         return(
             <View style={styles.contactRowContainer}>
-                    <Image style={{width: 50, height: 50}} source ={{uri: item.image}}/>
+                    <Image style={{width: 50, height: 50}} source ={{uri: item.profilePic}}/>
                     <View style={styles.personContactInfo}>
-                        <Text style={styles.person}>{item.firstName} {item.lastName}</Text>
-                        <Text style={styles.phone}>{item.phoneNumber}</Text>
+                        <Text style={styles.person}>{item.FName} {item.LName}</Text>
+                        <Text style={styles.phone}>{item.phoneNum}</Text>
                     </View> 
                     <View style={styles.checkBox}>
                         <CheckBox
