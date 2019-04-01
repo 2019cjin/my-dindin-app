@@ -234,9 +234,21 @@ export default class AddNewEvent extends React.Component{
                     <MapView.Marker
                     coordinate={{
                                 latitude: this.state.locationLatitude,
-                                longitude: this.state.locationLongitude
+                                longitude: this.state.locationLongitude,
+                                title: "title"
                                 }}
-                    />
+                                pinColor={'#0F8CFF'} 
+                            description={"some text"}
+                    >
+                    <MapView.Callout style={{width: 300, height: 20}}>
+                        {
+                            this.state.selectedAddress === 'No Address Selected'?
+                            <Text>Please type in or use blue icon to enter address</Text>:
+                            <Text>{this.state.selectedAddress}</Text>
+
+                        }
+                    </MapView.Callout>
+                    </MapView.Marker>
                     </MapView>
                 }
                 

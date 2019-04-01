@@ -57,6 +57,7 @@ export default class PendingInvite extends React.Component{
 
     componentDidMount() {
         this.timerID
+        //this.startListener(path)
       }
 
       componentWillUnmount(){

@@ -29,8 +29,14 @@ export default class AddNewEventNextStep extends React.Component{
     //https://api.myjson.com/bins/crkna
     sendInvitesBtnAction = ()=>{
         this.props.navigation.navigate('Home')
-        //need to send invitations
+
         //need to create event and add to eventList
+        this.getEventDetails()
+        this.getInviteeList()
+            console.log(this.state.inviteeList)
+            
+        //need to send invitations
+        
     }
 
     goBack = ()=>{
@@ -84,15 +90,17 @@ export default class AddNewEventNextStep extends React.Component{
     }
 
     async componentWillMount(){
-        if (this.state.contactsList === null)
-        {
+        //if (this.state.contactsList === null)
+        //{
             await this.getContactsList()
-        }
-        if (this.state.eventDetails === null)
-        {
-            await this.getEventDetails()
+       // }
+        //if (this.state.eventDetails === null)
+        //{
+            /*await this.getEventDetails()
             this.getInviteeList()
-        }
+            console.log(this.state.inviteeList)
+            console.log(this.state.inviteeList)*/
+        //}
         
     }
     

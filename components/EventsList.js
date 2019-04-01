@@ -1,8 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, SectionList } from 'react-native';
 import { Constants } from 'expo'
-
 import {getLastDay, getWeekDayMonthDate, convertStringToDate} from './DateConversion';
+
+import * as firebase from 'firebase';//for connecting to firebase
+
+// Initialize Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyDZpTrKnBHgaQbv_F87VoD5ZOn83Rkqe-w",
+    authDomain: "dindin-9954b.firebaseapp.com",
+    databaseURL: "https://dindin-9954b.firebaseio.com",
+    projectId: "dindin-9954b",
+    storageBucket: "dindin-9954b.appspot.com",
+    messagingSenderId: "1055947992772"
+  };
 
 export default class EventsList extends React.Component{
 
@@ -11,44 +22,32 @@ export default class EventsList extends React.Component{
         this.state ={
             eventsList: null,
             finalEvents: [],
-            exampleeventsList: [
-                {
-                    "key": "02/25/2019",
-                    "data": [
-                        {
-                            "image": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png", 
-                            "name": "Jack",
-                            "time": "2:00 PM",
-                        },
-                        {
-                            "image": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png", 
-                            "name": "Jill",
-                            "time": "5:00 PM",
-                        }
-                    ]
-                },
-                {
-                    "key": "02/26/2019",
-                    "data": []
-                },
-                {
-                    "key": "03/27/2019",
-                    "data": [
-                        {
-                            "image": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png", 
-                            "name": "Humpty Dumpty",
-                            "time": "2:00 PM"
-                        },
-                        {
-                            "image": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png", 
-                            "name": "Muffin Man",
-                            "time": "5:00 PM"
-                        }
-                    ]
-                }
-            ]
         }
+
+        //connect to firebase
+        if (!firebase.apps.length){
+            firebase.initializeApp(firebaseConfig)
+          }
+          path = 'jdoe/eventsList/'
+          this.startListener(path)
+          this.gotInformation = false;
     }
+
+
+    async startListener(path) {
+        let context = this;
+        firebase.database().ref(path).on('value', (snapshot) => {     
+          //console.log(JSON.stringify(snapshot.val()))
+          context.setState({
+            eventsList: JSON.parse(JSON.stringify(snapshot.val())), 
+            gotInformation: true
+          })
+          //console.log(context.state.eventsList)
+          context.convertList()
+          //console.log(context.state.finalEvents)
+        })
+        
+      }
 
     convertList(){
         if (this.state.eventsList !== null)
@@ -97,16 +96,17 @@ export default class EventsList extends React.Component{
                             {
                                 this.state.finalEvents[this.state.finalEvents.length - 1].data.push(
                                     {
-                                        "image": this.state.eventsList[i].image,
-                                        "name": this.state.eventsList[i].name,
+                                        //"image": this.state.eventsList[i].image,
+                                        //"name": this.state.eventsList[i].name,
                                         "time": this.state.eventsList[i].time,
-                                        /*"address": this.state.eventsList[i].address,
+                                        "address": this.state.eventsList[i].address,
                                         "latitude": this.state.eventsList[i].latitude,
                                         "longitude": this.state.eventsList[i].longitude,
+                                        "hostUserName": this.state.eventsList[i].hostUserName,
                                         "hostFName": this.state.eventsList[i].hostFName,
                                         "hostLName": this.state.eventsList[i].hostLName,
                                         "phoneNum": this.state.eventsList[i].phoneNum,
-                                        "profilePic": this.state.eventsList[i].profilePic,*/
+                                        "profilePic": this.state.eventsList[i].profilePic,
                                     }
                                 )
                                // console.log("added event:")
@@ -117,6 +117,7 @@ export default class EventsList extends React.Component{
                             else if (currentDate.getDate() < firstDate.getDate())
                             {
                                 i ++
+                                //console.log("skiped")
                             }
                             else{
                                 break
@@ -132,34 +133,7 @@ export default class EventsList extends React.Component{
         }
         else
         {
-            //console.log("null eventsList")
-        }
-    }
-
-    getFinalList(){
-        if (this.state.eventsList !== null)
-        {
-            sameDate = null
-            for (let i = 0; i < this.state.eventsList.length; i++)
-            {
-                if (sameDate < new Date(this.state.eventsList[i].date))
-                {
-                    this.state.finalEvents.push(
-                        {
-                            "key": new Date(this.state.eventsList[i].date),
-                            "data":[]
-                        }
-                    )
-                    sameDate = new Date(this.state.eventsList[i].date)
-                }
-                this.state.finalEvents[this.state.finalEvents.length - 1].data.push(
-                    {
-                        "image": this.state.eventsList[i].image,
-                        "time": this.state.eventsList[i].time,
-                        "name": this.state.eventsList[i].name,
-                    }
-                )
-            }
+            console.log("null eventsList")
         }
     }
 
@@ -168,17 +142,19 @@ export default class EventsList extends React.Component{
         //https://api.myjson.com/bins/1g5852
         //https://api.myjson.com/bins/ycd5i
         //https://api.myjson.com/bins/lgzwi
-        let response = await fetch("https://api.myjson.com/bins/lgzwi")
+        //https://api.myjson.com/bins/iix8a
+        let response = await fetch("https://api.myjson.com/bins/ycd5i")
         let extractedJson = await response.json()
         await this.setState({
             eventsList: extractedJson.eventsList
         })
-        //await this.getFinalList()
         await this.convertList()
     }
 
     componentDidMount(){
-        this.getEventsData()
+        //this.getEventsData()
+       // this.convertList()
+        //console.log("this is the eventsList:" + this.state.eventsList)
     }
 
     keyExtractor = (item, index) => index.toString()
@@ -187,9 +163,9 @@ export default class EventsList extends React.Component{
     <View>
         <View style={{paddingLeft: 20, paddingRight: 20}}>
             <View style={styles.eventRowContainer}>
-                <Image style={{width: 50, height: 50}} source ={{uri: item.image}}/>
+                <Image style={{width: 50, height: 50}} source ={{uri: item.profilePic}}/>
                 <View style={styles.personContactInfo}>
-                    <Text style={styles.person}>{item.name}</Text>
+                    <Text style={styles.person}>{item.hostFName} {item.hostLName}</Text>
                     <Text style={styles.time}>{item.time}</Text>
                 </View>
                 <View style={styles.contactButtons}>
@@ -220,14 +196,9 @@ export default class EventsList extends React.Component{
         }
         return null
     }
-    //perhaps need dynamically changing list
-
-    /**<Text>Today is: {this.props.today.getFullYear().toString()}</Text>
-                    <Text>Today is: {this.props.today.getMonth().toString()}</Text>
-                    <Text>Today is: {this.props.today.getDate().toString()}</Text> */
 
     render(){
-        if(this.state.eventsList !== null){
+        if(this.state.eventsList !== null && this.state.finalEvents.length > 0){
             return(
                 <View>
 
@@ -243,14 +214,12 @@ export default class EventsList extends React.Component{
             )
             }
             else{
+                //console.log("not getting list")
+                //console.log(this.state.eventsList)
+                //console.log(this.state.finalEvents)
                 return(   
                 <View style={styles.eventContainer}>
-                    <Text style={styles.date}>The Date</Text>
-                    <View style={styles.addEventButton}> 
-                        <TouchableOpacity>
-                            <Image source={require('../assets/addNewEvent.png')}/>
-                        </TouchableOpacity>
-                    </View> 
+                    <Text style={styles.date}>Loading your events list</Text>
                 </View>
                 )
             }
