@@ -30,7 +30,9 @@ export default class InvitationDetails extends React.Component{
         <Header navigation={this.props.navigation}/>
         
           <InviteDetail/>    
-          
+          <View style={styles.mapview}>
+            <MapInvite />  
+          </View>
         
       </View>
 
@@ -51,5 +53,11 @@ const styles = StyleSheet.create({
 
         },
 
+        mapview: {
+          flex: 1,
+          justifyContent: 'flex-end',
+          paddingTop: 10
+    
+        }
 
 });
