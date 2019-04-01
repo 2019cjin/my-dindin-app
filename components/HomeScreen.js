@@ -6,6 +6,7 @@ import EventsList from './EventsList';
 import OldEventsList from './OldEventsList';
 import Header from './Header'
 import PendingInvite from './PendingInvite'
+//import InviteDetailScreen from './InvitationDetailsScreen'
 
 export default class HomeScreen extends React.Component{
     constructor(props){
@@ -39,7 +40,7 @@ export default class HomeScreen extends React.Component{
         
         <View style={styles.container}>
         <Header navigation = {this.props.navigation}/>
-        <TouchableOpacity onPress={()=>{this.props.navigation.navigate('InviteDetail')}}>
+        <TouchableOpacity onPress={()=>{this.props.navigation.navigate('InviteDetailScreen')}}>
           <PendingInvite navigation = {this.props.navigation}/>    
           </TouchableOpacity>  
       

@@ -41,9 +41,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.paragraph}>
-          Pan, zoom, and tap on the map!
-        </Text>
+        
         
         {
           this.state.locationResult === null ?
