@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Constants, Svg, MapView, Marker, Location, Permissions } from 'expo'
 import { Picker, Text, View, StyleSheet, Image, TouchableOpacity, TextInput} from 'react-native';
+import {getNextAddr} from './MapHelperFunction';
 //import Picker from 'react-native-wheel-picker'
 //import {Svg} from 'react-native-svg';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -11,12 +12,13 @@ export default class AddNewEvent extends React.Component{
     constructor(){
         super()
         this.state={
-            hour: '',
+            hour: '12',
             hourNum:12,
-            minute:'',
+            minute:'00',
             minuteNum:0,
-            timeOfDay:'',
-            address:'38,-78',
+            timeOfDay:'AM',
+            address:null,
+            selectedAddress:'No Address Selected',
             addressLatitude: 38.0293059,
             addressLongitude: -78.4766781,
             mapRegion: null, 
@@ -24,7 +26,9 @@ export default class AddNewEvent extends React.Component{
             locationResult: null,
             locationLatitude: 39,
             locationLongitude: -77, 
-            locationInfo: null
+            locationInfo: null,
+            numLocRequests: 0,
+            date: ''
         }
     }
 
@@ -50,11 +54,18 @@ export default class AddNewEvent extends React.Component{
      }
 
      invitePeopleBtnAction = ()=>{
-         this.props.navigation.navigate('AddNewEventNextStep')
+         this.props.navigation.navigate('AddNewEventNextStep', {date: this.state.date, 
+                                                                time: this.state.hour + ":" + this.state.minute + " " + this.state.timeOfDay, 
+                                                                address: this.state.selectedAddress,
+                                                                addressLat: this.state.addressLatitude,
+                                                                addressLong: this.state.addressLongitude})
      }
 
      componentDidMount() {
+        const { navigation } = this.props;
+        const eDate = navigation.getParam('eventDate', 'NO DATE');
         this.getLocationAsync();
+        this.setState({date: eDate});
       }
     
       _handleMapRegionChange = mapRegion => {
@@ -76,11 +87,33 @@ export default class AddNewEvent extends React.Component{
        await this.setState({ locationResult: JSON.stringify(location), locationLatitude: location.coords.latitude, locationLongitude: location.coords.longitude});
       
        // Center the map on the location we just fetched.
-        this.setState({mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }});
-      }
-    
+        await this.setState({mapRegion: { latitude: location.coords.latitude, longitude: location.coords.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }});
+        
+        //add address
+        let geocode = await Location.reverseGeocodeAsync({latitude: location.coords.latitude, longitude: location.coords.longitude})
+        await this.setState({address:geocode})
+        //console.log("address now is:" + this.state.address[0].name + ", " + this.state.address[0].street+ ", " + this.state.address[0].city + " " + this.state.address[0].region + " " + this.state.address[0].postalCode)
+        //console.log(this.state.address.length)
+    }
 
     render(){
+
+       // const { navigation } = this.props;
+        //const date = navigation.getParam('eventDate', 'NO DATE');
+
+       /* {
+            this.state.numLocRequests > 0 ? 
+            <View>
+            <TextInput
+            style={{height: 25, fontSize: 20, borderBottomColor: 'grey', borderBottomWidth: 1}}
+            onChangeText={(address) => this.setState({selectedAddress: address})}
+            value={this.state.selectedAddress}
+            />
+            <Text numberOfLines={1} style={{fontSize: 20}}>{getNextAddr(this.state.address, this.state.numLocRequests)}</Text> 
+            </View>:
+            <Text>Click Blue Icon to the Left to Get Addresss</Text>
+        }*/
+
         return(
             <View style = {{ justifyContent: 'space-between', flex: 1}}>
                 <View style = {{ justifyContent: 'space-between', height: 200}}>
@@ -121,6 +154,8 @@ export default class AddNewEvent extends React.Component{
                         <Text style = {styles.title}>DinDin</Text>
                         <Text style = {styles.title}>            </Text>
                     </View>
+                    <Text style = {{fontSize: 15}}>            </Text>
+                    <Text style = {[{color:'grey', fontSize: 12, textAlign: 'center'}]}>When and where is dinner? </Text>
                     
                     <View style = {{flexDirection:'row', justifyContent: 'center', }}>
                     <View style={{justifyContent:"center"}}>
@@ -149,8 +184,8 @@ export default class AddNewEvent extends React.Component{
                     <Text style={{fontSize: 70, justifyContent: 'center',height:100, alignItems:'center'}}>:</Text>
 
                     <Picker selectedValue = {this.state.minute} onValueChange = {this.updateMinute} style={{height: 100, width:80, justifyContent: 'center'}} itemStyle={{height: 65, fontSize:44}}>
-                        <Picker.Item label = "00" value = "0" /><Picker.Item label = "01" value = "1" /><Picker.Item label = "02" value = "2" /><Picker.Item label = "03" value = "3" /><Picker.Item label = "04" value = "4" />
-                        <Picker.Item label = "05" value = "5" /><Picker.Item label = "06" value = "6" /><Picker.Item label = "07" value = "7" /><Picker.Item label = "08" value = "8" /><Picker.Item label = "09" value = "9" />
+                        <Picker.Item label = "00" value = "00" /><Picker.Item label = "01" value = "01" /><Picker.Item label = "02" value = "02" /><Picker.Item label = "03" value = "03" /><Picker.Item label = "04" value = "04" />
+                        <Picker.Item label = "05" value = "05" /><Picker.Item label = "06" value = "06" /><Picker.Item label = "07" value = "07" /><Picker.Item label = "08" value = "08" /><Picker.Item label = "09" value = "09" />
                         <Picker.Item label = "10" value = "10" /><Picker.Item label = "11" value = "11" /><Picker.Item label = "12" value = "12" /><Picker.Item label = "13" value = "13" /><Picker.Item label = "14" value = "14" />
                         <Picker.Item label = "15" value = "15" /><Picker.Item label = "16" value = "16" /><Picker.Item label = "17" value = "17" /><Picker.Item label = "18" value = "18" /><Picker.Item label = "19" value = "19" />
                         <Picker.Item label = "20" value = "20" /><Picker.Item label = "21" value = "21" /><Picker.Item label = "22" value = "22" /><Picker.Item label = "23" value = "23" /><Picker.Item label = "24" value = "24" />
@@ -169,17 +204,17 @@ export default class AddNewEvent extends React.Component{
                     </Picker>
                     
                     </View>
-                    <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                        <TouchableOpacity>
+                    <View style={{flexDirection: 'row', justifyContent: 'center', paddingLeft:20, paddingRight:20}}>
+                        <TouchableOpacity onPress={()=>{this.setState({numLocRequests: this.state.numLocRequests + 1, selectedAddress: getNextAddr(this.state.address, this.state.numLocRequests)})}}>
                             <Image style={{height:22, width: 15}} source={require('../assets/locationIcon.png')}/>
                         </TouchableOpacity>
                         <Text style={{fontSize: 20, color:'white'}}>
-                            cc
+                            c
                         </Text>
                         <TextInput
-                            style={{height: 25, width: 250, fontSize: 25, borderBottomColor: 'grey', borderBottomWidth: 1}}
-                            onChangeText={(address) => this.setState({address})}
-                            value={this.state.address}
+                            style={{height: 25, fontSize: 20, borderBottomColor: 'grey', borderBottomWidth: 1}}
+                            onChangeText={(address) => this.setState({selectedAddress: address})}
+                            value={this.state.selectedAddress}
                         />
                     </View>
                 </View>
@@ -193,22 +228,34 @@ export default class AddNewEvent extends React.Component{
                     this.state.mapRegion === null ?
                     <Text>Map region doesn't exist.</Text> :
                     <MapView
-                    style={{alignSelf: 'stretch', height: 350}}
+                    style={{alignSelf: 'stretch', height: 340}}
                     region={this.state.mapRegion}
                     onRegionChange={this._handleMapRegionChange}>
                     <MapView.Marker
-                coordinate={{
-                            latitude: this.state.locationLatitude,
-                            longitude: this.state.locationLongitude
-                            }}
-            />
+                    coordinate={{
+                                latitude: this.state.locationLatitude,
+                                longitude: this.state.locationLongitude,
+                                title: "title"
+                                }}
+                                pinColor={'#0F8CFF'} 
+                            description={"some text"}
+                    >
+                    <MapView.Callout style={{width: 300, height: 20}}>
+                        {
+                            this.state.selectedAddress === 'No Address Selected'?
+                            <Text>Please type in or use blue icon to enter address</Text>:
+                            <Text>{this.state.selectedAddress}</Text>
+
+                        }
+                    </MapView.Callout>
+                    </MapView.Marker>
                     </MapView>
                 }
                 
 
             </View>
             <TouchableOpacity onPress={this.invitePeopleBtnAction}>
-                    <Image style = {styles.invitePeopleButton} source ={require('../assets/invitePeopleBtn.png')}/>
+                <Image style = {styles.invitePeopleButton} source ={require('../assets/invitePeopleBtn.png')}/>
             </TouchableOpacity>
                 
             </View>
@@ -291,7 +338,7 @@ const styles = StyleSheet.create(
             justifyContent: 'center',
             //paddingTop: Constants.statusBarHeight,
             backgroundColor: '#ecf0f1',
-            height: 350
+            height: 340
           },
     }
 )

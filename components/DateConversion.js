@@ -34,4 +34,12 @@ function convertStringToDate(str){
   return new Date (parseInt(year, 10).toString(), parseInt(month, 10).toString(), parseInt(day, 10).toString())
 }
 
-export { getNumDays, weekDayMonthDate, getWeekDayMonthDate, convertStringToDate, getLastDay }
+function convertDateToDBString(item){
+  const d = item
+  let y = d.getFullYear().toString()
+  let m = d.getMonth().toString()
+  let date = d.getDate().toString()
+  return y + "-" + m + "-" + date
+}
+
+export { getNumDays, weekDayMonthDate, getWeekDayMonthDate, convertStringToDate, getLastDay, convertDateToDBString }

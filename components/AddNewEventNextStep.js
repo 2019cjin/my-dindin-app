@@ -1,21 +1,12 @@
 import * as React from 'react';
-import { Constants, Svg, CheckBox } from 'expo'
+import { Constants, Svg } from 'expo'
 import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList} from 'react-native';
-//import { CheckBox } from 'react-native-check-box';
+//import Checkbox from 'react-native-modest-checkbox';
+import { CheckBox } from 'react-native-elements';
+import {getWeekDayMonthDate, convertDateToDBString} from './DateConversion';
+import {getAddressString} from './MapHelperFunction';
 //import {Svg} from 'react-native-svg';
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
-//checkBox
-/*<View style={styles.checkBox}>
-                    <CheckBox
-                    checked={item.selected}
-                    checkedIcon={<Image source={require('../assets/selectedInvitee.png')} />}
-                    uncheckedIcon='circle-o'
-                    onPress={() => {
-                        item["selected"] = !item["selected"]
-                    }}
-                    />
-                </View>*/
 
 export default class AddNewEventNextStep extends React.Component{
     constructor(){
@@ -27,6 +18,9 @@ export default class AddNewEventNextStep extends React.Component{
             locLongitude: -77, 
             inviteeList:[],
             contactsList:null,
+            gotList: false,
+            eventDetails: null,
+            numInvitee: 0
         }
     }
 
@@ -35,17 +29,18 @@ export default class AddNewEventNextStep extends React.Component{
     //https://api.myjson.com/bins/crkna
     sendInvitesBtnAction = ()=>{
         this.props.navigation.navigate('Home')
-        //need to send invitations
+
         //need to create event and add to eventList
+        this.getEventDetails()
+        this.getInviteeList()
+            console.log(this.state.inviteeList)
+            
+        //need to send invitations
+        
     }
 
     goBack = ()=>{
         this.props.navigation.navigate('AddNewEvent')
-    }
-
-    getInviteesList(i){
-        this.state.contactsList[i]["selected"] = true
-        this.state.inviteeList.push(contactsList[i])
     }
 
     async getContactsList(){
@@ -59,12 +54,54 @@ export default class AddNewEventNextStep extends React.Component{
         await this.setState({
             contactsList: list
         })
+        this.setState({gotList:true})
         //await console.log("got contact list")
         //console.log(this.state.contactsList)
     }
 
-    componentWillMount(){
-        this.getContactsList()
+    getEventDetails(){
+        const { navigation } = this.props;
+        const date = navigation.getParam('date', 'NO DATE');
+        const time = navigation.getParam('time', 'NO TIME');
+        const location = navigation.getParam('address', 'NO ADDRESS')
+        const latitude = navigation.getParam('addressLat', 'NO LATITUDE')
+        const longitude = navigation.getParam('addressLong', 'NO LONGITUDE')
+
+        this.setState({eventDetails: {'date': convertDateToDBString(date), 
+                                      'time': time, 
+                                      'location': location,
+                                      'latitude': latitude,
+                                      'longitude': longitude,
+                                      'hostFName': 'Dave',
+                                      'hostLName': 'Lane',
+                                      'phoneNum': "123-456-7890",
+                                      'profilePic': ""}})
+
+    }
+
+    getInviteeList(){
+        for (let i = 0; i < this.state.contactsList.length; i ++)
+        {
+            if (this.state.contactsList[i]["selected"] === true)
+            {
+                this.state.inviteeList.push(this.state.contactsList[i])
+            }
+        }
+    }
+
+    async componentWillMount(){
+        //if (this.state.contactsList === null)
+        //{
+            await this.getContactsList()
+       // }
+        //if (this.state.eventDetails === null)
+        //{
+            /*await this.getEventDetails()
+            this.getInviteeList()
+            console.log(this.state.inviteeList)
+            console.log(this.state.inviteeList)*/
+        //}
+        
     }
     
 
@@ -73,7 +110,6 @@ export default class AddNewEventNextStep extends React.Component{
     }
 
     renderRow({item}){
-        image = true
         return(
             <View style={styles.contactRowContainer}>
                     <Image style={{width: 50, height: 50}} source ={{uri: item.image}}/>
@@ -81,19 +117,57 @@ export default class AddNewEventNextStep extends React.Component{
                         <Text style={styles.person}>{item.firstName} {item.lastName}</Text>
                         <Text style={styles.phone}>{item.phoneNumber}</Text>
                     </View> 
-                    <TouchableOpacity onPress={()=>{item["selected"] = !item["selected"]; console.log(item["selected"].toString())}}>
-                        {  image === false ?
-                        <Image source={require('../assets/selectedInvitee.png')}/>:
-                        <Image source={require('../assets/unselectedInvitee.png')}/>
-                        }
-                    </TouchableOpacity>
-                
+                    <View style={styles.checkBox}>
+                        <CheckBox
+                            checkedIcon={<Image source={require('../assets/selectedInvitee.png')} />}
+                            uncheckedIcon={<Image source={require('../assets/unselectedInvitee.png')} />}
+                            onPress={() => {
+                                item["selected"] = !item["selected"]
+                                if (item["selected"])
+                                {
+                                    this.setState({numInvitee: this.state.numInvitee + 1})
+                                }
+                                else
+                                {
+                                    this.setState({numInvitee: this.state.numInvitee - 1})
+                                }
+                            }}
+                            checked={item["selected"]}
+                            />
+                    </View>
             </View> 
         )
     }
 
     render(){
         //console.log(this.state.contactsList)
+        var payments = [];
+
+        if (this.state.contactsList !== null){
+        for (let i = 0; i < this.state.contactsList.length; i ++)
+        {
+            payments.push(
+            <View key = {i}>
+                <CheckBox
+                checkedIcon={<Image source={require('../assets/unselectedInvitee.png')} />}
+                uncheckedIcon={<Image source={require('../assets/selectedInvitee.png')} />}
+                onPress={() => {
+                    this.state.contactsList[i]["selected"] = !this.state.contactsList[i]["selected"]
+                    console.log(this.state.contactsList[i]["selected"].toString())
+                }}
+                checked={this.state.contactsList[i]["selected"]}
+                />
+                
+            </View>
+            )
+        }
+    }
+
+    const { navigation } = this.props;
+    const date = navigation.getParam('date', 'NO DATE');
+    const time = navigation.getParam('time', 'NO TIME');
+    const location = navigation.getParam('address', 'NO ADDRESS')
+
         return(
             <View style = {{ justifyContent: 'space-between', flex: 1}}>
                 <View style = {styles.header}>
@@ -155,13 +229,17 @@ export default class AddNewEventNextStep extends React.Component{
                     </TouchableOpacity>
                 </View>
 
-                <View style={[styles.iconStyle]}>
-                    <View style={{flex:1}}/>
-                    <View style={{flex:4}}>
-                        <Image style={{height:35, width: 40}} source ={require('../assets/yourEventIcon.png')}/>
+                <View style={[styles.iconStyle, {paddingLeft: 30, paddingRight:30}]}>
+                    <View style = {{flex:0.5}}/>
+                    <View style={{flex:4, alignItems:'center'}}>
+                        <Image style={{height:22, width: 25}} source ={require('../assets/yourEventIcon.png')}/>
+                        <Text numberOfLines={1} style={{fontSize:28}}>{location}</Text>
+                        <Text style = {{fontSize: 14, color:'grey'}}> {getWeekDayMonthDate(date)} - {time}</Text>
                     </View>
-                    <Text style={styles.numPeopleSelected}>{this.state.inviteeList.length} selected</Text>
-                    <View style={{flex:1}}/>
+                    <View style={{flex: 1, flexDirection:'row', justifyContent:'space-between', width:350}}>
+                        <Text style={{color:'grey'}}>Who do you want to invite?</Text>
+                        <Text style={{color: "#0F8CFF"}}>{this.state.numInvitee} selected</Text>
+                    </View>
                 </View>
 
                 <View style={{flex: 16, paddingLeft:20, paddingRight:20}}>
@@ -170,11 +248,13 @@ export default class AddNewEventNextStep extends React.Component{
                     <Text>contacts list loading...</Text> :
                     <FlatList
                         data={this.state.contactsList}
-                        renderItem={this.renderRow}
+                        renderItem={this.renderRow.bind(this)}
                         keyExtractor={this.keyExtractor}
+                        extraData={this.state}
                     />
                     }
                 </View>
+                
 
                 <TouchableOpacity onPress={this.sendInvitesBtnAction} style={{flex: 2}}>
                     <Image style = {styles.sendInvitesButton} source ={require('../assets/SendInvitesBtn.png')}/>
@@ -214,13 +294,13 @@ const styles = StyleSheet.create(
         iconStyle:{
             flex: 6,
             justifyContent:'space-evenly',
-            alignItems: 'center'
+            alignItems: 'center',
         },
         numPeopleSelected:{
-            textAlign:'right',
+           // textAlign:'right',
             color: "#0F8CFF",
-            width:350,
-            flex:1
+            //width:350,
+            //flex:1
         },
         contactRowContainer:{
             flexDirection:'row', 

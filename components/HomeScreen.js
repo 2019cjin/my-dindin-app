@@ -30,6 +30,9 @@ export default class HomeScreen extends React.Component{
         clearInterval(this.getDate)
     }
 
+
+    //navigation = {this.props.navigation}
+
     render(){
         return(
           

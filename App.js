@@ -14,12 +14,8 @@ import LogInScreen from './components/LogInScreen';
 //import InvitationDetailsScreen from './components/InvitationDetailsScreen'
 import PendingInvite from './components/PendingInvite'
 import InviteDetail from './components/InviteDetail'
-import {Provider, connect} from 'react-redux';
-import {createStore} from 'redux'
 //import LogInScreen from './components/LogInScreen';
-import Reducer from './utils/Reducer'
 
-import firebaseWrapper from './firebase/firebase_interface'
 
 // or any pure javascript modules available in npm
 //import { Card } from 'react-native-paper';
@@ -53,25 +49,17 @@ function mapStateToProps(state){
 export default class App extends React.Component {
   constructor(props){
     super(props)
-    this.store = createStore(Reducer,{database:''})
-    this.path = "/Invitations/Invitation/"
-        fbwrapper = new firebaseWrapper(this.path, this.store)
-        data =  fbwrapper.getData(); 
-        console.log("got data constructor" + data)
   }
   
    
 
   //dispatch functions
 
-
+//persistenceKey="TopNav"
   render() {
     
-    ConnectedComponent = connect(mapStateToProps)(AppContainer)
     return ( 
-      <Provider store= {this.store}>
-        <ConnectedComponent/>
-      </Provider>
+        <AppContainer />
     );
   }
 }
