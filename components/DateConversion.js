@@ -1,3 +1,5 @@
+//import console = require("console");
+
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 const weekDayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 const numDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
@@ -39,6 +41,13 @@ function convertDateToDBString(item){
   let y = d.getFullYear().toString()
   let m = d.getMonth().toString()
   let date = d.getDate().toString()
+  if (d.getDate() < 10){
+    date = "0" + d.getDate().toString()
+  }
+  if (d.getMonth() < 10)
+  {
+    m = "0" + d.getMonth().toString()
+  }
   return y + "-" + m + "-" + date
 }
 

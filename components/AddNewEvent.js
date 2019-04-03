@@ -28,7 +28,8 @@ export default class AddNewEvent extends React.Component{
             locationLongitude: -77, 
             locationInfo: null,
             numLocRequests: 0,
-            date: ''
+            date: '',
+            eventID: null
         }
     }
 
@@ -58,14 +59,16 @@ export default class AddNewEvent extends React.Component{
                                                                 time: this.state.hour + ":" + this.state.minute + " " + this.state.timeOfDay, 
                                                                 address: this.state.selectedAddress,
                                                                 addressLat: this.state.addressLatitude,
-                                                                addressLong: this.state.addressLongitude})
+                                                                addressLong: this.state.addressLongitude,
+                                                                eventID: this.state.eventID})
      }
 
      componentDidMount() {
         const { navigation } = this.props;
         const eDate = navigation.getParam('eventDate', 'NO DATE');
+        const eID = navigation.getParam('eventID', 'NO ID');
         this.getLocationAsync();
-        this.setState({date: eDate});
+        this.setState({date: eDate, eventID: eID});
       }
     
       _handleMapRegionChange = mapRegion => {

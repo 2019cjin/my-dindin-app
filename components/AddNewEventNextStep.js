@@ -28,43 +28,72 @@ export default class AddNewEventNextStep extends React.Component{
             locLongitude: -77, 
             inviteeList:[],
             contactsList:null,
-            gotList: false,
+            //gotList: false,
             eventDetails: null,
             numInvitee: 0
         }
-
-        //connect to firebase
-        if (!firebase.apps.length){
-            firebase.initializeApp(firebaseConfig)
-          }
-          path = 'jdoe/eventsList/'
-          this.startListener(path)
-          this.gotInformation = false;
     }
 
 
     async startListener(path) {
         let context = this;
-        firebase.database().ref(path).on('value', (snapshot) => {     
+        firebase.database().ref(path).on('value', async (snapshot) => {     
           //console.log(JSON.stringify(snapshot.val()))
-          context.setState({
-            eventsList: JSON.parse(JSON.stringify(snapshot.val())), 
+          await context.setState({
+            contactsList: JSON.parse(JSON.stringify(snapshot.val())), 
             gotInformation: true
           })
+          for (let i = 0; i < context.state.contactsList.length; i ++)
+            {
+                await (context.state.contactsList[i].selected = false)
+            }
         })
       }
 
+      updateEventOnDB(path) {
+           let context = this
+          /*firebase.database().ref(path).push(
+              context.state.eventDetails
+          )*/
+
+          firebase.database().ref('jdoe/eventsList/5/').set(
+            context.state.eventDetails
+          )
+      }
+
+      async updateInviteeListOnDB(path) {
+        let context = this
+       /*firebase.database().ref(path).push(
+           context.state.eventDetails
+       )*/
+
+       for (let i = 0; i < this.state.inviteeList.length; i ++)
+       {
+          await firebase.database().ref('jdoe/yourEventsList/5/' + this.state.inviteeList[i]["id"].toString() + '/').set(
+            context.state.inviteeList[i]
+          )
+          await firebase.database().ref('jdoe/yourEventsList/5/' + this.state.inviteeList[i]["id"].toString() + '/accepted/').set(
+            "false"
+          )
+       }
+   }
+
     //https://api.myjson.com/bins/1583d2
     //https://api.myjson.com/bins/crkna
-    sendInvitesBtnAction = ()=>{
-        this.props.navigation.navigate('Home')
+    sendInvitesBtnAction = async ()=>{
 
         //need to create event and add to eventList
-        this.getEventDetails()
-        this.getInviteeList()
+        await this.getEventDetails()
+        await this.getInviteeList()
         console.log(this.state.inviteeList)
+        console.log(this.state.eventDetails)
+
+        await this.updateEventOnDB('jdoe/eventsList/')
+        await this.updateInviteeListOnDB('jdoe/eventsList/')
+        this.props.navigation.navigate('Home')
             
         //need to send invitations
+        
         
     }
 
@@ -97,16 +126,18 @@ export default class AddNewEventNextStep extends React.Component{
         const location = navigation.getParam('address', 'NO ADDRESS')
         const latitude = navigation.getParam('addressLat', 'NO LATITUDE')
         const longitude = navigation.getParam('addressLong', 'NO LONGITUDE')
+        const eID = navigation.getParam('eventID', 'NO ID')
 
         this.setState({eventDetails: {'date': convertDateToDBString(date), 
                                       'time': time, 
                                       'location': location,
                                       'latitude': latitude,
                                       'longitude': longitude,
-                                      'hostFName': 'Dave',
-                                      'hostLName': 'Lane',
-                                      'phoneNum': "123-456-7890",
-                                      'profilePic': ""}})
+                                      'hostFName': 'John',
+                                      'hostLName': 'Doe',
+                                      'phoneNum': "987-654-3210",
+                                      'profilePic': "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png",
+                                      'id': eID}})
 
     }
 
@@ -123,7 +154,7 @@ export default class AddNewEventNextStep extends React.Component{
     async componentWillMount(){
         //if (this.state.contactsList === null)
         //{
-            await this.getContactsList()
+            //await this.getContactsList()
        // }
         //if (this.state.eventDetails === null)
         //{
@@ -132,6 +163,13 @@ export default class AddNewEventNextStep extends React.Component{
             console.log(this.state.inviteeList)
             console.log(this.state.inviteeList)*/
         //}
+        //connect to firebase
+        if (!firebase.apps.length){
+            firebase.initializeApp(firebaseConfig)
+          }
+          path = 'jdoe/contactsList/'
+          this.startListener(path)
+          this.gotInformation = false;
         
     }
     
@@ -172,27 +210,6 @@ export default class AddNewEventNextStep extends React.Component{
 
     render(){
         //console.log(this.state.contactsList)
-        var payments = [];
-
-        if (this.state.contactsList !== null){
-        for (let i = 0; i < this.state.contactsList.length; i ++)
-        {
-            payments.push(
-            <View key = {i}>
-                <CheckBox
-                checkedIcon={<Image source={require('../assets/unselectedInvitee.png')} />}
-                uncheckedIcon={<Image source={require('../assets/selectedInvitee.png')} />}
-                onPress={() => {
-                    this.state.contactsList[i]["selected"] = !this.state.contactsList[i]["selected"]
-                    console.log(this.state.contactsList[i]["selected"].toString())
-                }}
-                checked={this.state.contactsList[i]["selected"]}
-                />
-                
-            </View>
-            )
-        }
-    }
 
     const { navigation } = this.props;
     const date = navigation.getParam('date', 'NO DATE');

@@ -22,29 +22,31 @@ export default class EventsList extends React.Component{
         this.state ={
             eventsList: null,
             finalEvents: [],
+            //path = 'jdoe/eventsList/'
         }
-
         //connect to firebase
-        if (!firebase.apps.length){
+       /* if (!firebase.apps.length){
             firebase.initializeApp(firebaseConfig)
           }
-          path = 'jdoe/eventsList/'
-          this.startListener(path)
-          this.gotInformation = false;
+          path = 'jdoe/eventsList/'*/
+        //this.startListener(path)
+          
+          //this.gotInformation = false;
     }
 
 
     async startListener(path) {
-        let context = this;
-        firebase.database().ref(path).on('value', (snapshot) => {     
+        let context = this
+        firebase.database().ref(path).on('value', async (snapshot) => {     
           //console.log(JSON.stringify(snapshot.val()))
-          context.setState({
+          await context.setState({
             eventsList: JSON.parse(JSON.stringify(snapshot.val())), 
-            gotInformation: true
+            //gotInformation: true
           })
-          //console.log(context.state.eventsList)
-          context.convertList()
-          //console.log(context.state.finalEvents)
+         //await  console.log(context.state.eventsList)
+          await context.convertList()
+         // console.log("finalEvents")
+         // console.log(context.state.finalEvents)
         })
         
       }
@@ -52,6 +54,7 @@ export default class EventsList extends React.Component{
     convertList(){
         if (this.state.eventsList !== null)
         {
+            this.setState({finalEvents:[]})
             //console.log("not null eventsList")
             firstDate = new Date(this.props.today.getFullYear().toString(), this.props.today.getMonth().toString(), this.props.today.getDate().toString())
             //console.log("firstDate:" + firstDate.toString())
@@ -63,7 +66,7 @@ export default class EventsList extends React.Component{
             while (firstDate <= lastDate)
             {
                 //make new list of events for a particular date for each date
-                //console.log("firstDate:"+firstDate.toString())
+               // console.log("firstDate:"+firstDate.toString())
                 newDate = new Date()
                 newDate.setDate(firstDate.getDate())
                 this.state.finalEvents.push(
@@ -90,14 +93,13 @@ export default class EventsList extends React.Component{
                     {
                         while (i < this.state.eventsList.length && currentDate.getDate() <= firstDate.getDate())
                         {
-                            //console.log("eventToAdd:"+this.state.eventsList[i].name)
+                            //console.log("i of event to add: " + i)
+                            //console.log("eventToAdd:"+this.state.eventsList[i].date)
                             currentDate = convertStringToDate(this.state.eventsList[i].date.toString())
                             if (currentDate.getDate() === firstDate.getDate())
                             {
                                 this.state.finalEvents[this.state.finalEvents.length - 1].data.push(
                                     {
-                                        //"image": this.state.eventsList[i].image,
-                                        //"name": this.state.eventsList[i].name,
                                         "time": this.state.eventsList[i].time,
                                         "address": this.state.eventsList[i].address,
                                         "latitude": this.state.eventsList[i].latitude,
@@ -109,17 +111,26 @@ export default class EventsList extends React.Component{
                                         "profilePic": this.state.eventsList[i].profilePic,
                                     }
                                 )
-                               // console.log("added event:")
+                                //console.log("added event:")
                                 i ++
+                                if (i < this.state.eventsList.length)
+                                {
+                                    currentDate = convertStringToDate(this.state.eventsList[i].date.toString())
+                                }
                                 //currentDate = convertStringToDate(this.state.eventsList[i].date.toString())
                                // console.log("i after adding event:" + i)
                             }
                             else if (currentDate.getDate() < firstDate.getDate())
                             {
                                 i ++
+                                if (i < this.state.eventsList.length)
+                                {
+                                    currentDate = convertStringToDate(this.state.eventsList[i].date.toString())
+                                }
                                 //console.log("skiped")
                             }
                             else{
+                                //console.log("is future event")
                                 break
                             }
                             
@@ -152,9 +163,13 @@ export default class EventsList extends React.Component{
     }
 
     componentDidMount(){
-        //this.getEventsData()
-       // this.convertList()
-        //console.log("this is the eventsList:" + this.state.eventsList)
+        if (!firebase.apps.length){
+            firebase.initializeApp(firebaseConfig)
+          }
+          path = 'jdoe/eventsList/'
+        
+            this.startListener(path)
+        
     }
 
     keyExtractor = (item, index) => index.toString()
@@ -188,7 +203,7 @@ export default class EventsList extends React.Component{
         if(section.data.length == 0){
         return <View style={{paddingLeft: 20, paddingRight: 20}}>
                 <View style={styles.addEventButton}> 
-                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddNewEvent', {eventDate: section.key}); this.setState({currentDate: this.props.today}); }}>
+                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddNewEvent', {eventDate: section.key, eventID: this.state.eventsList.length - 1}); this.setState({currentDate: this.props.today}); }}>
                         <Image source={require('../assets/addNewEvent.png')}/>
                     </TouchableOpacity>
                 </View>
