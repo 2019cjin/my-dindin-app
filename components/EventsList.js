@@ -15,6 +15,14 @@ const firebaseConfig = {
     messagingSenderId: "1055947992772"
   };
 
+function compare(a,b) {
+    if (a.date < b.date)
+        return -1;
+    if (a.date > b.date)
+        return 1;
+    return 0;
+}
+
 export default class EventsList extends React.Component{
 
     constructor(){
@@ -54,6 +62,7 @@ export default class EventsList extends React.Component{
     convertList(){
         if (this.state.eventsList !== null)
         {
+            this.setState({eventsList:this.state.eventsList.sort(compare)})
             this.setState({finalEvents:[]})
             //console.log("not null eventsList")
             firstDate = new Date(this.props.today.getFullYear().toString(), this.props.today.getMonth().toString(), this.props.today.getDate().toString())
@@ -83,7 +92,7 @@ export default class EventsList extends React.Component{
                     //console.log("i in eventsList:" + i)
                     if (currentDate.getMonth() !== firstDate.getMonth() || currentDate.getFullYear() !== firstDate.getFullYear())
                     {
-                        i = this.state.eventsList.length
+                        i ++
                     }
                     else if (currentDate.getDate() > firstDate.getDate())
                     {
@@ -180,7 +189,13 @@ export default class EventsList extends React.Component{
             <View style={styles.eventRowContainer}>
                 <Image style={{width: 50, height: 50}} source ={{uri: item.profilePic}}/>
                 <View style={styles.personContactInfo}>
-                    <Text style={styles.person}>{item.hostFName} {item.hostLName}</Text>
+
+                    {
+                        item.hostUserName === 'jdoe' ? 
+                        <Text style={styles.person}>Meal Hosted By You</Text> :
+                        <Text style={styles.person}>{item.hostFName} {item.hostLName}</Text>
+                    }
+                    
                     <Text style={styles.time}>{item.time}</Text>
                 </View>
                 <View style={styles.contactButtons}>
@@ -203,7 +218,7 @@ export default class EventsList extends React.Component{
         if(section.data.length == 0){
         return <View style={{paddingLeft: 20, paddingRight: 20}}>
                 <View style={styles.addEventButton}> 
-                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddNewEvent', {eventDate: section.key, eventID: this.state.eventsList.length - 1}); this.setState({currentDate: this.props.today}); }}>
+                    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddNewEvent', {eventDate: section.key, eventID: this.state.eventsList.length}); this.setState({currentDate: this.props.today}); }}>
                         <Image source={require('../assets/addNewEvent.png')}/>
                     </TouchableOpacity>
                 </View>

@@ -7,6 +7,7 @@ import {getWeekDayMonthDate, convertDateToDBString} from './DateConversion';
 import {getAddressString} from './MapHelperFunction';
 
 import * as firebase from 'firebase';//for connecting to firebase
+//import console = require('console');
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -56,7 +57,7 @@ export default class AddNewEventNextStep extends React.Component{
               context.state.eventDetails
           )*/
 
-          firebase.database().ref('jdoe/eventsList/5/').set(
+          firebase.database().ref('jdoe/eventsList/'+ this.state.eventDetails["id"] + '/').set(
             context.state.eventDetails
           )
       }
@@ -69,10 +70,10 @@ export default class AddNewEventNextStep extends React.Component{
 
        for (let i = 0; i < this.state.inviteeList.length; i ++)
        {
-          await firebase.database().ref('jdoe/yourEventsList/5/' + this.state.inviteeList[i]["id"].toString() + '/').set(
+          await firebase.database().ref('jdoe/yourEventsList/'+ this.state.eventDetails["id"] + '/' + this.state.inviteeList[i]["id"].toString() + '/').set(
             context.state.inviteeList[i]
           )
-          await firebase.database().ref('jdoe/yourEventsList/5/' + this.state.inviteeList[i]["id"].toString() + '/accepted/').set(
+          await firebase.database().ref('jdoe/yourEventsList/' + this.state.eventDetails["id"] + '/' + this.state.inviteeList[i]["id"].toString() + '/accepted/').set(
             "false"
           )
        }
@@ -85,8 +86,8 @@ export default class AddNewEventNextStep extends React.Component{
         //need to create event and add to eventList
         await this.getEventDetails()
         await this.getInviteeList()
-        console.log(this.state.inviteeList)
-        console.log(this.state.eventDetails)
+        //console.log(this.state.inviteeList)
+        //console.log(this.state.eventDetails)
 
         await this.updateEventOnDB('jdoe/eventsList/')
         await this.updateInviteeListOnDB('jdoe/eventsList/')
@@ -135,6 +136,7 @@ export default class AddNewEventNextStep extends React.Component{
                                       'longitude': longitude,
                                       'hostFName': 'John',
                                       'hostLName': 'Doe',
+                                      'hostUserName': 'jdoe',
                                       'phoneNum': "987-654-3210",
                                       'profilePic': "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png",
                                       'id': eID}})
