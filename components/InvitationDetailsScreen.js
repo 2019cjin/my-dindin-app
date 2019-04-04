@@ -3,11 +3,13 @@ import { Constants } from 'expo'
 import { Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Header from './Header'
 import InviteDetail from './InviteDetail'
+import MapInvite from './MapInvite'
+import InviteCarousel from './Carousel'
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 //import EventsList from './EventsList';
 //import OldEventsList from './OldEventsList';
 
-export default class InvitationDetails extends React.Component{
+export default class InvitationDetailsScreen extends React.Component{
     //constructor(){
       //  super()
         //this.state={
@@ -24,22 +26,21 @@ export default class InvitationDetails extends React.Component{
     //  <EventsList type = {new Date()} navigation = {this.props.navigation} />
     render(){
         return(
-          
-        
         <View style={styles.container}>
         <Header navigation={this.props.navigation}/>
         
-          <InviteDetail/>    
-          <View style={styles.mapview}>
-            <MapInvite />  
-          </View>
+        <InviteDetail/>    
+        <InviteCarousel/>
+          
         
-      </View>
-
-       
-           
+      </View>   
         )
     }
+    /*
+     <View style={styles.mapview}>
+            <MapInvite />  
+          </View>
+     */
 }
 //<TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
 // </TouchableOpacity> 
@@ -56,7 +57,9 @@ const styles = StyleSheet.create({
         mapview: {
           flex: 1,
           justifyContent: 'flex-end',
-          paddingTop: 10
+          paddingTop: 10,
+          //borderColor:'black',
+          //borderWidth:10
     
         }
 

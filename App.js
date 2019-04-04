@@ -29,7 +29,7 @@ const rootStack = createStackNavigator({
   LogIn: LogInScreen,
   PendingInvite:PendingInvite,
   InviteDetail:InviteDetail,
-  InviteDetailScreen:InvitationDetailsScreen,
+  InvitationDetailsScreen:InvitationDetailsScreen,
 },
 {
   initialRouteName: 'Splash'

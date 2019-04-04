@@ -120,7 +120,7 @@ render(){
   return(
   <View style={styles.container}>
 
-    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('InviteDetail')}}>
+    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('InvitationDetailsScreen')}}>
 
 
     
