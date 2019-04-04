@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import FacebookLogin from 'react-facebook-login';
 
+//var provider = new firebase.auth.FacebookAuthProvider();
+
 export default class LogInAccount extends Component {
     state = {
         isLoggedIn: false,
