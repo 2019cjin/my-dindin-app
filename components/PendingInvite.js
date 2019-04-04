@@ -134,10 +134,10 @@ render(){
              <View> 
                   <Image style={styles.profilePic} source={require('../assets/profpic1.png')} />
 
-              <Text style={styles.author}>  {this.state.data[0]["name"]} {this.state.catFact.lastName}
+              <Text style={styles.author}>  {this.state.data[0]["name"]} 
                 </Text>
 
-                  <Text style={styles.author}> Wednesday 4 Nov - 8 pm 
+                  <Text style={styles.author}> {this.state.data[0]["location"]} 
                 </Text>           
             </View>
 

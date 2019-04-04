@@ -3,45 +3,6 @@ import {View, Text, StyleSheet,ImageBackground, Image, TouchableOpacity} from 'r
 import MapInvite from './MapInvite'
 
 export default class InviteDetail extends React.Component{
-/*
- constructor(props){
-     super(props)
-     this.state={
-         pendinginvite: null
-     }
- }   
-
-componentDidMount(){
-    this.getData()
-}
-
-async getData(){
-    let response = await fetch("https://www.cs.virginia.edu/~dgg6b/Mobile/Featured/featured.json")
-    let parsedResponse = await response.json()
-    this.setState({
-        pendinginvite : parsedResponse
-    })
-}
-
-render(){
-    if(this.state.pendinginvite === null){
-        return(<View/>)
-    }
-    return(
-        
-        <View style={styles.container}>
-
-        <ImageBackground style={styles.featuredImage}
-        source={{uri: this.state.pendinginvite.image}}>
-            <Text style={styles.title}> {this.state.pendinginvite.title}
-             </Text>
-            <Text style={styles.author}> {this.state.pendinginvite.author} 
-            </Text>
-        </ImageBackground>
-        </View>
-        )
-    }
-}*/
 
 render(){
   return(
@@ -66,20 +27,7 @@ render(){
         </ImageBackground>
       </TouchableOpacity>
 
-        <View style ={styles.setButtons}>
-        <TouchableOpacity>
-          <Text style= {styles.acceptInvite}>
-            Accept
-          </Text>
-          </TouchableOpacity>
-         
-          <TouchableOpacity>
-          <Text style= {styles.declineInvite}>
-            Decline
-          </Text>
-          </TouchableOpacity>
-        </View>
-        <MapInvite />
+           
 
   </View>
   )
@@ -100,7 +48,12 @@ const styles = StyleSheet.create(
             borderWidth: 1,
             backgroundColor: "#e8f4f8",
             borderColor: "#eef7fa",
-            borderRadius: 5
+            borderRadius: 5,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.8,
+            shadowRadius: 2,
+            elevation: 1,
         },
        
         author:{
@@ -134,6 +87,11 @@ const styles = StyleSheet.create(
           width: 177,
           textAlign: "center",
           color: 'green',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.8,
+          shadowRadius: 2,
+          elevation: 1,
         },
 
         declineInvite:{
@@ -142,7 +100,12 @@ const styles = StyleSheet.create(
           backgroundColor:'#e8f4f8',
           width: 177,
           textAlign: "center",
-          color: 'red'
+          color: 'red',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.8,
+          shadowRadius: 2,
+          elevation: 1,
         }
 
        
