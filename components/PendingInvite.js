@@ -121,11 +121,6 @@ render(){
   <View style={styles.container}>
 
     <TouchableOpacity onPress={()=>{this.props.navigation.navigate('InvitationDetailsScreen')}}>
-
-
-    
-
-
             { this.state.gotInformation ? ( 
             <View>
             <Text style={styles.title}> Pending {this.state.data.length}</Text>
