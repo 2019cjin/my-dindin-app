@@ -27,7 +27,8 @@ export default class PendingInvite extends React.Component{
     constructor(props){
         super(props)
         this.state= {
-          catFact:{firstName: '', lastName: ''}
+          catFact:{firstName: '', lastName: ''},
+          isFlashing:false, isFlashing2:false
         }
 
     }
@@ -74,46 +75,19 @@ export default class PendingInvite extends React.Component{
         )
       }
     
-
-/*
- constructor(props){
-     super(props)
-     this.state={
-         pendinginvite: null
-     }
- }   
-
-componentDidMount(){
-    this.getData()
-}
-
-async getData(){
-    let response = await fetch("https://www.homedir.virginia.edu/myhome/esb5er/myweb/html/dinDinJSON/EvansAlma.json")
-    let parsedResponse = await response.json()
-    this.setState({
-        pendinginvite : parsedResponse
-    })
-}
-
-render(){
-    if(this.state.pendinginvite === null){
-        return(<View/>)
-    }
-    return(
+      tick3() {
+        this.setState({isFlashing: true})  
+        this.interval = setTimeout(()=> this.setState({isFlashing: false}), 1000)
+      
         
-        <View style={styles.container}>
+     }
+     
+   
+      tick2() {
+       this.setState({isFlashing2: true})  
+      this.interval = setTimeout(()=> this.setState({isFlashing2: false}), 1000)
+     }
 
-        <ImageBackground style={styles.featuredImage}
-        source={{uri: this.state.pendinginvite.image}}>
-            <Text style={styles.title}> {this.state.pendinginvite.title}
-             </Text>
-            <Text style={styles.author}> {this.state.pendinginvite.author} 
-            </Text>
-        </ImageBackground>
-        </View>
-        )
-    }
-}*/
 
 
 render(){
@@ -147,17 +121,38 @@ render(){
         
         
         <View style ={styles.setButtons}>
-        <TouchableOpacity>
-          <Text style= {styles.acceptInvite}>
+        <TouchableOpacity onPress={()=>{ this.tick3()}}>      
+        { 
+          this.state.isFlashing === false ?
+          <Text style={styles.acceptInvite}>
             Accept
-          </Text>
+          </Text> :
+          this.state.isFlashing === true ?
+           
+          <Text style={styles.accept}>
+            Accept
+          </Text>:        
+          
+          <Text/>
+         }
           </TouchableOpacity>
          
-          <TouchableOpacity>
-          <Text style= {styles.declineInvite}>
+          <TouchableOpacity onPress={()=>{ this.tick2()
+}}>  
+          { 
+          this.state.isFlashing2 === false ?
+          <Text style={styles.declineInvite}>
             Decline
-          </Text>
-          </TouchableOpacity>         
+          </Text> :
+          this.state.isFlashing2 === true ?
+           
+          <Text style={styles.decline}>
+            Decline
+          </Text>:        
+          
+          <Text/>
+         }
+          </TouchableOpacity>     
 
         </View>
 
@@ -183,7 +178,12 @@ const styles = StyleSheet.create(
             borderWidth: 1,
             backgroundColor: "#e8f4f8",
             borderColor: "#eef7fa",
-            borderRadius: 5
+            borderRadius: 5,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.8,
+            shadowRadius: 2,
+            elevation: 1,
         },
         title:{
             //fontFamily: "Helvetica",
@@ -223,6 +223,11 @@ const styles = StyleSheet.create(
           width: 195,
           textAlign: "center",
           color: 'green',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.8,
+          shadowRadius: 2,
+          elevation: 1,
         },
 
         declineInvite:{
@@ -231,7 +236,36 @@ const styles = StyleSheet.create(
           backgroundColor:'#e8f4f8',
           width: 195,
           textAlign: "center",
-          color: 'red'
+          color: 'red',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.8,
+          shadowRadius: 2,
+          elevation: 1,
+        },
+
+        accept:{
+          backgroundColor: 'green',
+          width:195,
+          textAlign: 'center',
+          color: 'black',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.8,
+          shadowRadius: 2,
+          elevation: 1,
+        },
+
+         decline:{
+          backgroundColor: 'red',
+          width:195,
+          textAlign: 'center',
+          color: 'black',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.8,
+          shadowRadius: 2,
+          elevation: 1,
         }
 }
 )
