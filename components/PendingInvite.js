@@ -29,13 +29,6 @@ export default class PendingInvite extends React.Component{
         this.state= {
           catFact:{firstName: '', lastName: ''}
         }
-        //console.log(props.store)
-        if (!firebase.apps.length){
-          firebase.initializeApp(firebaseConfig)
-        }
-        path = 'Invitations/Invitation/'
-        this.startListener(path)
-        this.gotInformation = false;
 
     }
 
@@ -58,6 +51,13 @@ export default class PendingInvite extends React.Component{
     componentDidMount() {
         this.timerID
         //this.startListener(path)
+        //console.log(props.store)
+        if (!firebase.apps.length){
+          firebase.initializeApp(firebaseConfig)
+        }
+        path = 'Invitations/Invitation/'
+        this.startListener(path)
+        this.gotInformation = false;
       }
 
       componentWillUnmount(){
@@ -120,7 +120,7 @@ render(){
   return(
   <View style={styles.container}>
 
-    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('InviteDetail')}}>
+    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('InvitationDetailsScreen')}}>
 
 
     

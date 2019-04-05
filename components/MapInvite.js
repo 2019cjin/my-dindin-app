@@ -51,7 +51,7 @@ export default class App extends Component {
             this.state.mapRegion === null ?
             <Text>Map region doesn't exist.</Text> :
             <MapView
-              style={{ alignSelf: 'stretch', height: 400 }}
+              style={{ alignSelf: 'stretch',height:360}}
               region={this.state.mapRegion}
               onRegionChange={this._handleMapRegionChange}>
               <MapView.Marker
@@ -62,11 +62,6 @@ export default class App extends Component {
       />
             </MapView>
         }
-        
-        
-        <Text>
-          Location: {this.state.locationResult}
-        </Text>
 
       </View>
         

@@ -175,9 +175,9 @@ export default class EventsList extends React.Component{
         if (!firebase.apps.length){
             firebase.initializeApp(firebaseConfig)
           }
-          path = 'jdoe/eventsList/'
+        path = 'jdoe/eventsList/'
         
-            this.startListener(path)
+        this.startListener(path)
         
     }
 

@@ -9,6 +9,9 @@ import {getNextAddr} from './MapHelperFunction';
 
 export default class AddNewEvent extends React.Component{
 
+
+    //38.0293059
+    //addressLongitude: -78.4766781,
     constructor(){
         super()
         this.state={
@@ -19,8 +22,8 @@ export default class AddNewEvent extends React.Component{
             timeOfDay:'AM',
             address:null,
             selectedAddress:'No Address Selected',
-            addressLatitude: 38.0293059,
-            addressLongitude: -78.4766781,
+            addressLatitude: 0,
+            addressLongitude: 0,
             mapRegion: null, 
             hasLocationPermissions: false,
             locationResult: null,
@@ -44,7 +47,7 @@ export default class AddNewEvent extends React.Component{
         this.setState({ timeOfDay: t })
      }
 
-     getAddress () {
+     /*getAddress () {
          if (parseInt(this.state.address.substring(0, 2), 10) !== null || parseInt(this.state.address.substring(3, 5), 10) !== null)
          {
             this.setState({
@@ -52,14 +55,14 @@ export default class AddNewEvent extends React.Component{
                 addressLongitude: parseInt(this.state.address.substring(3, 6), 10)
             })
          }
-     }
+     }*/
 
      invitePeopleBtnAction = ()=>{
          this.props.navigation.navigate('AddNewEventNextStep', {date: this.state.date, 
                                                                 time: this.state.hour + ":" + this.state.minute + " " + this.state.timeOfDay, 
                                                                 address: this.state.selectedAddress,
-                                                                addressLat: this.state.addressLatitude,
-                                                                addressLong: this.state.addressLongitude,
+                                                                addressLat: this.state.locationLatitude,
+                                                                addressLong: this.state.locationLongitude,
                                                                 eventID: this.state.eventID})
      }
 

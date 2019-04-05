@@ -76,6 +76,22 @@ export default class AddNewEventNextStep extends React.Component{
           await firebase.database().ref('jdoe/yourEventsList/' + this.state.eventDetails["id"] + '/' + this.state.inviteeList[i]["id"].toString() + '/accepted/').set(
             "false"
           )
+    
+          //update DB for invitee
+          let pendingInviteID = 0
+          
+          var pendingIDRef = await firebase.database().ref(this.state.inviteeList[i]['Username'] + '/numPendingInvite/');
+            pendingIDRef.on('value', function(snapshot) {
+            pendingInviteID =  JSON.stringify(snapshot.val());
+          });
+          
+          await firebase.database().ref(this.state.inviteeList[i]['Username'] + '/pendingInvite/' + pendingInviteID.toString() + '/').set(
+              context.state.eventDetails
+          )
+          await firebase.database().ref(this.state.inviteeList[i]['Username'] + '/numPendingInvite/').set(
+              (parseInt(pendingInviteID, 10) + 1)
+          );
+
        }
    }
 
