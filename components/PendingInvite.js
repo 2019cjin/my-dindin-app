@@ -228,6 +228,11 @@ const styles = StyleSheet.create(
           width: 195,
           textAlign: "center",
           color: 'green',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.8,
+          shadowRadius: 2,
+          elevation: 1,
         },
 
         declineInvite:{
@@ -236,7 +241,12 @@ const styles = StyleSheet.create(
           backgroundColor:'#e8f4f8',
           width: 195,
           textAlign: "center",
-          color: 'red'
+          color: 'red',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.8,
+          shadowRadius: 2,
+          elevation: 1,
         },
 
         accept:{
