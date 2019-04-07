@@ -14,6 +14,7 @@ import LogInScreen from './components/LogInScreen';
 import InvitationDetailsScreen from './components/InvitationDetailsScreen'
 import PendingInvite from './components/PendingInvite'
 import InviteDetail from './components/InviteDetail'
+import YourEventDetails from './components/YourEventDetails'
 //import LogInScreen from './components/LogInScreen';
 
 
@@ -30,6 +31,7 @@ const rootStack = createStackNavigator({
   PendingInvite:PendingInvite,
   InviteDetail:InviteDetail,
   InvitationDetailsScreen:InvitationDetailsScreen,
+  YourEventDetails: YourEventDetails,
 },
 {
   initialRouteName: 'Splash'
