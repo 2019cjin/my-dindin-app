@@ -30,8 +30,10 @@ export default class InvitationDetailsScreen extends React.Component{
         <Header navigation={this.props.navigation}/>
         
         <InviteDetail/>    
-        <InviteCarousel/>
-          
+        
+        <View style={styles.mapview}>
+            <MapInvite />  
+          </View>
         
       </View>   
         )
@@ -40,6 +42,7 @@ export default class InvitationDetailsScreen extends React.Component{
      <View style={styles.mapview}>
             <MapInvite />  
           </View>
+          <InviteCarousel/>
      */
 }
 //<TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>

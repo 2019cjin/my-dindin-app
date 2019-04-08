@@ -30,16 +30,7 @@ export default class EventsList extends React.Component{
         this.state ={
             eventsList: null,
             finalEvents: [],
-            //path = 'jdoe/eventsList/'
         }
-        //connect to firebase
-       /* if (!firebase.apps.length){
-            firebase.initializeApp(firebaseConfig)
-          }
-          path = 'jdoe/eventsList/'*/
-        //this.startListener(path)
-          
-          //this.gotInformation = false;
     }
 
 
@@ -110,7 +101,7 @@ export default class EventsList extends React.Component{
                                 this.state.finalEvents[this.state.finalEvents.length - 1].data.push(
                                     {
                                         "time": this.state.eventsList[i].time,
-                                        "address": this.state.eventsList[i].address,
+                                        "location": this.state.eventsList[i].location,
                                         "latitude": this.state.eventsList[i].latitude,
                                         "longitude": this.state.eventsList[i].longitude,
                                         "hostUserName": this.state.eventsList[i].hostUserName,
@@ -118,6 +109,8 @@ export default class EventsList extends React.Component{
                                         "hostLName": this.state.eventsList[i].hostLName,
                                         "phoneNum": this.state.eventsList[i].phoneNum,
                                         "profilePic": this.state.eventsList[i].profilePic,
+                                        "id": this.state.eventsList[i].id,
+                                        "date": this.state.eventsList[i].date
                                     }
                                 )
                                 //console.log("added event:")
@@ -157,20 +150,6 @@ export default class EventsList extends React.Component{
         }
     }
 
-    async getEventsData(){
-        //let response = await fetch("https://api.myjson.com/bins/v8bqq")
-        //https://api.myjson.com/bins/1g5852
-        //https://api.myjson.com/bins/ycd5i
-        //https://api.myjson.com/bins/lgzwi
-        //https://api.myjson.com/bins/iix8a
-        let response = await fetch("https://api.myjson.com/bins/ycd5i")
-        let extractedJson = await response.json()
-        await this.setState({
-            eventsList: extractedJson.eventsList
-        })
-        await this.convertList()
-    }
-
     componentDidMount(){
         if (!firebase.apps.length){
             firebase.initializeApp(firebaseConfig)
@@ -192,11 +171,23 @@ export default class EventsList extends React.Component{
 
                     {
                         item.hostUserName === 'jdoe' ? 
-                        <Text style={styles.person}>Meal Hosted By You</Text> :
-                        <Text style={styles.person}>{item.hostFName} {item.hostLName}</Text>
+                        <View> 
+                            <TouchableOpacity onPress={() => {this.props.navigation.navigate('YourEventDetails', {id: item.id,
+                                                                                                                  date: item.date,
+                                                                                                                  time: item.time,
+                                                                                                                  location: item.location});}}>
+                                <Text style={styles.person}>Meal Hosted By You</Text>
+                                <Text style={styles.time}>{item.time}</Text>
+                            </TouchableOpacity>
+                        </View>
+                         :
+                        <View> 
+                            <Text style={styles.person}>{item.hostFName} {item.hostLName}</Text>
+                            <Text style={styles.time}>{item.time}</Text>
+                        </View>
+                        
                     }
                     
-                    <Text style={styles.time}>{item.time}</Text>
                 </View>
                 <View style={styles.contactButtons}>
                     <TouchableOpacity>
