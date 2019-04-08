@@ -35,17 +35,41 @@ export default class YourEventDetails extends React.Component{
         super()
         this.state={
             inviteeList: null,
-            finalInviteeList:null,
-            examplefinalInviteeList:[
+            finalInviteeList:[
                 {
-                    "key":"Accepted!", 
+                    "key":"Who is coming:", 
                     "data":[          
                             
                     ]
                 },
                 {
-                    "key":"Declined!", 
+                    "key":"Who is not coming:", 
                     "data":[
+                        
+                    ]
+                }
+            ],
+            examplefinalInviteeList:[
+                {
+                    "key":"Who is coming:", 
+                    "data":[          
+                            
+                    ]
+                },
+                {
+                    "key":"Who is not coming:", 
+                    "data":[
+                            {
+                                "FName": "George",
+                                "LName": "Samson",
+                                "Username": "gsamson",
+                                "accepted": "false",
+                                "email": "",
+                                "id": 0,
+                                "phoneNum": "456-984-0797",
+                                "profilePic": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png",
+                                "selected": true,
+                              },
                         
                     ]
                 }
@@ -62,7 +86,8 @@ export default class YourEventDetails extends React.Component{
             gotInformation: true
           })
          await context.getFinalList()
-         // await console.log(context.state.inviteeList)
+         await console.log(context.state.finalInviteeList)
+         //await console.log(context.state.finalInviteeList[0].key)
             //await console.log(context.state.notComing)
         })
       }
@@ -73,8 +98,8 @@ export default class YourEventDetails extends React.Component{
               //console.log("here it is")
             await this.setState({inviteeList:this.state.inviteeList.sort(compare)})
             await this.setState({finalInviteeList:[
-                                                {"key":"Accepted!", "data":[]},
-                                                {"key":"Declined!", "data":[]}
+                                                {"key":"Who is coming", "data":[]},
+                                                {"key":"Who is not coming!", "data":[]}
                                             ]})
 
             for (let i = 0; i < this.state.inviteeList.length; i++)
@@ -122,7 +147,7 @@ export default class YourEventDetails extends React.Component{
     }
 
     renderRow =  ({ item, index, section: { key, data } }) => {
-            <View style={styles.contactRowContainer}>
+          return  <View style={styles.contactRowContainer}>
                     <Image style={{width: 50, height: 50}} source ={{uri: item.profilePic}}/>
                     <View style={styles.personContactInfo}>
                         <Text style={styles.person}>{item.FName} {item.LName}</Text>
@@ -185,9 +210,8 @@ export default class YourEventDetails extends React.Component{
         const eDate = navigation.getParam('date', 'NO DATE');
         const eTime = navigation.getParam('time', 'NO TIME');
         const eLocation = navigation.getParam('location', 'NO LOCATION');
-
-        console.log(this.state.finalInviteeList)
         //this.getFinalList()
+        console.log(this.state.finalInviteeList)
 
         return(
             <View style = {{ justifyContent: 'space-between', flex: 1}}>
@@ -243,34 +267,28 @@ export default class YourEventDetails extends React.Component{
             <View style={{flex: 1, justifyContent:"space-evenly"}}>
     
                 <View style={{flex: 16, paddingLeft:20, paddingRight:20}}>
-               
-                    <View style={{ flexDirection:'row', justifyContent:'space-between', width:350}}>
-                        <Text style={{color:'grey'}}>Who you invited:</Text>
-                    </View>
 
                     {
-                    this.state.finalInviteeList !== null && (this.state.finalInviteeList[0]["data"].length > 0 || this.state.finalInviteeList[1]["data"].length > 0) ?
-                    <View>
-                        <SectionList
-                        renderSectionFooter={({section}) => this.renderNoContent(section)}
-                        renderSectionHeader={this.getHeader}
-                        renderItem = {this.renderRow}
-                        sections={this.state.examplefinalInviteeList}
-                        keyExtractor={this.keyExtractor}
-                        />
-                    </View> :
-                    <View>
-                        <Text>Loading lists</Text>
+                    this.state.inviteeList === null && this.state.finalInviteeList[0]["data"].length === 0 && this.state.finalInviteeList[1]["data"].length === 0?
                         <View>
-                        <SectionList
+                            <Text>Loading list</Text>
+                            <SectionList
+                            renderSectionFooter={({section}) => this.renderNoContent(section)}
+                            renderSectionHeader={this.getHeader}
+                            renderItem = {this.renderRow}
+                            sections={this.state.examplefinalInviteeList}
+                            keyExtractor={(item, index) => index.toString()}
+                            />
+                        </View>
+                         :
+                         <SectionList
                         renderSectionFooter={({section}) => this.renderNoContent(section)}
                         renderSectionHeader={this.getHeader}
                         renderItem = {this.renderRow}
                         sections={this.state.examplefinalInviteeList}
-                        keyExtractor={this.keyExtractor}
+                        keyExtractor={(item, index) => index.toString()}
                         />
-                    </View>
-                    </View>
+                        
                     }
 
                 </View>
@@ -416,8 +434,9 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             paddingBottom: 30,
             paddingTop: 20,
-            paddingLeft: 20,
-            paddingRight: 20,
+            color:'grey',
+            //paddingLeft: 20,
+            //paddingRight: 20,
         },
         emptyList:{
             paddingBottom: 10,
