@@ -19,6 +19,7 @@
     "react-native-modest-checkbox": "^3.3.0",
     "react-native-paper": "2.2.8",
     "react-native-responsive-screen": "^1.2.0",
+    "react-native-snap-carousel": "^3.7.5",
     "react-native-svg": "^9.3.3",
     "react-native-wheel-picker": "^1.2.0",
     "react-navigation": "^3.4.1",
