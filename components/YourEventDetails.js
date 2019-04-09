@@ -34,6 +34,7 @@ export default class YourEventDetails extends React.Component{
     constructor(){
         super()
         this.state={
+            finishedLoading: false,
             inviteeList: null,
             finalInviteeList:[
                 {
@@ -43,33 +44,8 @@ export default class YourEventDetails extends React.Component{
                     ]
                 },
                 {
-                    "key":"Who is not coming:", 
+                    "key":"Can't make it:", 
                     "data":[
-                        
-                    ]
-                }
-            ],
-            examplefinalInviteeList:[
-                {
-                    "key":"Who is coming:", 
-                    "data":[          
-                            
-                    ]
-                },
-                {
-                    "key":"Who is not coming:", 
-                    "data":[
-                            {
-                                "FName": "George",
-                                "LName": "Samson",
-                                "Username": "gsamson",
-                                "accepted": "false",
-                                "email": "",
-                                "id": 0,
-                                "phoneNum": "456-984-0797",
-                                "profilePic": "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png",
-                                "selected": true,
-                              },
                         
                     ]
                 }
@@ -86,7 +62,7 @@ export default class YourEventDetails extends React.Component{
             gotInformation: true
           })
          await context.getFinalList()
-         await console.log(context.state.finalInviteeList)
+         //await console.log(context.state.finalInviteeList)
          //await console.log(context.state.finalInviteeList[0].key)
             //await console.log(context.state.notComing)
         })
@@ -101,18 +77,25 @@ export default class YourEventDetails extends React.Component{
                                                 {"key":"Who is coming", "data":[]},
                                                 {"key":"Who is not coming!", "data":[]}
                                             ]})
+            
+            let finalInviteeL = [
+                {"key":"Who is coming:", "data":[]},
+                {"key":"Can't make it:", "data":[]}
+            ]
 
             for (let i = 0; i < this.state.inviteeList.length; i++)
             {
                 if (this.state.inviteeList[i].accepted==="false")
                 {
-                    await this.state.finalInviteeList[1]["data"].push(this.state.inviteeList[i])
+                    await finalInviteeL[1]["data"].push(this.state.inviteeList[i])
                 }
                 else
                 {
-                    await this.state.finalInviteeList[0]["data"].push(this.state.inviteeList[i])
+                    await finalInviteeL[0]["data"].push(this.state.inviteeList[i])
                 }
             }
+
+            await this.setState({finalInviteeList: finalInviteeL, finishedLoading: true})
           }
       }
 
@@ -211,7 +194,7 @@ export default class YourEventDetails extends React.Component{
         const eTime = navigation.getParam('time', 'NO TIME');
         const eLocation = navigation.getParam('location', 'NO LOCATION');
         //this.getFinalList()
-        console.log(this.state.finalInviteeList)
+        //console.log(this.state.finalInviteeList)
 
         return(
             <View style = {{ justifyContent: 'space-between', flex: 1}}>
@@ -269,23 +252,16 @@ export default class YourEventDetails extends React.Component{
                 <View style={{flex: 16, paddingLeft:20, paddingRight:20}}>
 
                     {
-                    this.state.inviteeList === null && this.state.finalInviteeList[0]["data"].length === 0 && this.state.finalInviteeList[1]["data"].length === 0?
+                    this.state.finishedLoading === false?
                         <View>
                             <Text>Loading list</Text>
-                            <SectionList
-                            renderSectionFooter={({section}) => this.renderNoContent(section)}
-                            renderSectionHeader={this.getHeader}
-                            renderItem = {this.renderRow}
-                            sections={this.state.examplefinalInviteeList}
-                            keyExtractor={(item, index) => index.toString()}
-                            />
                         </View>
                          :
                          <SectionList
                         renderSectionFooter={({section}) => this.renderNoContent(section)}
                         renderSectionHeader={this.getHeader}
                         renderItem = {this.renderRow}
-                        sections={this.state.examplefinalInviteeList}
+                        sections={this.state.finalInviteeList}
                         keyExtractor={(item, index) => index.toString()}
                         />
                         
