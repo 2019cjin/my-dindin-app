@@ -45,7 +45,7 @@ export default class EventsList extends React.Component{
          //await  console.log(context.state.eventsList)
           await context.convertList()
          // console.log("finalEvents")
-         // console.log(context.state.finalEvents)
+          //console.log(context.state.finalEvents)
         })
         
       }
