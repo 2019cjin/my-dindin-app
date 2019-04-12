@@ -70,10 +70,10 @@ export default class AddNewEventNextStep extends React.Component{
 
        for (let i = 0; i < this.state.inviteeList.length; i ++)
        {
-          await firebase.database().ref('jdoe/yourEventsList/'+ this.state.eventDetails["id"] + '/' + this.state.inviteeList[i]["id"].toString() + '/').set(
+          await firebase.database().ref('jdoe/yourEventsList/'+ this.state.eventDetails["id"] + '/' + i + '/').set(
             context.state.inviteeList[i]
           )
-          await firebase.database().ref('jdoe/yourEventsList/' + this.state.eventDetails["id"] + '/' + this.state.inviteeList[i]["id"].toString() + '/accepted/').set(
+          await firebase.database().ref('jdoe/yourEventsList/' + this.state.eventDetails["id"] + '/' + i + '/accepted/').set(
             "false"
           )
     
