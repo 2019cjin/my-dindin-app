@@ -154,7 +154,7 @@ export default class AddNewEventNextStep extends React.Component{
                                       'hostLName': 'Doe',
                                       'hostUserName': 'jdoe',
                                       'phoneNum': "987-654-3210",
-                                      'profilePic': "https://www.cs.virginia.edu/~dgg6b/Mobile/Images/PodCastImage1.png",
+                                      'profilePic': "https://a.icons8.com/0dnMfkZQ/2Z8Mj0/oval-1-copy.png",
                                       'id': eID}})
 
     }
