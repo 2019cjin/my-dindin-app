@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 
-import Carousel from 'react-native-snap-carousel';
+//import Carousel from 'react-native-snap-carousel';
 
 const firebaseConfig = {
     apiKey: "AIzaSyDZpTrKnBHgaQbv_F87VoD5ZOn83Rkqe-w",
@@ -42,12 +42,8 @@ export class InviteCarousel extends Component {
 
     render () {
         return (
-            <Carousel 
-              layout={'default'}            
-              ref={(c) => { this._carousel = c; }}
-              data={this.state.data[0]["name"]}
-              renderItem={this._renderItem}
-            />
+            <ScrollView contentContainerStyle={styles.contentContainer}>
+            </ScrollView>
         );
     }
 }
