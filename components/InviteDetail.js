@@ -2,6 +2,8 @@ import * as React from 'react'
 import {View, Text, StyleSheet,ImageBackground, Image, TouchableOpacity} from 'react-native'
 import MapInvite from './MapInvite'
 
+import {weekDayMonthDate2} from './DateConversion';
+
 export default class InviteDetail extends React.Component{
 
 render(){
@@ -13,14 +15,14 @@ render(){
 
           
              
-              <Image style={styles.profilePic} source={require('../assets/profpic1.png')} />
-           <Text style={styles.author}> Location
+              <Image style={styles.profilePic} source={{uri: this.props.host.profilePic}} />
+           <Text style={styles.author}> {this.props.host.location}
              </Text>
 
-              <Text style={styles.author}> Wednesday 4 Nov - 8 pm 
+              <Text style={styles.author}> {weekDayMonthDate2(this.props.host.date)} - {this.props.host.time}
              </Text>
 
-             <Text style={styles.author}> Hosted by Jill Smith
+             <Text style={styles.author}> Hosted by {this.props.host.hostFName} {this.props.host.hostLName}
              </Text>
              
 
@@ -71,6 +73,8 @@ const styles = StyleSheet.create(
             //paddingLeft: 100,
             //paddingTop:70,
             //backgroundColor:'blue'
+            height: 50,
+            width: 50
         },
 
         setButtons:{

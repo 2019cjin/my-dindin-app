@@ -8,6 +8,7 @@ import PendingInvite from './PendingInvite'
 //import InviteDetailScreen from './InvitationDetailsScreen'
 
 import * as firebase from 'firebase';//for connecting to firebase
+//import console = require('console');
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -32,6 +33,7 @@ export default class HomeScreen extends React.Component{
         let context = this
         firebase.database().ref(path).on('value', async (snapshot) => {     
           let numInvites = parseInt(JSON.stringify(snapshot.val()), 10)
+          console.log(numInvites)
           if (numInvites > 0)
           {
               context.setState({noPendingInvites: false})
@@ -42,14 +44,14 @@ export default class HomeScreen extends React.Component{
     
     getDate = setInterval(() => {this.setState({date: new Date()})}, 1000)
 
-    componentDidMount(){
+    async componentDidMount(){
         
-        this.getDate;
+        await (this.getDate);
 
         if (!firebase.apps.length){
-            firebase.initializeApp(firebaseConfig)
+            await (firebase.initializeApp(firebaseConfig))
           }
-        path = 'gsamson/numPendingInvite/'
+        await (path = 'gsamson/numPendingInvite/')
         
         this.startListener(path)
 
@@ -75,7 +77,7 @@ export default class HomeScreen extends React.Component{
         <TouchableOpacity onPress={()=>{this.props.navigation.navigate('InviteDetailScreen')}}>
           <PendingInvite navigation = {this.props.navigation}/>    
           </TouchableOpacity>  :
-          <View/>
+          <View><Text>No pending invites</Text></View>
         }
       
           <EventsList today = {this.state.date} navigation = {this.props.navigation} />
