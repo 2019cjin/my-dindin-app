@@ -56,8 +56,8 @@ export default class OldEventsList extends React.Component{
                 <View>
                     
                      <FlatList
-                        data={this.state.eventsList}
-                        renderItem={this.renderRow}
+                        data={this.state.eventsList} //database
+                        renderItem={this.renderRow} //style
                         keyExtractor={this.keyExtractor}
                     />
                     </View>

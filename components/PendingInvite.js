@@ -56,7 +56,7 @@ export default class PendingInvite extends React.Component{
         if (!firebase.apps.length){
           firebase.initializeApp(firebaseConfig)
         }
-        path = 'Invitations/Invitation/'
+        path = 'Invitations/Invitation/gsamson/pendingInvite'
         this.startListener(path)
         this.gotInformation = false;
       }

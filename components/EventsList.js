@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, SectionList } from 'react-native';
 import { Constants } from 'expo'
 import {getLastDay, getWeekDayMonthDate, convertStringToDate} from './DateConversion';
-
+//Lines 5 -16
 import * as firebase from 'firebase';//for connecting to firebase
 
 // Initialize Firebase
@@ -33,7 +33,7 @@ export default class EventsList extends React.Component{
         }
     }
 
-
+    //Need this too
     async startListener(path) {
         let context = this
         firebase.database().ref(path).on('value', async (snapshot) => {     
@@ -43,7 +43,7 @@ export default class EventsList extends React.Component{
             //gotInformation: true
           })
          //await  console.log(context.state.eventsList)
-          await context.convertList()
+          await context.convertList() //unnessecary for pendingInvite
          // console.log("finalEvents")
           //console.log(context.state.finalEvents)
         })
@@ -150,6 +150,7 @@ export default class EventsList extends React.Component{
         }
     }
 
+    //do pending invite -- hardcode in pendingInvite List start with 0, update numPending Invite
     componentDidMount(){
         if (!firebase.apps.length){
             firebase.initializeApp(firebaseConfig)
