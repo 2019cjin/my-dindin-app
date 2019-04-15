@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {View, Text, StyleSheet,ImageBackground, Image, TouchableOpacity} from 'react-native'
+import {View, Text, StyleSheet,ImageBackground, Image, TouchableOpacity, FlatList} from 'react-native'
 import {Constants} from 'expo'
 import * as firebase from 'firebase';
 
@@ -103,7 +103,7 @@ render(){
              <View> 
                   <Image style={styles.profilePic} source={require('../assets/profpic1.png')} />
 
-              <Text style={styles.author}>  {this.state.data[0]["name"]} 
+              <Text style={styles.author}>  {this.state.data[0]["FName"]} {this.state.data[0]["LName"]} 
                 </Text>
 
                   <Text style={styles.author}> {this.state.data[0]["location"]} 
