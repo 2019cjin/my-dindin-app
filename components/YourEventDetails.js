@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Constants, Svg, MapView, Marker, Location, Permissions } from 'expo'
 import { Picker, Text, View, StyleSheet, Image, TouchableOpacity, FlatList, SectionList} from 'react-native';
 import {getNextAddr} from './MapHelperFunction';
-import {weekDayMonthDate} from './DateConversion';
+import {weekDayMonthDate, weekDayMonthDate2} from './DateConversion';
 
 import * as firebase from 'firebase';//for connecting to firebase
 //import console = require('console');
@@ -241,7 +241,7 @@ export default class YourEventDetails extends React.Component{
                         <View style={{flex:4, alignItems:'center'}}>
                             <Image style={{height:22, width: 25}} source ={require('../assets/yourEventIcon.png')}/>
                             <Text numberOfLines={1} style={{fontSize:25}}>{eLocation}</Text>
-                            <Text style = {{fontSize: 14, color:'grey'}}> {weekDayMonthDate(eDate)} - {eTime}</Text>
+                            <Text style = {{fontSize: 14, color:'grey'}}> {weekDayMonthDate2(eDate)} - {eTime}</Text>
                             <Text style = {{fontSize: 14, color:'grey'}}>Hosted by You</Text>
                         </View>
                     </View>
