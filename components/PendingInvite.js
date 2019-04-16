@@ -79,6 +79,7 @@ export default class PendingInvite extends React.Component{
               if (this.state.data[i].isPending === true)
               {
                 this.state.finalList.push(initialList[i])
+                this.state.finalList[this.state.finalList.length - 1].index = i
               }
           }
         }
@@ -134,16 +135,16 @@ export default class PendingInvite extends React.Component{
       return item.id.toString()
   }
 
-  async accepted(item){ 
+  async accepted(item, index){ 
 
     await this.tick3()
-    await console.log("text is " + item.id.toString())
+    await (newIndex = item.index)
     await( guestIndex = 0)
 
     //finish updating host's guest list
     await firebase.database().ref('jdoe/yourEventsList/' + item.id.toString() ).on('value', async function(snapshot) {
       await (guests =  snapshot.val())
-      await console.log(guests)
+      //await console.log(guests)
       for (let i = 0; i < guests.length; i ++)
       {
         if (guests[i].Username === item.Username)
@@ -151,7 +152,7 @@ export default class PendingInvite extends React.Component{
           await (guestIndex = i)
         }
       }
-      console.log("guest index is " + guestIndex)
+      //console.log("guest index is " + guestIndex)
 
       firebase.database().ref('jdoe/yourEventsList/' + item.id.toString() + '/' + guestIndex.toString() + '/accepted').set(
         "true"
@@ -160,49 +161,40 @@ export default class PendingInvite extends React.Component{
     })
 
     //add new event to guest's event list
-    firebase.database().ref('gsamson/eventsList/0/').set(
+
+    await( eventID = 0 )
+    await(eventIDRef = await firebase.database().ref('gsamson/numEvents/'))
+    await eventIDRef.on('value', function(snapshot) {
+      eventID =  snapshot.val();
+    })
+    firebase.database().ref('gsamson/eventsList/' + eventID.toString() + '/').set(
       item
     )
+    firebase.database().ref('gsamson/numEvents/').set(
+      eventID + 1
+    )
+    
+  
 
     //adjust pendingInvite list
-    firebase.database().ref('gsamson/pendingInvite/2/isPending').set(
+    firebase.database().ref('gsamson/pendingInvite/' + newIndex.toString() + '/isPending').set(
       false
     )
 
-    //finish adding new event to guest's events list
-    /*let eventInfo = null
-    await ( event = firebase.database().ref('gsamson/pendingInvite/' + id.toString()))
-    await event.on('value', function(snapshot) {
-      eventInfo =  snapshot.val();
-      firebase.database().ref('gsamson/eventsList/0/').set(
-        snapshot.val()
-      )
-    })
-    await console.log("eventInfo is " + eventInfo)*/
-    
-   /* await firebase.database().ref('gsamson/eventsList/0/').set(
-      eventInfo
-    )*/
-
-    //finish updating guest's pending invites information
-   /*await  firebase.database().ref('gsamson/numPendingInvite/').set(
-      5
-    )*/
-
-
   }
-  declined = async ()=>{ 
+  async declined (item, index){ 
 
     await this.tick2()
     //adjust pendingInvite list
-    await firebase.database().ref('gsamson/pendingInvite/3/isPending').set(
+    await (newIndex = item.index)
+    firebase.database().ref('gsamson/pendingInvite/' + newIndex.toString() + '/isPending').set(
       false
     )
 
 
   }
 
-renderRow({item}){
+renderRow({item, index}){
   return(
   <View style={styles.container}>
     <TouchableOpacity onPress={()=>{this.props.navigation.navigate('InvitationDetailsScreen', {host: item})}}>
@@ -228,7 +220,7 @@ renderRow({item}){
         
         
         <View style ={styles.setButtons}>
-        <TouchableOpacity onPress={() => this.accepted(item)}>      
+        <TouchableOpacity onPress={() => this.accepted(item, index)}>      
         { 
           this.state.isFlashing === false ?
           <Text style={styles.acceptInvite}>
@@ -244,7 +236,7 @@ renderRow({item}){
          }
           </TouchableOpacity>
          
-          <TouchableOpacity onPress={this.declined}>  
+          <TouchableOpacity onPress={() => this.declined(item, index)}>  
           { 
           this.state.isFlashing2 === false ?
           <Text style={styles.declineInvite}>
