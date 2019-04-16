@@ -64,7 +64,7 @@ export default class PendingInvite extends React.Component{
         if (this.state.data.length > 0){
           this.setState({finalList:[]})
           let initialList = this.state.data.sort(compare)
-          let firstIndex = 0
+          let firstIndex = this.state.data.length
           let todayString = convertDateToDBString(new Date())
           for (let i = 0; i < this.state.data.length; i ++)
           {
@@ -76,7 +76,10 @@ export default class PendingInvite extends React.Component{
             }
           }
           for (let i = firstIndex; i < this.state.data.length; i ++){
-              this.state.finalList.push(initialList[i])
+              if (this.state.data[i].isPending === true)
+              {
+                this.state.finalList.push(initialList[i])
+              }
           }
         }
     }
@@ -117,9 +120,7 @@ export default class PendingInvite extends React.Component{
     
       tick3() {
         this.setState({isFlashing: true})  
-        this.interval = setTimeout(()=> this.setState({isFlashing: false}), 1000)
-       // clearInterval(this.interval)
-        
+        this.interval = setTimeout(()=> this.setState({isFlashing: false}), 1000)   
      }
      
    
@@ -133,33 +134,43 @@ export default class PendingInvite extends React.Component{
       return item.id.toString()
   }
 
-  async accepted(id, username){ 
+  async accepted(item){ 
 
     await this.tick3()
-    /*await console.log("text is " + id.toString())
+    await console.log("text is " + item.id.toString())
     await( guestIndex = 0)
 
     //finish updating host's guest list
-    await firebase.database().ref('jdoe/yourEventsList/' + id.toString() ).on('value', async function(snapshot) {
+    await firebase.database().ref('jdoe/yourEventsList/' + item.id.toString() ).on('value', async function(snapshot) {
       await (guests =  snapshot.val())
       await console.log(guests)
       for (let i = 0; i < guests.length; i ++)
       {
-        if (guests[i].Username === username)
+        if (guests[i].Username === item.Username)
         {
           await (guestIndex = i)
         }
       }
       console.log("guest index is " + guestIndex)
 
-      firebase.database().ref('jdoe/yourEventsList/' + id.toString() + '/' + guestIndex.toString() + '/accepted').set(
+      firebase.database().ref('jdoe/yourEventsList/' + item.id.toString() + '/' + guestIndex.toString() + '/accepted').set(
         "true"
       )
 
     })
 
+    //add new event to guest's event list
+    firebase.database().ref('gsamson/eventsList/0/').set(
+      item
+    )
+
+    //adjust pendingInvite list
+    firebase.database().ref('gsamson/pendingInvite/2/isPending').set(
+      false
+    )
+
     //finish adding new event to guest's events list
-    let eventInfo = null
+    /*let eventInfo = null
     await ( event = firebase.database().ref('gsamson/pendingInvite/' + id.toString()))
     await event.on('value', function(snapshot) {
       eventInfo =  snapshot.val();
@@ -167,7 +178,7 @@ export default class PendingInvite extends React.Component{
         snapshot.val()
       )
     })
-    await console.log("eventInfo is " + eventInfo)
+    await console.log("eventInfo is " + eventInfo)*/
     
    /* await firebase.database().ref('gsamson/eventsList/0/').set(
       eventInfo
@@ -180,9 +191,14 @@ export default class PendingInvite extends React.Component{
 
 
   }
-  declined = ()=>{ 
+  declined = async ()=>{ 
 
-    this.tick2()
+    await this.tick2()
+    //adjust pendingInvite list
+    await firebase.database().ref('gsamson/pendingInvite/3/isPending').set(
+      false
+    )
+
 
   }
 
@@ -212,7 +228,7 @@ renderRow({item}){
         
         
         <View style ={styles.setButtons}>
-        <TouchableOpacity onPress={() => this.accepted(item.id, item.Username)}>      
+        <TouchableOpacity onPress={() => this.accepted(item)}>      
         { 
           this.state.isFlashing === false ?
           <Text style={styles.acceptInvite}>
