@@ -65,8 +65,8 @@ export default class App extends Component {
 
                <MapView.Marker
          coordinate={{
-                      latitude: 38,
-                      longitude: -79
+                      latitude:  this.props.host.latitude,
+                      longitude: this.props.host.longitude
                     }}                      
               
       />

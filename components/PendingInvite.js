@@ -104,8 +104,7 @@ export default class PendingInvite extends React.Component{
 
     var event = firebase.database().ref('gsamson/pendingInvite/0')*/
 
-              <Text style={styles.author}>  {this.state.data[0]["FName"]} {this.state.data[0]["LName"]} 
-                </Text>
+              
     /*firebase.database().ref('gsamson/eventsList/0').set(
       event
     )*/
