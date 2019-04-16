@@ -54,13 +54,26 @@ export default class App extends Component {
               style={{ alignSelf: 'stretch',height:360}}
               region={this.state.mapRegion}
               onRegionChange={this._handleMapRegionChange}>
+              
               <MapView.Marker
          coordinate={{
                       latitude: this.state.locationLatitude,
                       longitude: this.state.locationLongitude
-                    }}
+                    }}                      
+              
+      />
+
+               <MapView.Marker
+         coordinate={{
+                      latitude: 38,
+                      longitude: -79
+                    }}                      
+              
       />
             </MapView>
+            
+            
+            
         }
 
       </View>

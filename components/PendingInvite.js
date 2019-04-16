@@ -79,9 +79,7 @@ export default class PendingInvite extends React.Component{
     
       tick3() {
         this.setState({isFlashing: true})  
-        this.interval = setTimeout(()=> this.setState({isFlashing: false}), 1000)
-      
-        
+        this.interval = setTimeout(()=> this.setState({isFlashing: false}), 1000)   
      }
      
    
