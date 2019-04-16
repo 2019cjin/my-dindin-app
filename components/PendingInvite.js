@@ -2,6 +2,7 @@ import * as React from 'react'
 import {View, Text, StyleSheet,ImageBackground, Image, TouchableOpacity, FlatList} from 'react-native'
 import {Constants} from 'expo'
 import * as firebase from 'firebase';
+import {weekDayMonthDate2} from './DateConversion';
 
 //import InvitationDetailsScreen from './components/InvitationDetailsScreen'
 
@@ -28,7 +29,8 @@ export default class PendingInvite extends React.Component{
         super(props)
         this.state= {
           catFact:{firstName: '', lastName: ''},
-          isFlashing:false, isFlashing2:false
+          isFlashing:false, isFlashing2:false,
+          data:[]
         }
 
     }
@@ -56,7 +58,7 @@ export default class PendingInvite extends React.Component{
         if (!firebase.apps.length){
           firebase.initializeApp(firebaseConfig)
         }
-        path = 'Invitations/Invitation/gsamson/pendingInvite'
+        path = 'gsamson/pendingInvite'
         this.startListener(path)
         this.gotInformation = false;
       }
@@ -88,32 +90,55 @@ export default class PendingInvite extends React.Component{
       this.interval = setTimeout(()=> this.setState({isFlashing2: false}), 1000)
      }
 
+     keyExtractor(item){
+      return item.id.toString()
+  }
 
+  accepted = () => { 
 
-render(){
-  return(
-  <View style={styles.container}>
+    /*firebase.database().ref('jdoe/yourEventsList/' + '5/0/accepted').set(
+      "true"
+    )
 
-    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('InvitationDetailsScreen')}}>
-            { this.state.gotInformation ? ( 
-            <View>
-            <Text style={styles.title}> Pending {this.state.data.length}</Text>
-       <ImageBackground style={styles.featuredImage}>
+    firebase.database().ref('gsamson/numPendingInvite/').set(
+      "6"
+    )
 
-             <View> 
-                  <Image style={styles.profilePic} source={require('../assets/profpic1.png')} />
+    var event = firebase.database().ref('gsamson/pendingInvite/0')*/
 
               <Text style={styles.author}>  {this.state.data[0]["FName"]} {this.state.data[0]["LName"]} 
                 </Text>
+    /*firebase.database().ref('gsamson/eventsList/0').set(
+      event
+    )*/
 
-                  <Text style={styles.author}> {this.state.data[0]["location"]} 
-                </Text>           
-            </View>
+    this.tick3()
+  }
+  declined = ()=>{ 
+
+    this.tick2()
+
+  }
+
+renderRow({item}){
+  return(
+  <View style={styles.container}>
+    <TouchableOpacity onPress={()=>{this.props.navigation.navigate('InvitationDetailsScreen', {host: item})}}>
+      { this.state.gotInformation ? ( 
+        <View>
+            <ImageBackground style={styles.featuredImage}>
+
+                <View> 
+                      <Image style={styles.profilePic} source={{uri: item.profilePic}} />
+
+                      <Text style={styles.author}>  {item["hostFName"]} {item["hostLName"]} </Text>
+                      <Text style={styles.author}> {weekDayMonthDate2(item["date"])} - {item["time"]} </Text>         
+                </View>
 
             </ImageBackground>
-            </View>
+        </View>
 
-            ):  (<View/>)
+            ):  (<View><Text>Loading pending invites</Text></View>)
 
         }
 
@@ -121,7 +146,7 @@ render(){
         
         
         <View style ={styles.setButtons}>
-        <TouchableOpacity onPress={()=>{ this.tick3()}}>      
+        <TouchableOpacity onPress={this.accepted}>      
         { 
           this.state.isFlashing === false ?
           <Text style={styles.acceptInvite}>
@@ -137,8 +162,7 @@ render(){
          }
           </TouchableOpacity>
          
-          <TouchableOpacity onPress={()=>{ this.tick2()
-}}>  
+          <TouchableOpacity onPress={this.declined}>  
           { 
           this.state.isFlashing2 === false ?
           <Text style={styles.declineInvite}>
@@ -155,15 +179,37 @@ render(){
           </TouchableOpacity>     
 
         </View>
-
-
-
-
-
   </View>
   )
 }
+
+render(){
+  return(
+    <View>
+      {this.state.gotInformation ? ( 
+      <View><Text style={styles.title}> Pending {this.state.data.length}</Text>
+      <FlatList
+          data={this.state.data}
+          renderItem={this.renderRow.bind(this)}
+          keyExtractor={this.keyExtractor}
+          extraData={this.state}
+          horizontal={true}
+      /></View> ):  (<View><Text>Loading pending invites</Text></View>)
+      }
+    </View>  
+  )
 }
+
+/*render(){
+  return(
+    <View>
+      <Text>Pending Invite here</Text>
+    </View>  
+  )
+}*/
+
+}
+
 const styles = StyleSheet.create(
     {
         container:{
@@ -172,6 +218,7 @@ const styles = StyleSheet.create(
         },
         featuredImage:{
             height: 148,
+            width: 350,
             flexDirection: 'column',
             justifyContent: 'flex-start',
             borderStyle: 'solid',
@@ -184,6 +231,10 @@ const styles = StyleSheet.create(
             shadowOpacity: 0.8,
             shadowRadius: 2,
             elevation: 1,
+            padding: 40,
+            paddingRight: 40,
+            paddingTop: 20,
+            paddingBottom: 20
         },
         title:{
             //fontFamily: "Helvetica",
@@ -197,15 +248,17 @@ const styles = StyleSheet.create(
             fontSize: 14,
             color: "#000000",
             textAlign: "right",
-            paddingRight: 50,
+            //paddingRight: 50,
             //fontStretch: "Medium"
         },
 
         profilePic:{
        
             //textAlign: "left",
-            paddingLeft: 100,
-            paddingTop:70,
+            //paddingLeft: 100,
+           // paddingTop:70,
+            width: 70, 
+            height: 70
             //backgroundColor:'blue'
         },
         
@@ -220,7 +273,7 @@ const styles = StyleSheet.create(
           //fontFamily: "Segoe UI",
           fontSize: 14,
           backgroundColor:'#e8f4f8',
-          width: 195,
+          width: 175,
           textAlign: "center",
           color: 'green',
           shadowColor: '#000',
@@ -234,7 +287,7 @@ const styles = StyleSheet.create(
           //fontFamily: "Segoe UI",
           fontSize: 14,
           backgroundColor:'#e8f4f8',
-          width: 195,
+          width: 175,
           textAlign: "center",
           color: 'red',
           shadowColor: '#000',
@@ -246,7 +299,7 @@ const styles = StyleSheet.create(
 
         accept:{
           backgroundColor: 'green',
-          width:195,
+          width:175,
           textAlign: 'center',
           color: 'black',
           shadowColor: '#000',
@@ -258,7 +311,7 @@ const styles = StyleSheet.create(
 
          decline:{
           backgroundColor: 'red',
-          width:195,
+          width:175,
           textAlign: 'center',
           color: 'black',
           shadowColor: '#000',

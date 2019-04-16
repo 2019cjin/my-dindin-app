@@ -4,7 +4,7 @@ import { Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Header from './Header'
 import InviteDetail from './InviteDetail'
 import MapInvite from './MapInvite'
-import InviteCarousel from './Carousel'
+//import InviteCarousel from './Carousel'
 //import { listenOrientationChange, removeOrientationListener, widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 //import EventsList from './EventsList';
 //import OldEventsList from './OldEventsList';
@@ -25,11 +25,15 @@ export default class InvitationDetailsScreen extends React.Component{
     //event list don't show events in days before today
     //  <EventsList type = {new Date()} navigation = {this.props.navigation} />
     render(){
+
+      const { navigation } = this.props;
+      const h = navigation.getParam('host', 'NO HOST');
+
         return(
         <View style={styles.container}>
         <Header navigation={this.props.navigation}/>
         
-        <InviteDetail/>    
+        <InviteDetail host = {h}/>    
         
         <View style={styles.mapview}>
             <MapInvite />  
