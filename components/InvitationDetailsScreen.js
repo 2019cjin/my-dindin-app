@@ -33,7 +33,7 @@ export default class InvitationDetailsScreen extends React.Component{
         <View style={styles.container}>
         <Header navigation={this.props.navigation}/>
         
-        <InviteDetail host = {h}/>    
+        <InviteDetail host = {h} navigation={this.props.navigation}/>    
         
         <View style={styles.mapview}>
             <MapInvite />  

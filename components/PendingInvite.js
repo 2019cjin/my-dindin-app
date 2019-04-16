@@ -118,7 +118,7 @@ export default class PendingInvite extends React.Component{
       tick3() {
         this.setState({isFlashing: true})  
         this.interval = setTimeout(()=> this.setState({isFlashing: false}), 1000)
-      
+       // clearInterval(this.interval)
         
      }
      
@@ -126,33 +126,59 @@ export default class PendingInvite extends React.Component{
       tick2() {
        this.setState({isFlashing2: true})  
       this.interval = setTimeout(()=> this.setState({isFlashing2: false}), 1000)
+      //clearInterval(this.interval)
      }
 
      keyExtractor(item){
       return item.id.toString()
   }
 
-  accepted = ()=> { 
+  async accepted(id, username){ 
 
-    firebase.database().ref('jdoe/yourEventsList/' + '5/0/accepted').set(
-      "true"
-    )
+    await this.tick3()
+    /*await console.log("text is " + id.toString())
+    await( guestIndex = 0)
 
-    firebase.database().ref('gsamson/numPendingInvite/').set(
-      6
-    )
+    //finish updating host's guest list
+    await firebase.database().ref('jdoe/yourEventsList/' + id.toString() ).on('value', async function(snapshot) {
+      await (guests =  snapshot.val())
+      await console.log(guests)
+      for (let i = 0; i < guests.length; i ++)
+      {
+        if (guests[i].Username === username)
+        {
+          await (guestIndex = i)
+        }
+      }
+      console.log("guest index is " + guestIndex)
 
+      firebase.database().ref('jdoe/yourEventsList/' + id.toString() + '/' + guestIndex.toString() + '/accepted').set(
+        "true"
+      )
+
+    })
+
+    //finish adding new event to guest's events list
     let eventInfo = null
-    var event = firebase.database().ref('gsamson/pendingInvite/0/')
-    event.on('value', function(snapshot) {
+    await ( event = firebase.database().ref('gsamson/pendingInvite/' + id.toString()))
+    await event.on('value', function(snapshot) {
       eventInfo =  snapshot.val();
-    });
+      firebase.database().ref('gsamson/eventsList/0/').set(
+        snapshot.val()
+      )
+    })
+    await console.log("eventInfo is " + eventInfo)
     
-    firebase.database().ref('gsamson/eventsList/0/').set(
+   /* await firebase.database().ref('gsamson/eventsList/0/').set(
       eventInfo
-    )
+    )*/
 
-    this.tick3()
+    //finish updating guest's pending invites information
+   /*await  firebase.database().ref('gsamson/numPendingInvite/').set(
+      5
+    )*/
+
+
   }
   declined = ()=>{ 
 
@@ -186,7 +212,7 @@ renderRow({item}){
         
         
         <View style ={styles.setButtons}>
-        <TouchableOpacity onPress={this.accepted}>      
+        <TouchableOpacity onPress={() => this.accepted(item.id, item.Username)}>      
         { 
           this.state.isFlashing === false ?
           <Text style={styles.acceptInvite}>
