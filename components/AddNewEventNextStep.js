@@ -107,6 +107,9 @@ export default class AddNewEventNextStep extends React.Component{
 
         await this.updateEventOnDB('jdoe/eventsList/')
         await this.updateInviteeListOnDB('jdoe/eventsList/')
+
+        //for one second: display success message
+
         this.props.navigation.navigate('Home')
             
         //need to send invitations

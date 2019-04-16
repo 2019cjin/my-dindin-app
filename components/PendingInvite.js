@@ -2,7 +2,7 @@ import * as React from 'react'
 import {View, Text, StyleSheet,ImageBackground, Image, TouchableOpacity, FlatList} from 'react-native'
 import {Constants} from 'expo'
 import * as firebase from 'firebase';
-import {weekDayMonthDate2} from './DateConversion';
+import {weekDayMonthDate2, convertDateToDBString} from './DateConversion';
 
 //import InvitationDetailsScreen from './components/InvitationDetailsScreen'
 
@@ -23,6 +23,15 @@ var GobalSpace = {
      messagingSenderId: "1055947992772"
    };
    
+
+   function compare(a,b) {
+    if (a.date < b.date)
+        return -1;
+    if (a.date > b.date)
+        return 1;
+    return 0;
+    }
+
 export default class PendingInvite extends React.Component{
 
     constructor(props){
@@ -30,24 +39,47 @@ export default class PendingInvite extends React.Component{
         this.state= {
           catFact:{firstName: '', lastName: ''},
           isFlashing:false, isFlashing2:false,
-          data:[]
+          data:[],
+          finalList: [],
+          firstIndex: 0
         }
 
     }
 
     
-    startListener(path) {
+    async startListener(path) {
       let context = this
-      firebase.database().ref(path).on('value', (snapshot) => {     
+      await firebase.database().ref(path).on('value', (snapshot) => {     
         console.log(JSON.stringify(snapshot.val()))
         context.setState({
           data: JSON.parse(JSON.stringify(snapshot.val())), 
           gotInformation: true
         })
+        context.getFinalList()
       })
+      
     }
 
-      
+    getFinalList(){
+        if (this.state.data.length > 0){
+          this.setState({finalList:[]})
+          let initialList = this.state.data.sort(compare)
+          let firstIndex = 0
+          let todayString = convertDateToDBString(new Date())
+          for (let i = 0; i < this.state.data.length; i ++)
+          {
+            currentDate = initialList[i]["date"]
+            if (currentDate >= todayString){
+              firstIndex = i
+              this.setState({firstIndex: firstIndex})
+              break
+            }
+          }
+          for (let i = firstIndex; i < this.state.data.length; i ++){
+              this.state.finalList.push(initialList[i])
+          }
+        }
+    }
 
     timerID = setInterval(() => {this.tick()}, 7000)
 
@@ -65,6 +97,12 @@ export default class PendingInvite extends React.Component{
 
       componentWillUnmount(){
         clearInterval(this.timerID)
+        if (!firebase.apps.length){
+          firebase.initializeApp(firebaseConfig)
+        }
+        path = 'gsamson/pendingInvite'
+        this.startListener(path)
+        this.gotInformation = false;
     }
 
       tick() {
@@ -94,21 +132,25 @@ export default class PendingInvite extends React.Component{
       return item.id.toString()
   }
 
-  accepted = () => { 
+  accepted = ()=> { 
 
-    /*firebase.database().ref('jdoe/yourEventsList/' + '5/0/accepted').set(
+    firebase.database().ref('jdoe/yourEventsList/' + '5/0/accepted').set(
       "true"
     )
 
     firebase.database().ref('gsamson/numPendingInvite/').set(
-      "6"
+      6
     )
 
-    var event = firebase.database().ref('gsamson/pendingInvite/0')*/
-
-    /*firebase.database().ref('gsamson/eventsList/0').set(
-      event
-    )*/
+    let eventInfo = null
+    var event = firebase.database().ref('gsamson/pendingInvite/0/')
+    event.on('value', function(snapshot) {
+      eventInfo =  snapshot.val();
+    });
+    
+    firebase.database().ref('gsamson/eventsList/0/').set(
+      eventInfo
+    )
 
     this.tick3()
   }
@@ -185,9 +227,9 @@ render(){
   return(
     <View>
       {this.state.gotInformation ? ( 
-      <View><Text style={styles.title}> Pending {this.state.data.length}</Text>
+      <View><Text style={styles.title}> Pending {this.state.data.length - this.state.firstIndex}</Text>
       <FlatList
-          data={this.state.data}
+          data={this.state.finalList}
           renderItem={this.renderRow.bind(this)}
           keyExtractor={this.keyExtractor}
           extraData={this.state}
