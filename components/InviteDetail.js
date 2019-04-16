@@ -48,8 +48,10 @@ const styles = StyleSheet.create(
             alignItems: 'center',
             borderStyle: 'solid',
             borderWidth: 1,
-            backgroundColor: "#e8f4f8",
-            borderColor: "#eef7fa",
+            //backgroundColor: "#e8f4f8",
+            backgroundColor: "white",
+            //borderColor: "#eef7fa",
+            borderColor: "white",
             borderRadius: 5,
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
@@ -63,7 +65,7 @@ const styles = StyleSheet.create(
             fontSize: 14,
             color: "#000000",
             textAlign: "center",
-            paddingRight: 50,
+            //paddingRight: 50,
             //fontStretch: "Medium"
         },
 
