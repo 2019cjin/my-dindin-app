@@ -41,7 +41,8 @@ export default class PendingInvite extends React.Component{
           isFlashing:false, isFlashing2:false,
           data:[],
           finalList: [],
-          firstIndex: 0
+          firstIndex: 0,
+          numPending: 0
         }
 
     }
@@ -83,6 +84,7 @@ export default class PendingInvite extends React.Component{
               }
           }
           this.state.finalList.sort(compare)
+          this.setState({numPending: this.state.finalList.length})
         }
     }
 
@@ -164,14 +166,14 @@ export default class PendingInvite extends React.Component{
     //add new event to guest's event list
 
     await( eventID = 0 )
-    await(eventIDRef = await firebase.database().ref('gsamson/numEvents/'))
+    await(eventIDRef = await firebase.database().ref('jdoe/numEvents/'))
     await eventIDRef.on('value', function(snapshot) {
       eventID =  snapshot.val();
     })
-    firebase.database().ref('gsamson/eventsList/' + eventID.toString() + '/').set(
+    firebase.database().ref('jdoe/eventsList/' + eventID.toString() + '/').set(
       item
     )
-    firebase.database().ref('gsamson/numEvents/').set(
+    firebase.database().ref('jdoe/numEvents/').set(
       eventID + 1
     )
     
@@ -179,7 +181,7 @@ export default class PendingInvite extends React.Component{
 
     //adjust pendingInvite list
     await console.log(newIndex)
-    firebase.database().ref('gsamson/pendingInvite/' + newIndex.toString() + '/isPending').set(
+    firebase.database().ref('jdoe/pendingInvite/' + newIndex.toString() + '/isPending').set(
       false
     )
 
@@ -189,7 +191,7 @@ export default class PendingInvite extends React.Component{
     await this.tick2()
     //adjust pendingInvite list
     await (newIndex = item.index)
-    firebase.database().ref('gsamson/pendingInvite/' + newIndex.toString() + '/isPending').set(
+    firebase.database().ref('jdoe/pendingInvite/' + newIndex.toString() + '/isPending').set(
       false
     )
 
@@ -263,7 +265,7 @@ render(){
   return(
     <View>
       {this.state.gotInformation ? ( 
-      <View><Text style={styles.title}> Pending {this.state.data.length - this.state.firstIndex}</Text>
+      <View><Text style={styles.title}> Pending {this.state.finalList.length}</Text>
       <FlatList
           data={this.state.finalList}
           renderItem={this.renderRow.bind(this)}
