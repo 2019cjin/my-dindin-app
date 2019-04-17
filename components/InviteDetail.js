@@ -13,8 +13,6 @@ render(){
       <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Home')}}>
        <ImageBackground style={styles.featuredImage}>
 
-          
-             
               <Image style={styles.profilePic} source={{uri: this.props.host.profilePic}} />
            <Text style={styles.author}> {this.props.host.location}
              </Text>
@@ -23,8 +21,13 @@ render(){
              </Text>
 
              <Text style={styles.author}> Hosted by {this.props.host.hostFName} {this.props.host.hostLName}
-             </Text>
-             
+             </Text>        
+             {this.props.host.isPending ?
+             <Text style={styles.author}> Status: Pending
+             </Text>  :
+            <Text style={styles.author}> Status: Accepted
+             </Text>            
+             }
 
         </ImageBackground>
       </TouchableOpacity>
