@@ -10,20 +10,7 @@ import MapInvite from './MapInvite'
 //import OldEventsList from './OldEventsList';
 
 export default class InvitationDetailsScreen extends React.Component{
-    //constructor(){
-      //  super()
-        //this.state={
-          //  date: new Date(),//include so that we are able to change the month
-       // }
-    //}
-
-   // componentDidMount(){
-        //setInterval(() => {this.setState({date: new Date()})}, 1000);
-
-    //}
-    //eventlist: need to pass in what month - default month is month of today
-    //event list don't show events in days before today
-    //  <EventsList type = {new Date()} navigation = {this.props.navigation} />
+    
     render(){
 
       const { navigation } = this.props;
