@@ -37,7 +37,7 @@ export default class EventsList extends React.Component{
     async startListener(path) {
         let context = this
         firebase.database().ref(path).on('value', async (snapshot) => {     
-          //console.log(JSON.stringify(snapshot.val()))
+          //console.log(snapshot.val())
           await context.setState({
             eventsList: JSON.parse(JSON.stringify(snapshot.val())), 
             //gotInformation: true
@@ -54,6 +54,8 @@ export default class EventsList extends React.Component{
         if (this.state.eventsList !== null)
         {
             this.setState({eventsList:this.state.eventsList.sort(compare)})
+            //console.log("sorted eventsList")
+            //console.log(this.state.eventsList)
             this.setState({finalEvents:[]})
             //console.log("not null eventsList")
             firstDate = new Date(this.props.today.getFullYear().toString(), this.props.today.getMonth().toString(), this.props.today.getDate().toString())
@@ -66,7 +68,7 @@ export default class EventsList extends React.Component{
             while (firstDate <= lastDate)
             {
                 //make new list of events for a particular date for each date
-               // console.log("firstDate:"+firstDate.toString())
+              // console.log("firstDate:"+firstDate.toString())
                 newDate = new Date()
                 newDate.setDate(firstDate.getDate())
                 this.state.finalEvents.push(

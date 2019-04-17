@@ -79,10 +79,16 @@ export default class AddNewEventNextStep extends React.Component{
     
           //update DB for invitee
           let pendingInviteID = 0
+          let eventID = 0
           
           var pendingIDRef = await firebase.database().ref(this.state.inviteeList[i]['Username'] + '/numPendingInvite/');
             pendingIDRef.on('value', function(snapshot) {
             pendingInviteID =  JSON.stringify(snapshot.val());
+          });
+
+          var eventIDRef = await firebase.database().ref(this.state.inviteeList[i]['Username'] + '/numEvents/');
+            eventIDRef.on('value', function(snapshot) {
+            eventID =  snapshot.val()
           });
           
           await firebase.database().ref(this.state.inviteeList[i]['Username'] + '/pendingInvite/' + pendingInviteID.toString() + '/').set(
@@ -91,6 +97,9 @@ export default class AddNewEventNextStep extends React.Component{
           await firebase.database().ref(this.state.inviteeList[i]['Username'] + '/numPendingInvite/').set(
               (parseInt(pendingInviteID, 10) + 1)
           );
+          await firebase.database().ref(this.state.inviteeList[i]['Username'] + '/numEvents/').set(
+            (eventID + 1)
+        );
 
        }
    }

@@ -97,7 +97,7 @@ export default class PendingInvite extends React.Component{
         if (!firebase.apps.length){
           firebase.initializeApp(firebaseConfig)
         }
-        path = 'gsamson/pendingInvite'
+        path = 'jdoe/pendingInvite'
         this.startListener(path)
         this.gotInformation = false;
       }
@@ -107,7 +107,7 @@ export default class PendingInvite extends React.Component{
         if (!firebase.apps.length){
           firebase.initializeApp(firebaseConfig)
         }
-        path = 'gsamson/pendingInvite'
+        path = 'jdoe/pendingInvite'
         this.startListener(path)
         this.gotInformation = false;
     }
@@ -165,17 +165,22 @@ export default class PendingInvite extends React.Component{
 
     //add new event to guest's event list
 
-    await( eventID = 0 )
-    await(eventIDRef = await firebase.database().ref('jdoe/numEvents/'))
-    await eventIDRef.on('value', function(snapshot) {
-      eventID =  snapshot.val();
+    await( eventID = 13 )
+    await(eventIDRef = firebase.database().ref('jdoe/numEvents/'))
+    await eventIDRef.on('value', async function(snapshot) {
+      await (eventID =  snapshot.val())
+      console.log("stringify: " + JSON.stringify(snapshot.val()))
+      
     })
-    firebase.database().ref('jdoe/eventsList/' + eventID.toString() + '/').set(
+    await console.log("eventID is :" + eventID)
+    await firebase.database().ref('jdoe/eventsList/' + eventID + '/').set(
       item
     )
-    firebase.database().ref('jdoe/numEvents/').set(
+    await firebase.database().ref('jdoe/numEvents/').set(
       eventID + 1
     )
+    
+    
     
   
 
