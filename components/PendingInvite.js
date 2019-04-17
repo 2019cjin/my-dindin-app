@@ -63,7 +63,7 @@ export default class PendingInvite extends React.Component{
     getFinalList(){
         if (this.state.data.length > 0){
           this.setState({finalList:[]})
-          let initialList = this.state.data.sort(compare)
+          let initialList = this.state.data
           let firstIndex = this.state.data.length
           let todayString = convertDateToDBString(new Date())
           for (let i = 0; i < this.state.data.length; i ++)
@@ -82,6 +82,7 @@ export default class PendingInvite extends React.Component{
                 this.state.finalList[this.state.finalList.length - 1].index = i
               }
           }
+          this.state.finalList.sort(compare)
         }
     }
 
@@ -142,7 +143,7 @@ export default class PendingInvite extends React.Component{
     await( guestIndex = 0)
 
     //finish updating host's guest list
-    await firebase.database().ref('jdoe/yourEventsList/' + item.id.toString() ).on('value', async function(snapshot) {
+    await firebase.database().ref(item.hostUserName.toString() + '/yourEventsList/' + item.id.toString() ).on('value', async function(snapshot) {
       await (guests =  snapshot.val())
       //await console.log(guests)
       for (let i = 0; i < guests.length; i ++)
@@ -154,7 +155,7 @@ export default class PendingInvite extends React.Component{
       }
       //console.log("guest index is " + guestIndex)
 
-      firebase.database().ref('jdoe/yourEventsList/' + item.id.toString() + '/' + guestIndex.toString() + '/accepted').set(
+      firebase.database().ref(item.hostUserName.toString() +'/yourEventsList/' + item.id.toString() + '/' + guestIndex.toString() + '/accepted').set(
         "true"
       )
 
@@ -177,6 +178,7 @@ export default class PendingInvite extends React.Component{
   
 
     //adjust pendingInvite list
+    await console.log(newIndex)
     firebase.database().ref('gsamson/pendingInvite/' + newIndex.toString() + '/isPending').set(
       false
     )
